@@ -34,7 +34,7 @@ namespace RealNews
         {
             if (path == "style.css") {
                 OutPutContentType(ctx, ".css");
-                WriteResponse(ctx, 200, Properties.Resources.style );
+                WriteResponse(ctx, 200, File.ReadAllText("configs\\style.css"));
             }
             else
                 base.ServeFile(ctx, path);

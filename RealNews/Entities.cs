@@ -17,6 +17,7 @@ namespace RealNews
         public int UpdateEveryHour;
         public bool DownloadImages = true;
         public DateTime LastItemDate;
+        public string LastError;
     }
 
 
@@ -32,6 +33,8 @@ namespace RealNews
         public string Description;
         public int feedid;
         public string Attachment;
+
+        public bool isRead = false;
     }
 
 

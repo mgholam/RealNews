@@ -35,6 +35,9 @@ namespace RealNews
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("configs");
+            if (File.Exists("configs\\style.css") == false)
+                File.WriteAllText("configs\\style.css", Properties.Resources.style);
+
             SetDoubleBuffering(listView1, true);
             SetHeight(listView1, 20);
 
@@ -59,6 +62,7 @@ namespace RealNews
 
             splitContainer1.SplitterDistance = Settings.treeviewwidth;
             splitContainer2.SplitterDistance = Settings.feeditemlistwidth;
+
             loaded = true;
 
             _imgcache = new RaptorDB.KeyStoreHF("cache", "images.dat");
@@ -104,16 +108,26 @@ namespace RealNews
             var feedxml = "";
             if (feed != null && feed.URL != "")
             {
-                toolMessage.Text = "Getting : " + feed.URL;
-                Thread.Sleep(100);
-                Application.DoEvents();
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                WebClient wc = new WebClient();
-                wc.Encoding = Encoding.UTF8;
-                if (Settings.UseSytemProxy)
-                    wc.Proxy = WebRequest.DefaultWebProxy;
-                feedxml = wc.DownloadString(feed.URL);
-                File.WriteAllText(GetFeedXmlFilename(feed), feedxml, Encoding.UTF8);
+                try
+                {
+                    feed.LastError = "";
+                    toolMessage.Text = "Getting : " + feed.URL;
+                    Thread.Sleep(100);
+                    Application.DoEvents();
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    WebClient wc = new WebClient();
+                    wc.Encoding = Encoding.UTF8;
+                    if (Settings.UseSytemProxy)
+                        wc.Proxy = WebRequest.DefaultWebProxy;
+                    feedxml = wc.DownloadString(feed.URL);
+                    feed.LastUpdate = DateTime.Now;
+                    File.WriteAllText(GetFeedXmlFilename(feed), feedxml, Encoding.UTF8);
+                }
+                catch (Exception ex)
+                {
+                    feed.LastError = ex.Message;
+                    return;
+                }
             }
             else // testing
             {
@@ -131,7 +145,7 @@ namespace RealNews
                     feedid = feed.id,
                     Id = item.Id,
                     Link = item.Link,
-                    Attachment = item.SpecificItem.Enclosure.Url,
+                    Attachment = item.SpecificItem.Enclosure != null ? item.SpecificItem.Enclosure.Url : "",
                     Categories = item.Categories.Count > 5 ? string.Join(", ", item.Categories.ToArray(), 0, 4) : string.Join(", ", item.Categories),
                     Author = item.Author
                 };
@@ -216,6 +230,8 @@ namespace RealNews
                 };
             }
 
+            item.isRead = true;
+
             var str = item.Description;
             //str = "\r\n<table>\r\n<tr><td>title</td><td>Mum S02E02 HDTV x264-RiVER</td></tr><tr><td>category</td><td>TV</td></tr><tr><td>link</td><td>https://eztv.ag/ep/617889/mum-s02e02-hdtv-x264-river/</td></tr><tr><td>guid</td><td>https://eztv.ag/ep/617889/mum-s02e02-hdtv-x264-river/</td></tr><tr><td>pubDate</td><td>Tue, 27 Feb 2018 18:00:02 -0500</td></tr><tr><td>contentLength</td><td>189773815</td></tr><tr><td>infoHash</td><td>932C6874CF5508513C26D1D698B60FB3B97A0538</td></tr><tr><td>magnetURI</td><td>magnet:?xt=urn:btih:932C6874CF5508513C26D1D698B60FB3B97A0538&dn=Mum.S02E02.HDTV.x264-RiVER%5Beztv%5D.mkv&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969</td></tr><tr><td>seeds</td><td>0</td></tr><tr><td>peers</td><td>0</td></tr><tr><td>verified</td><td>0</td></tr><tr><td>fileName</td><td>Mum.S02E02.HDTV.x264-RiVER[eztv].mkv</td></tr><tr><td>enclosure</td><td></td></tr></table>\r\n";
             str = str.Replace("{port}", Settings.webport.ToString());
@@ -226,7 +242,7 @@ namespace RealNews
                 sb.Append("dir='rtl'>"); // fix : get if rtl
             else
                 sb.Append(">");
-            sb.Append("<link rel='stylesheet' href='http://localhost:"+Settings.webport+"/style.css'>");
+            sb.Append("<link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'>");
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             sb.Append("<label>");
@@ -323,7 +339,7 @@ namespace RealNews
                 }
                 listView1.Items.Clear();
                 listView1.View = View.Details;
-                listView1.RightToLeft = feed.RTL? RightToLeft.Yes: RightToLeft.No;
+                listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
                 listView1.RightToLeftLayout = feed.RTL;
 
                 if (list != null)
@@ -340,7 +356,8 @@ namespace RealNews
                         lvi.SubItems.Add(i.date.ToString());
                         listView1.Items.Add(lvi);
                         //listView1.Items.Add(i.Title);
-
+                        if (i.isRead == false)
+                            lvi.Font = new Font(lvi.Font, FontStyle.Bold);
                     }
                     listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                     listView1.EndUpdate();
@@ -351,19 +368,19 @@ namespace RealNews
 
         private string GetFeedFilename(Feed f)
         {
-            return "feeds\\lists\\" + f.Title.Replace(":", "") + ".list";
+            return "feeds\\lists\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".list";
         }
         private string GetFeedFilename(string title)
         {
-            return "feeds\\lists\\" + title.Replace(":", "") + ".list";
+            return "feeds\\lists\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".list";
         }
         private string GetFeedXmlFilename(Feed f)
         {
-            return "feeds\\temp\\" + f.Title.Replace(":", "") + ".xml";
+            return "feeds\\temp\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
         }
         private string GetFeedXmlFilename(string title)
         {
-            return "feeds\\temp\\" + title.Replace(":", "") + ".xml";
+            return "feeds\\temp\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
         }
 
         private static void SetDoubleBuffering(System.Windows.Forms.Control control, bool value)
@@ -467,11 +484,13 @@ namespace RealNews
         private void listView1_Click(object sender, EventArgs e)
         {
             ShowItem(listView1.FocusedItem.Tag as FeedItem);
+            listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
         }
 
         private void listView1_KeyUp(object sender, KeyEventArgs e)
         {
             ShowItem(listView1.FocusedItem.Tag as FeedItem);
+            listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
         }
     }
 }
