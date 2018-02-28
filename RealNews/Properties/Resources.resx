@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="notfound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\notfound.img;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>&lt;html dir="rtl"&gt;
+&lt;script src="badcode.js"&gt;&lt;/script&gt;
+&lt;IMG SRC="javascript:alert('XSS');"&gt;
+&lt;img width="150" height="150" src="https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-150x150.png" class="webfeedsFeaturedVisual wp-post-image" alt="Alcohol 120 Percent" style="display: block; margin-bottom: 5px; clear:both;max-width: 100%;" srcset="https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-150x150.png 150w, https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-90x90.png 90w, https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-64x64.png 64w, https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-96x96.png 96w, https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-100x100.png 100w, https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent.png 256w" sizes="(max-width: 150px) 100vw, 150px" /&gt;دانلود الکل 120 درصد ؛ بهترین نرم افزار کپی دیسک های قفل دار
+&lt;/html&gt;</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>What goes into a Docker stack? Carl and Richard talk to Rob Richardson about how containers are evolving in the .NET world. Rob talks about how the Windows side of Docker is actually getting stronger - most developers using Docker use Linux as the template OS. The conversation focuses on moving existing .NET applications into Docker - aka, without .NET Core. It's certainly possible, and you get some of the container advantages. But with containers comes new thinking around architecture, the ability to organize and scale your services differently. But you can implement those features gradually, and take advantage of what orchestration can do for you. Whether in the cloud or on-premises, containers have a lot to offer!
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;title&lt;/td&gt;&lt;td&gt;The Docker Stack with Rob Richardson&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;link&lt;/td&gt;&lt;td&gt;http://www.dotnetrocks.com/default.aspx?ShowNum=1523&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;pubDate&lt;/td&gt;&lt;td&gt;Tue, 27 Feb 2018 00:00:00 EDT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;description&lt;/td&gt;&lt;td&gt;What goes into a Docker stack? Carl and Richard talk to Rob Richardson about how containers are evolving in the .NET world. Rob talks about how the Windows side of Docker is actually getting stronger - most developers using Docker use Linux as the template OS. The conversation focuses on moving existing .NET applications into Docker - aka, without .NET Core. It's certainly possible, and you get some of the container advantages. But with containers comes new thinking around architecture, the ability to organize and scale your services differently. But you can implement those features gradually, and take advantage of what orchestration can do for you. Whether in the cloud or on-premises, containers have a lot to offer!&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;source&lt;/td&gt;&lt;td&gt;.NET Rocks!&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;guid&lt;/td&gt;&lt;td&gt;http://www.dotnetrocks.com/default.aspx?ShowNum=1523&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;author&lt;/td&gt;&lt;td&gt;Carl Franklin&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;subtitle&lt;/td&gt;&lt;td&gt;.NET Rocks! is an Internet Audio Talk Show for Microsoft .NET Developers.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;summary&lt;/td&gt;&lt;td&gt;What goes into a Docker stack? Carl and Richard talk to Rob Richardson about how containers are evolving in the .NET world. Rob talks about how the Windows side of Docker is actually getting stronger - most developers using Docker use Linux as the template OS. The conversation focuses on moving existing .NET applications into Docker - aka, without .NET Core. It's certainly possible, and you get some of the container advantages. But with containers comes new thinking around architecture, the ability to organize and scale your services differently. But you can implement those features gradually, and take advantage of what orchestration can do for you. Whether in the cloud or on-premises, containers have a lot to offer!&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;enclosure&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;duration&lt;/td&gt;&lt;td&gt;00:51:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;keywords&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</value>
+  </data>
+  <data name="String3" xml:space="preserve">
+    <value>As the maker of Windows, Office, and Xbox, Microsoft is undoubtedly against software piracy. When people pirate its games and other software, it arguably takes money out of the companyâ€™s pockets. Believe it or not though, Microsoft is actually promoting piracy! No, not software piracy, but traditional piracy, like with actual pirates. Well, the historical/make-believe type at least. You know, peg legs, eye patches, parrots and such. You see, today it announces theآ Xbox One S Sea Of Thieves Bundle. "As we approach the global launch of one of the most anticipated Xbox One exclusives for 2018, weâ€™re pleased to announce&amp;#8230; &lt;a href="https://betanews.com/2018/02/27/microsoft-xbox-piracy/" rel="nofollow"&gt;[Continue Reading]&lt;/a&gt;&lt;div class="feedflare"&gt;
+&lt;a href="http://localhost:{port}/api/image?localhost:{port}/api/image?localhost:{port}/api/image?feeds.betanews.com/~ff/bn?a=ALkgP7mT8Zo:X4cQN2vvhc4:qj6IDK7rITs"&gt;&lt;img src="http://localhost:{port}/api/image?localhost:{port}/api/image?localhost:{port}/api/image?feeds.feedburner.com/~ff/bn?d=qj6IDK7rITs" border="0"&gt;&lt;/a&gt; &lt;a href="http://localhost:{port}/api/image?localhost:{port}/api/image?localhost:{port}/api/image?feeds.betanews.com/~ff/bn?a=ALkgP7mT8Zo:X4cQN2vvhc4:yIl2AUoC8zA"&gt;&lt;img src="http://localhost:{port}/api/image?localhost:{port}/api/image?localhost:{port}/api/image?feeds.feedburner.com/~ff/bn?d=yIl2AUoC8zA" border="0"&gt;&lt;/a&gt;
+&lt;/div&gt;&lt;img src="http://localhost:{port}/api/image?localhost:{port}/api/image?localhost:{port}/api/image?feeds.feedburner.com/~r/bn/~4/ALkgP7mT8Zo" height="1" width="1" alt=""&gt;
+&lt;table class='extradata'&gt;
+&lt;tr&gt;&lt;td&gt;title&lt;/td&gt;&lt;td&gt;Microsoft promotes piracy on Xbox One&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;link&lt;/td&gt;&lt;td&gt;http://feeds.betanews.com/~r/bn/~3/ALkgP7mT8Zo/&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;comments&lt;/td&gt;&lt;td&gt;https://betanews.com/2018/02/27/microsoft-xbox-piracy/#comments, 12&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;pubDate&lt;/td&gt;&lt;td&gt;Tue, 27 Feb 2018 19:55:18 +0000&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;creator&lt;/td&gt;&lt;td&gt;Brian Fagioli&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;category&lt;/td&gt;&lt;td&gt;Article, Xbox One S&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;guid&lt;/td&gt;&lt;td&gt;https://betanews.com/?p=394452&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;description&lt;/td&gt;&lt;td&gt;As the maker of Windows, Office, and Xbox, Microsoft is undoubtedly against software piracy. When people pirate its games and other software, it arguably takes money out of the companyâ€™s pockets. Believe it or not though, Microsoft is actually promoting piracy! No, not software piracy, but traditional piracy, like with actual pirates. Well, the historical/make-believe type at least. You know, peg legs, eye patches, parrots and such. You see, today it announces theآ Xbox One S Sea Of Thieves Bundle. "As we approach the global launch of one of the most anticipated Xbox One exclusives for 2018, weâ€™re pleased to announce&amp;#8230; &lt;a href="https://betanews.com/2018/02/27/microsoft-xbox-piracy/" rel="nofollow"&gt;[Continue Reading]&lt;/a&gt;&lt;div class="feedflare"&gt;
+&lt;a href="http://feeds.betanews.com/~ff/bn?a=ALkgP7mT8Zo:X4cQN2vvhc4:qj6IDK7rITs"&gt;&lt;img src="http://feeds.feedburner.com/~ff/bn?d=qj6IDK7rITs" border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a href="http://feeds.betanews.com/~ff/bn?a=ALkgP7mT8Zo:X4cQN2vvhc4:yIl2AUoC8zA"&gt;&lt;img src="http://feeds.feedburner.com/~ff/bn?d=yIl2AUoC8zA" border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+&lt;/div&gt;&lt;img src="http://feeds.feedburner.com/~r/bn/~4/ALkgP7mT8Zo" height="1" width="1" alt=""/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;commentRss&lt;/td&gt;&lt;td&gt;https://betanews.com/2018/02/27/microsoft-xbox-piracy/feed/&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;post-id&lt;/td&gt;&lt;td&gt;394452&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;origLink&lt;/td&gt;&lt;td&gt;https://betanews.com/2018/02/27/microsoft-xbox-piracy/&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</value>
+  </data>
+  <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\style.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
+  </data>
+</root>
