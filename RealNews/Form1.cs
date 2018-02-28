@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using CodeHollow.FeedReader;
+using fastJSON;
 using RaptorDB;
 
 namespace RealNews
@@ -19,8 +20,8 @@ namespace RealNews
         public Form1()
         {
             InitializeComponent();
-
         }
+
         RealNewsWeb web;
         bool loaded = false;
         private KeyStoreHF _imgcache;
@@ -28,6 +29,8 @@ namespace RealNews
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
         bool _rendering = false;
         Feed _currentFeed = null;
+        private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
+
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,7 +45,7 @@ namespace RealNews
             SetHeight(listView1, 20);
 
             if (File.Exists("configs\\settings.config"))
-                fastJSON.JSON.FillObject(new Settings(), File.ReadAllText("configs\\settings.config"));
+                JSON.FillObject(new Settings(), File.ReadAllText("configs\\settings.config"));
             if (Settings.Maximized)
                 this.WindowState = FormWindowState.Maximized;
             else
@@ -50,7 +53,7 @@ namespace RealNews
 
             if (File.Exists("feeds\\feeds.list"))
             {
-                _feeds = fastJSON.JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
+                _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
                 foreach (var f in _feeds)
                 {
                     var tn = new TreeNode();
@@ -65,8 +68,14 @@ namespace RealNews
 
             loaded = true;
 
-            _imgcache = new RaptorDB.KeyStoreHF("cache", "images.dat");
+            _imgcache = new KeyStoreHF("cache", "images.dat");
             web = new RealNewsWeb(Settings.webport);
+            _skin.ParentForm = this; // FIX : skinner mangles the form when window less set 
+            _skin.DefaultSkin = BizFX.UI.Skin.DefaultSkin.Office2007Obsidian;
+            //toolStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(_Manager.CurrentColors);
+            menuStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
+            statusStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
+            this.Invalidate();
         }
 
 
@@ -191,7 +200,7 @@ namespace RealNews
             string fn = GetFeedFilename("betanews"); // testing
             if (feed != null && feed.Title != "")
                 fn = GetFeedFilename(feed);
-            File.WriteAllText(fn, fastJSON.JSON.ToNiceJSON(list, new fastJSON.JSONParameters { UseExtensions = false, UseEscapedUnicode = false }), Encoding.UTF8);
+            File.WriteAllText(fn, JSON.ToNiceJSON(list, new fastJSON.JSONParameters { UseExtensions = false, UseEscapedUnicode = false }), Encoding.UTF8);
             toolMessage.Text = "Downloading image x of y";
             // fix : download images
 
@@ -226,14 +235,15 @@ namespace RealNews
                     Link = "http://google.com",
                     Author = "m. gholam",
                     Categories = "testing, 123",
-                    date = DateTime.Now
+                    date = DateTime.Now,
+                    Description = "",
+                    Attachment = ""
                 };
             }
 
             item.isRead = true;
 
             var str = item.Description;
-            //str = "\r\n<table>\r\n<tr><td>title</td><td>Mum S02E02 HDTV x264-RiVER</td></tr><tr><td>category</td><td>TV</td></tr><tr><td>link</td><td>https://eztv.ag/ep/617889/mum-s02e02-hdtv-x264-river/</td></tr><tr><td>guid</td><td>https://eztv.ag/ep/617889/mum-s02e02-hdtv-x264-river/</td></tr><tr><td>pubDate</td><td>Tue, 27 Feb 2018 18:00:02 -0500</td></tr><tr><td>contentLength</td><td>189773815</td></tr><tr><td>infoHash</td><td>932C6874CF5508513C26D1D698B60FB3B97A0538</td></tr><tr><td>magnetURI</td><td>magnet:?xt=urn:btih:932C6874CF5508513C26D1D698B60FB3B97A0538&dn=Mum.S02E02.HDTV.x264-RiVER%5Beztv%5D.mkv&tr=udp%3A%2F%2Ftracker.publicbt.com%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Fexodus.desync.com%3A6969</td></tr><tr><td>seeds</td><td>0</td></tr><tr><td>peers</td><td>0</td></tr><tr><td>verified</td><td>0</td></tr><tr><td>fileName</td><td>Mum.S02E02.HDTV.x264-RiVER[eztv].mkv</td></tr><tr><td>enclosure</td><td></td></tr></table>\r\n";
             str = str.Replace("{port}", Settings.webport.ToString());
 
             StringBuilder sb = new StringBuilder();
@@ -258,13 +268,6 @@ namespace RealNews
             sb.AppendLine(str);
             sb.AppendLine("</html>");
 
-            //_rendering = true;
-            //webBrowser1.Navigate("about:blank");
-            //while (webBrowser1.Document == null || webBrowser1.Document.Body == null)
-            //    Application.DoEvents();
-            //webBrowser1.Document.OpenNew(true).Write(sb.ToString());
-            ////webBrowser1.DocumentText = sb.ToString();
-            //_rendering = false;
             DisplayHtml(sb.ToString());
         }
 
@@ -281,12 +284,13 @@ namespace RealNews
                 Settings.Maximized = false;
             else
                 Settings.Maximized = true;
-            var jp = new fastJSON.JSONParameters { UseExtensions = false };
-            File.WriteAllText("configs\\settings.config", fastJSON.JSON.ToNiceJSON(new Settings(), jp));
-            File.WriteAllText("feeds\\feeds.list", fastJSON.JSON.ToNiceJSON(_feeds, jp));
+            var jp = new JSONParameters { UseExtensions = false };
+            File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
+            File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
             foreach (var i in _feeditems)
             {
-                File.WriteAllText(GetFeedFilename(i.Key), fastJSON.JSON.ToNiceJSON(i.Value, jp));
+                File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
+                //File.WriteAllBytes(GetFeedFilename(i.Key) + ".bin", fastBinaryJSON.BJSON.ToBJSON(i.Value, new fastBinaryJSON.BJSONParameters { UseExtensions = false, UseUnicodeStrings = false }));
             }
             _imgcache.Shutdown();
         }
@@ -318,7 +322,7 @@ namespace RealNews
                     webBrowser1.Document.Write(string.Empty);
                 }
             }
-            catch (Exception e)
+            catch //(Exception e)
             { } // do nothing with this
             webBrowser1.DocumentText = html;
             _rendering = false;
@@ -333,7 +337,7 @@ namespace RealNews
                 {
                     if (File.Exists(GetFeedFilename(feed)))
                     {
-                        list = fastJSON.JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(feed)));
+                        list = JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(feed)));
                         _feeditems.TryAdd(feed.Title, list);
                     }
                 }
@@ -416,13 +420,11 @@ namespace RealNews
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            // fix : after feed select -> show feed item list 
+            // after feed select -> show feed item list 
             var feed = e.Node.Tag as Feed;
             _currentFeed = feed;
             ShowFeedList(feed);
         }
-
-
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {

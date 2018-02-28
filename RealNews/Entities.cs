@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealNews
 {
@@ -18,6 +14,7 @@ namespace RealNews
         public bool DownloadImages = true;
         public DateTime LastItemDate;
         public string LastError;
+        public int UpdateEveryMin = -1; // use global settings else e.g. 8*60 min
     }
 
 

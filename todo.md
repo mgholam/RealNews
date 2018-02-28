@@ -6,10 +6,10 @@
 - ~~get image size without downloading~~
 - get image dim without downloading
 - ~~use system proxy settings~~
-- read write opml
+- ~~read~~ write opml
 - ~~styling~~ -> css style with `HtmlPanel`
 - ~~replace img tags with call to cache~~ -> event handler in `HtmlPanel`
-- extract linked content as attachments
+- ~~extract linked content as attachments~~
 
 
 

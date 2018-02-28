@@ -34,15 +34,22 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BizFX.UI.Skin">
+      <HintPath>..\components\BizFX.UI.Skin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\components\FeedReader-master\FeedReader\bin\Debug\net452\HtmlAgilityPack.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RaptorDB">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RaptorDB.Common">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,6 +76,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RealNewsWeb.cs" />
+    <Compile Include="Renderer\Office2007BlackColorTable.cs" />
+    <Compile Include="Renderer\Office2007BlueColorTable.cs" />
+    <Compile Include="Renderer\Office2007Rendererbse.cs" />
+    <Compile Include="Renderer\Office2007SilverColorTable.cs" />
+    <Compile Include="Renderer\OfficeColorTable.cs" />
+    <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -98,6 +111,7 @@
     <ProjectReference Include="..\components\FeedReader-master\FeedReader\FeedReader.csproj">
       <Project>{420a6ab1-a7f2-42b9-99bf-644cdfadd17b}</Project>
       <Name>FeedReader</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

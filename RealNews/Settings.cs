@@ -7,5 +7,6 @@
         public static int feeditemlistwidth = 400;
         public static bool Maximized = true;
         public static bool UseSytemProxy = true;
+        public static int GlobalUpdateEveryMin = 4*60;
     }
 }
