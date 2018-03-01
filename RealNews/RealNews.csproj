@@ -117,5 +117,17 @@
   <ItemGroup>
     <None Include="Resources\style.css" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rss.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rss.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\news_new.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\star_yellow.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -61,12 +61,42 @@ namespace RealNews.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon news_new {
+            get {
+                object obj = ResourceManager.GetObject("news_new", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] notfound {
             get {
                 object obj = ResourceManager.GetObject("notfound", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rss {
+            get {
+                object obj = ResourceManager.GetObject("rss", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon star_yellow {
+            get {
+                object obj = ResourceManager.GetObject("star_yellow", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -101,25 +131,38 @@ namespace RealNews.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .title{
+        ///   Looks up a localized string similar to body {
+        ///    font-family: Tahoma;
+        ///    font-weight: normal;
+        ///}
+        ///
+        ///.title {
         ///    background-color: lavender;
         ///    padding: 10px;
         ///    margin-bottom: 15px;
         ///}
         ///
-        ///.title h2 {
-        ///    font-family: Tahoma;
-        ///    font-weight: normal;
+        ///    .title h2 {
+        ///        font-weight: normal;
+        ///    }
+        ///
+        ///        .title h2 a {
+        ///            text-decoration: none;
+        ///        }
+        ///
+        ///    .title label {
+        ///        margin-left: 5px;
+        ///        margin-right: 5px;
+        ///        font-size: xx-small;
+        ///    }
+        ///
+        ///.extradata {
+        ///    background-color: #bbb;
+        ///    font-size: x-small;
+        ///    margin-top : 30px;
         ///}
         ///
-        ///.title h2 a {
-        ///    text-decoration: none;
-        ///}
-        ///
-        ///.title label{
-        ///    margin-left: 5px;
-        ///    margin-right: 5px;
-        ///}.
+        ///    .extradata [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string style {
             get {

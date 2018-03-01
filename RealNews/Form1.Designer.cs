@@ -30,12 +30,15 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Unread");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starred");
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.markAsReadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.updateNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,10 +46,12 @@
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNewFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importOPMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
@@ -88,12 +93,19 @@
             this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.FullRowSelect = true;
+            this.treeView1.ImageIndex = 0;
+            this.treeView1.ImageList = this.rssImages;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            treeNode1.Name = "unread";
+            treeNode1.Name = "Unread";
             treeNode1.Text = "Unread";
+            treeNode2.Name = "Starred";
+            treeNode2.Text = "Starred";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode1,
+            treeNode2});
+            this.treeView1.SelectedImageIndex = 0;
+            this.treeView1.ShowLines = false;
             this.treeView1.Size = new System.Drawing.Size(340, 509);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -105,9 +117,10 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.markAsReadToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.updateNowToolStripMenuItem});
+            this.updateNowToolStripMenuItem,
+            this.editFeedToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 54);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 76);
             // 
             // markAsReadToolStripMenuItem
             // 
@@ -127,6 +140,19 @@
             this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.updateNowToolStripMenuItem.Text = "Update now";
             this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
+            // 
+            // editFeedToolStripMenuItem
+            // 
+            this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
+            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.editFeedToolStripMenuItem.Text = "Edit Feed";
+            this.editFeedToolStripMenuItem.Click += new System.EventHandler(this.editFeedToolStripMenuItem_Click);
+            // 
+            // rssImages
+            // 
+            this.rssImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.rssImages.ImageSize = new System.Drawing.Size(20, 20);
+            this.rssImages.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // splitContainer2
             // 
@@ -188,7 +214,7 @@
             this.fileToolStripMenuItem,
             this.nextToolStripMenuItem,
             this.updateAllToolStripMenuItem,
-            this.testToolStripMenuItem});
+            this.starToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1021, 24);
@@ -198,15 +224,31 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addNewFeedToolStripMenuItem,
+            this.importOPMLToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(36, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // addNewFeedToolStripMenuItem
+            // 
+            this.addNewFeedToolStripMenuItem.Name = "addNewFeedToolStripMenuItem";
+            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.addNewFeedToolStripMenuItem.Text = "Add New Feed";
+            this.addNewFeedToolStripMenuItem.Click += new System.EventHandler(this.addNewFeedToolStripMenuItem_Click);
+            // 
+            // importOPMLToolStripMenuItem
+            // 
+            this.importOPMLToolStripMenuItem.Name = "importOPMLToolStripMenuItem";
+            this.importOPMLToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.importOPMLToolStripMenuItem.Text = "Import OPML";
+            this.importOPMLToolStripMenuItem.Click += new System.EventHandler(this.importOPMLToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -214,8 +256,8 @@
             // 
             this.nextToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
-            this.nextToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.nextToolStripMenuItem.Text = "Next";
+            this.nextToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
+            this.nextToolStripMenuItem.Text = "Next Unread";
             this.nextToolStripMenuItem.Click += new System.EventHandler(this.nextToolStripMenuItem_Click);
             // 
             // updateAllToolStripMenuItem
@@ -225,12 +267,13 @@
             this.updateAllToolStripMenuItem.Text = "Update All";
             this.updateAllToolStripMenuItem.Click += new System.EventHandler(this.updateAllToolStripMenuItem_Click);
             // 
-            // testToolStripMenuItem
+            // starToolStripMenuItem
             // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            this.starToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.starToolStripMenuItem.Name = "starToolStripMenuItem";
+            this.starToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.starToolStripMenuItem.Text = "Toggle Star";
+            this.starToolStripMenuItem.Click += new System.EventHandler(this.starToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -304,7 +347,6 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolMessage;
         private System.Windows.Forms.ToolStripMenuItem updateAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem markAsReadToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
@@ -312,6 +354,11 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ToolStripMenuItem starToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addNewFeedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importOPMLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editFeedToolStripMenuItem;
+        private System.Windows.Forms.ImageList rssImages;
     }
 }
 

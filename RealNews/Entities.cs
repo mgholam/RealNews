@@ -16,6 +16,7 @@ namespace RealNews
         public string LastError;
         public int UpdateEveryMin = -1; // use global settings else e.g. 8*60 min
         public int UnreadCount = 0;
+        public bool feediconfailed = false;
     }
 
 
