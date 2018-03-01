@@ -325,7 +325,10 @@ namespace RealNews
 
             if (old != null)
             {
+                old.Sort(new FeedItemSort());
+                list.Sort(new FeedItemSort());
                 var o  = old.Union(list, new FeedItemComparer()).ToList();
+                o.Sort(new FeedItemSort());
                 list = o;
             }
 
@@ -477,11 +480,11 @@ namespace RealNews
             if (_currentFeed.UnreadCount == 0)
             {
                 // find next feed
-                int i = _feeds.FindIndex(x => x.Title == _currentFeed.Title);
-                i++;
+                int i = 0;// _feeds.FindIndex(x => x.Title == _currentFeed.Title);
+                //i++;
                 while (i < _feeds.Count)
                 {
-                    _currentFeed = _feeds[i];
+                    _currentFeed = _feeds[i++];
                     if (_currentFeed.UnreadCount > 0)
                     {
                         ShowFeedList(_currentFeed);
@@ -499,6 +502,8 @@ namespace RealNews
         private void ShowNextItem()
         {
             var item = _currentList.Find(x => x.isRead == false);
+            if (item == null)
+                return;
             ShowItem(item);
             var l = listView1.FindItemWithText(item.Title);
             if (l.Index + 5 < listView1.Items.Count)
@@ -706,6 +711,7 @@ namespace RealNews
         {
             _currentList.ForEach(x => x.isRead = true);
             UpdateFeedCount();
+            ShowFeedList(_currentFeed);
         }
 
         private void updateNowToolStripMenuItem_Click(object sender, EventArgs e)

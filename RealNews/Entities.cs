@@ -51,6 +51,13 @@ namespace RealNews
             return p.Title.GetHashCode();
         }
     }
+    class FeedItemSort : IComparer<FeedItem>
+    {
+        public int Compare(FeedItem x, FeedItem y)
+        {
+            return y.date.CompareTo(x.date);
+        }
+    }
 
     class listviewcompare : IComparer
     {
