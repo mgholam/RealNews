@@ -325,8 +325,6 @@ namespace RealNews
 
             if (old != null)
             {
-                old.Sort(new FeedItemSort());
-                list.Sort(new FeedItemSort());
                 var o  = old.Union(list, new FeedItemComparer()).ToList();
                 o.Sort(new FeedItemSort());
                 list = o;
