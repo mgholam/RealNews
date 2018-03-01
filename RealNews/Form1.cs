@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -54,13 +55,21 @@ namespace RealNews
             if (File.Exists("feeds\\feeds.list"))
             {
                 _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
+                treeView1.BeginUpdate();
                 foreach (var f in _feeds)
                 {
                     var tn = new TreeNode();
                     tn.Tag = f;
-                    tn.Text = f.Title;
+                    if (f.UnreadCount > 0)
+                    {
+                        tn.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                        tn.Text = f.Title + $" ({f.UnreadCount})";
+                    }
+                    else
+                        tn.Text = f.Title;
                     treeView1.Nodes.Add(tn);
                 }
+                treeView1.EndUpdate();
             }
 
             splitContainer1.SplitterDistance = Settings.treeviewwidth;
@@ -70,15 +79,18 @@ namespace RealNews
 
             _imgcache = new KeyStoreHF("cache", "images.dat");
             web = new RealNewsWeb(Settings.webport);
+
+            SkinForm();
+        }
+
+        private void SkinForm()
+        {
             _skin.ParentForm = this; // FIX : skinner mangles the form when window less set 
             _skin.DefaultSkin = BizFX.UI.Skin.DefaultSkin.Office2007Obsidian;
-            //toolStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(_Manager.CurrentColors);
             menuStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
             statusStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
             this.Invalidate();
         }
-
-
 
         //-------------------------------------------------------------------------------------------------------------
 
@@ -188,7 +200,20 @@ namespace RealNews
                         sb.Append("<tr><td>");
                         sb.Append(j.Key);
                         sb.Append("</td><td>");
-                        sb.Append(j.Value);
+
+                        if (j.Value.StartsWith("magnet") || j.Value.StartsWith("http"))
+                            sb.Append("<a href='" + j.Value + "' rel='noreferrer'>" + j.Value + "</a>");
+
+                        else if (j.Key.ToLower().Contains("length"))
+                        {
+                            long val = 0;
+                            if (long.TryParse(j.Value, out val))
+                                sb.Append(val.ToString("#,#"));
+                            else
+                                sb.Append(j.Value);
+                        }
+                        else
+                            sb.Append(j.Value);
                         sb.Append("</td></tr>");
                     }
                     sb.AppendLine("</table>");
@@ -226,7 +251,6 @@ namespace RealNews
         private void ShowItem(FeedItem item)
         {
             // fix : show item
-
             if (item == null)
             {
                 item = new FeedItem
@@ -269,6 +293,55 @@ namespace RealNews
             sb.AppendLine("</html>");
 
             DisplayHtml(sb.ToString());
+
+            UpdateFeedCount();
+        }
+
+        private void UpdateFeedCount()
+        {
+            List<FeedItem> list = null;
+            _feeditems.TryGetValue(_currentFeed.Title, out list);
+            treeView1.BeginUpdate();
+            if (list != null)
+            {
+                _currentFeed.UnreadCount = list.Count(x => x.isRead == false);
+                foreach (TreeNode n in treeView1.Nodes)
+                {
+                    if (n.Text.StartsWith(_currentFeed.Title))
+                    {
+                        if (_currentFeed.UnreadCount > 0)
+                        {
+                            n.Text = _currentFeed.Title + $" ({_currentFeed.UnreadCount})";
+                            n.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                        }
+                        else
+                        {
+                            n.Text = _currentFeed.Title;
+                            n.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                        }
+
+                    }
+                }
+            }
+
+            var ur = treeView1.Nodes.Find("Unread", true);
+            if (ur.Length > 0)
+            {
+                long c = 0;
+                foreach (var f in _feeds)
+                    c += f.UnreadCount;
+                if (c > 0)
+                {
+                    ur[0].Text = $"Unread ({c})";
+                    ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                }
+                else
+                {
+                    ur[0].Text = "Unread";
+                    ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                }
+            }
+            treeView1.EndUpdate();
         }
 
         private void MoveNextUnread()
@@ -366,6 +439,7 @@ namespace RealNews
                     listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                     listView1.EndUpdate();
                     listView1.ResumeLayout();
+                    UpdateFeedCount();
                 }
             }
         }
