@@ -32,6 +32,7 @@ namespace RealNews
         bool _rendering = false;
         Feed _currentFeed = null;
         List<FeedItem> _currentList = null;
+        List<string> _downloadimglist = new List<string>();
         private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
 
 
@@ -72,6 +73,8 @@ namespace RealNews
                 tt[0].SelectedImageIndex = 2;
             }
 
+            //listView1.ListViewItemSorter
+
             LoadFeeds();
 
             splitContainer1.SplitterDistance = Settings.treeviewwidth;
@@ -88,6 +91,9 @@ namespace RealNews
         private void LoadFeeds()
         {
             splitContainer1.Visible = false;
+            if (File.Exists("feeds\\downloadimg.list"))
+                _downloadimglist = JSON.ToObject<List<string>>(File.ReadAllText("feeds\\downloadimg.list"));
+
             if (File.Exists("feeds\\feeds.list"))
             {
                 _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
@@ -121,6 +127,7 @@ namespace RealNews
                     else
                         tn.Text = f.Title;
                     treeView1.Nodes.Add(tn);
+                    _currentFeed = f;
                     ShowFeedList(f);
                 }
                 treeView1.EndUpdate();
@@ -158,7 +165,6 @@ namespace RealNews
                         File.Delete(fn);
                     f.feediconfailed = true;
                 }
-
             }
         }
 
@@ -203,7 +209,7 @@ namespace RealNews
             }
         }
 
-        private void ProceeeFeedURL(Feed feed)
+        private void UpdateFeed(Feed feed)
         {
             var feedxml = "";
             if (feed != null && feed.URL != "")
@@ -229,10 +235,10 @@ namespace RealNews
                     return;
                 }
             }
-            else // testing
-            {
-                feedxml = File.ReadAllText(GetFeedXmlFilename("betanews"));
-            }
+            //else // testing
+            //{
+            //    feedxml = File.ReadAllText(GetFeedXmlFilename("betanews"));
+            //}
 
             var reader = FeedReader.ReadFromString(feedxml);
             List<FeedItem> list = new List<FeedItem>();
@@ -256,7 +262,7 @@ namespace RealNews
                 List<string> imgs = new List<string>();
                 foreach (var img in GetImagesInHTMLString(p))
                 {
-                    imgs.Add(r.Match(img).Groups["href"].Value);
+                    _downloadimglist.Add(r.Match(img).Groups["href"].Value);
                 }
 
                 foreach (var img in imgs)
@@ -269,7 +275,7 @@ namespace RealNews
                 }
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(p);
-                if(i.Attachment!="")
+                if (i.Attachment != "")
                     sb.AppendLine("<br/> <a href='" + i.Attachment + "'>" + i.Attachment + "</a>");
 
                 if (item.SpecificItem.ExtraData != null)
@@ -316,6 +322,13 @@ namespace RealNews
             List<FeedItem> old = null;
             if (_feeditems.ContainsKey(feed.Title))
                 _feeditems.TryRemove(feed.Title, out old);
+
+            if (old != null)
+            {
+                var o  = old.Union(list, new FeedItemComparer()).ToList();
+                list = o;
+            }
+
             _feeditems.TryAdd(feed.Title, list);
 
             ShowFeedList(feed);
@@ -326,7 +339,7 @@ namespace RealNews
             // fix : update all
             foreach (var f in _feeds)
             {
-                ProceeeFeedURL(f);
+                UpdateFeed(f);
             }
         }
 
@@ -409,7 +422,7 @@ namespace RealNews
 
         private void UpdateFeedCount()
         {
-            if (_currentList == null || _currentFeed==null)
+            if (_currentList == null || _currentFeed == null)
                 return;
             List<FeedItem> list = _currentList;
             treeView1.BeginUpdate();
@@ -465,9 +478,10 @@ namespace RealNews
             {
                 // find next feed
                 int i = _feeds.FindIndex(x => x.Title == _currentFeed.Title);
+                i++;
                 while (i < _feeds.Count)
                 {
-                    _currentFeed = _feeds[++i];
+                    _currentFeed = _feeds[i];
                     if (_currentFeed.UnreadCount > 0)
                     {
                         ShowFeedList(_currentFeed);
@@ -509,6 +523,7 @@ namespace RealNews
             var jp = new JSONParameters { UseExtensions = false };
             File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
             File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
+            File.WriteAllText("feeds\\downloadimg.list", JSON.ToJSON(_downloadimglist, jp));
             foreach (var i in _feeditems)
             {
                 File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
@@ -696,7 +711,7 @@ namespace RealNews
         private void updateNowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var f = treeView1.SelectedNode.Tag as Feed;
-            ProceeeFeedURL(f);
+            UpdateFeed(f);
         }
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

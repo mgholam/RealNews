@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Unread");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starred");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Unread");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starred");
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -97,13 +97,13 @@
             this.treeView1.ImageList = this.rssImages;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Unread";
-            treeNode1.Text = "Unread";
-            treeNode2.Name = "Starred";
-            treeNode2.Text = "Starred";
+            treeNode3.Name = "Unread";
+            treeNode3.Text = "Unread";
+            treeNode4.Name = "Starred";
+            treeNode4.Text = "Starred";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowLines = false;
             this.treeView1.Size = new System.Drawing.Size(340, 509);
@@ -183,6 +183,7 @@
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(225, 509);
+            this.listView1.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;

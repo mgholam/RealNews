@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace RealNews
 {
@@ -37,6 +39,24 @@ namespace RealNews
         public bool isStarred = false; // fix : set starred
     }
 
+    class FeedItemComparer : IEqualityComparer<FeedItem>
+    {
+        public bool Equals(FeedItem p1, FeedItem p2)
+        {
+            return p1.Title == p2.Title;
+        }
 
+        public int GetHashCode(FeedItem p)
+        {
+            return p.Title.GetHashCode();
+        }
+    }
 
+    class listviewcompare : IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
