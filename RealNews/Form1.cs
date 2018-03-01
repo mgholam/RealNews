@@ -39,6 +39,7 @@ namespace RealNews
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("feeds\\icons");
@@ -72,8 +73,6 @@ namespace RealNews
                 tt[0].ImageIndex = 2;
                 tt[0].SelectedImageIndex = 2;
             }
-
-            //listView1.ListViewItemSorter
 
             LoadFeeds();
 
@@ -262,7 +261,7 @@ namespace RealNews
                 List<string> imgs = new List<string>();
                 foreach (var img in GetImagesInHTMLString(p))
                 {
-                    _downloadimglist.Add(r.Match(img).Groups["href"].Value);
+                    imgs.Add(r.Match(img).Groups["href"].Value);
                 }
 
                 foreach (var img in imgs)
@@ -273,6 +272,7 @@ namespace RealNews
                     else
                         p = p.Replace(img, img.Replace("https://", n));
                 }
+                _downloadimglist.AddRange(imgs);
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(p);
                 if (i.Attachment != "")
@@ -318,7 +318,7 @@ namespace RealNews
             // fix : download images
 
 
-            // fix : check and add to existing list
+            // check and add to existing list
             List<FeedItem> old = null;
             if (_feeditems.ContainsKey(feed.Title))
                 _feeditems.TryRemove(feed.Title, out old);
