@@ -33,6 +33,7 @@ namespace RealNews
         public string Attachment;
 
         public bool isRead = false;
+        public bool isStarred = false; // fix : set starred
     }
 
 

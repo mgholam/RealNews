@@ -30,6 +30,7 @@ namespace RealNews
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
         bool _rendering = false;
         Feed _currentFeed = null;
+        List<FeedItem> _currentList = null;
         private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
 
 
@@ -60,6 +61,7 @@ namespace RealNews
                 {
                     var tn = new TreeNode();
                     tn.Tag = f;
+                    tn.Name = f.Title;
                     if (f.UnreadCount > 0)
                     {
                         tn.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
@@ -204,7 +206,7 @@ namespace RealNews
                         if (j.Value.StartsWith("magnet") || j.Value.StartsWith("http"))
                             sb.Append("<a href='" + j.Value + "' rel='noreferrer'>" + j.Value + "</a>");
 
-                        else if (j.Key.ToLower().Contains("length"))
+                        else if (j.Key.ToLower().Contains("length") || j.Key.ToLower() == "size")
                         {
                             long val = 0;
                             if (long.TryParse(j.Value, out val))
@@ -250,7 +252,7 @@ namespace RealNews
 
         private void ShowItem(FeedItem item)
         {
-            // fix : show item
+            // show item
             if (item == null)
             {
                 item = new FeedItem
@@ -273,7 +275,7 @@ namespace RealNews
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<html");
             if (_currentFeed.RTL)
-                sb.Append("dir='rtl'>"); // fix : get if rtl
+                sb.Append("dir='rtl'>"); // get if rtl
             else
                 sb.Append(">");
             sb.Append("<link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'>");
@@ -299,8 +301,7 @@ namespace RealNews
 
         private void UpdateFeedCount()
         {
-            List<FeedItem> list = null;
-            _feeditems.TryGetValue(_currentFeed.Title, out list);
+            List<FeedItem> list = _currentList;
             treeView1.BeginUpdate();
             if (list != null)
             {
@@ -346,9 +347,40 @@ namespace RealNews
 
         private void MoveNextUnread()
         {
-            // fix : move next
-            ShowItem(null);
-            MessageBox.Show("next");
+            if (_currentFeed == null)
+                _currentFeed = _feeds[0];
+
+            // move next
+            if (_currentFeed.UnreadCount == 0)
+            {
+                // find next feed
+                int i = _feeds.FindIndex(x => x.Title == _currentFeed.Title);
+                while (i < _feeds.Count)
+                {
+                    _currentFeed = _feeds[++i];
+                    if (_currentFeed.UnreadCount > 0)
+                    {
+                        ShowFeedList(_currentFeed);
+                        // focus feed in treeview
+                        var n = treeView1.Nodes.Find(_currentFeed.Title, true);
+                        if (n.Length > 0)
+                            treeView1.SelectedNode = n[0];
+                        break;
+                    }
+                }
+            }
+            ShowNextItem();
+        }
+
+        private void ShowNextItem()
+        {
+            var item = _currentList.Find(x => x.isRead == false);
+            ShowItem(item);
+            var l = listView1.FindItemWithText(item.Title);
+            if (l.Index + 5 < listView1.Items.Count)
+                listView1.EnsureVisible(l.Index + 5);
+            if (l != null)
+                l.Font = new Font(listView1.Font, FontStyle.Regular);
         }
 
         private void Shutdown()
@@ -421,6 +453,7 @@ namespace RealNews
 
                 if (list != null)
                 {
+                    _currentList = list;
                     listView1.SuspendLayout();
                     listView1.BeginUpdate();
                     foreach (var i in list)
@@ -540,7 +573,8 @@ namespace RealNews
 
         private void markAsReadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : 
+            _currentList.ForEach(x => x.isRead = true);
+            UpdateFeedCount();
         }
 
         private void updateNowToolStripMenuItem_Click(object sender, EventArgs e)
