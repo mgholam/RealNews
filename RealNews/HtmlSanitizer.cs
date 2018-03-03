@@ -4,7 +4,7 @@ using System.Xml;
 using HtmlAgilityPack;
 
 namespace Westwind.Web.Utilities
-{
+{ 
     public class HtmlSanitizer
     {
 

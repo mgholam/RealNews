@@ -34,13 +34,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.numUpdate = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.chkImages = new System.Windows.Forms.CheckBox();
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.numUpdate = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +67,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(60, 22);
             this.button1.TabIndex = 2;
-            this.button1.Text = "get";
+            this.button1.Text = "get info";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -106,6 +106,18 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Details";
+            // 
+            // numUpdate
+            // 
+            this.numUpdate.Location = new System.Drawing.Point(95, 57);
+            this.numUpdate.Maximum = new decimal(new int[] {
+            1440,
+            0,
+            0,
+            0});
+            this.numUpdate.Name = "numUpdate";
+            this.numUpdate.Size = new System.Drawing.Size(123, 22);
+            this.numUpdate.TabIndex = 15;
             // 
             // label4
             // 
@@ -160,18 +172,6 @@
             this.label2.Size = new System.Drawing.Size(38, 14);
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
-            // 
-            // numUpdate
-            // 
-            this.numUpdate.Location = new System.Drawing.Point(95, 57);
-            this.numUpdate.Maximum = new decimal(new int[] {
-            1440,
-            0,
-            0,
-            0});
-            this.numUpdate.Name = "numUpdate";
-            this.numUpdate.Size = new System.Drawing.Size(123, 22);
-            this.numUpdate.TabIndex = 15;
             // 
             // frmFeed
             // 

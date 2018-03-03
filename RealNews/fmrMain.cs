@@ -98,7 +98,7 @@ namespace RealNews
             _imgcache = new KeyStoreHF("cache", "images.dat");
             web = new RealNewsWeb(Settings.webport);
 
-            //SkinForm();
+            SkinForm();
             Log(" ");
         }
 
@@ -184,10 +184,13 @@ namespace RealNews
 
         private void SkinForm()
         {
-            _skin.ParentForm = this; // FIX : skinner mangles the form when window less set 
-            _skin.DefaultSkin = BizFX.UI.Skin.DefaultSkin.Office2007Obsidian;
-            menuStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
-            statusStrip1.Renderer = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
+            //_skin.ParentForm = this; // FIX : skinner mangles the form when window less set 
+            //_skin.DefaultSkin = BizFX.UI.Skin.DefaultSkin.Office2007Obsidian;
+            var r = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
+            menuStrip1.Renderer = r;
+            statusStrip1.Renderer = r;
+            contextMenuStrip1.Renderer = r;
+            contextMenuStrip2.Renderer = r;
             this.Invalidate();
         }
 
@@ -235,7 +238,7 @@ namespace RealNews
                     log("Getting : " + feed.URL);
                     Thread.Sleep(100);
                     Application.DoEvents();
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls| SecurityProtocolType.Ssl3;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                     mWebClient wc = new mWebClient();
                     wc.Encoding = Encoding.UTF8;
                     if (Settings.UseSytemProxy)
@@ -372,9 +375,16 @@ namespace RealNews
                         });
                     }));
                 }
-                //Task.WaitAll(tasks.ToArray());
-                toolProgressBar.Value = i;
-                Log("Done.");
+                Task.Factory.StartNew(() =>
+                {
+                    Task.WaitAll(tasks.ToArray());
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        toolProgressBar.Value = 0;
+                        toolCount.Text = "";
+                        Log("Update Done.");
+                    });
+                });
             }
         }
 

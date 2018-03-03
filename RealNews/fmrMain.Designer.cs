@@ -43,6 +43,9 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toggleStarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.markUnreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,11 +57,9 @@
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toggleStarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.markUnreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -68,9 +69,9 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -95,6 +96,7 @@
             // 
             // treeView1
             // 
+            this.treeView1.BackColor = System.Drawing.SystemColors.Control;
             this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.FullRowSelect = true;
@@ -126,9 +128,10 @@
             this.markAsReadToolStripMenuItem,
             this.toolStripMenuItem1,
             this.updateNowToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.editFeedToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 82);
             // 
             // markAsReadToolStripMenuItem
             // 
@@ -183,11 +186,13 @@
             // 
             // listView1
             // 
+            this.listView1.BackColor = System.Drawing.SystemColors.Control;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
             this.listView1.ContextMenuStrip = this.contextMenuStrip2;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.ForeColor = System.Drawing.SystemColors.WindowText;
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
@@ -206,6 +211,28 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Date";
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toggleStarToolStripMenuItem,
+            this.markUnreadToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(143, 48);
+            // 
+            // toggleStarToolStripMenuItem
+            // 
+            this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
+            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.toggleStarToolStripMenuItem.Text = "Toggle Star";
+            this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
+            // 
+            // markUnreadToolStripMenuItem
+            // 
+            this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
+            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.markUnreadToolStripMenuItem.Text = "Mark Unread";
+            this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
             // 
             // webBrowser1
             // 
@@ -303,43 +330,26 @@
             this.toolProgressBar.Name = "toolProgressBar";
             this.toolProgressBar.Size = new System.Drawing.Size(100, 16);
             // 
-            // toolMessage
-            // 
-            this.toolMessage.Name = "toolMessage";
-            this.toolMessage.Size = new System.Drawing.Size(862, 17);
-            this.toolMessage.Spring = true;
-            this.toolMessage.Text = "loading...";
-            this.toolMessage.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // contextMenuStrip2
-            // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toggleStarToolStripMenuItem,
-            this.markUnreadToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(143, 48);
-            // 
-            // toggleStarToolStripMenuItem
-            // 
-            this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
-            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.toggleStarToolStripMenuItem.Text = "Toggle Star";
-            this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
-            // 
-            // markUnreadToolStripMenuItem
-            // 
-            this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
-            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.markUnreadToolStripMenuItem.Text = "Mark Unread";
-            this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
-            // 
             // toolCount
             // 
             this.toolCount.Name = "toolCount";
             this.toolCount.Size = new System.Drawing.Size(11, 17);
             this.toolCount.Text = " ";
             // 
-            // Form1
+            // toolMessage
+            // 
+            this.toolMessage.Name = "toolMessage";
+            this.toolMessage.Size = new System.Drawing.Size(893, 17);
+            this.toolMessage.Spring = true;
+            this.toolMessage.Text = "loading...";
+            this.toolMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(139, 6);
+            // 
+            // fmrMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -350,7 +360,7 @@
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "fmrMain";
             this.Text = "Real News";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -364,11 +374,11 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -404,6 +414,7 @@
         private System.Windows.Forms.ToolStripMenuItem toggleStarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem markUnreadToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolCount;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }
 

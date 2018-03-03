@@ -1,3 +1,20 @@
+# TODO
+
+- tree folders and move items
+- rename dll files
+- about & version control
+- write OPML
+- dark UI
+- zoom level settings
+- window form font settings
+- read OPML
+- refine styling
+- download images @time
+- minimize to tray
+- ​
+
+
+
 # ?
 
 - vpn code
