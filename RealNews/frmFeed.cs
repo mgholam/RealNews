@@ -1,9 +1,11 @@
-﻿using System;
+﻿using CodeHollow.FeedReader;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +31,9 @@ namespace RealNews
 
         private void frmFeed_Load(object sender, EventArgs e)
         {
+            if (feed == null)
+                feed = new Feed();
+
             txtURL.Text = feed.URL;
             txtName.Text = feed.Title;
             chkRTL.Checked = feed.RTL;
@@ -37,13 +42,44 @@ namespace RealNews
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // fix : save button
+            // save button
+            ret = new Feed
+            {
+                Title = txtName.Text,
+                URL = txtURL.Text,
+                DownloadImages = chkImages.Checked,
+                RTL = chkRTL.Checked,
+                UpdateEveryMin = (int)numUpdate.Value 
+            };
 
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // fix : read feed header info
+            // read feed header info
+            txtName.Text = GetInfo(txtURL.Text);
+        }
+
+        private string GetInfo(string url)
+        {
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls  | SecurityProtocolType.Ssl3;
+                mWebClient wc = new mWebClient();
+                wc.Encoding = Encoding.UTF8;
+                if (Settings.UseSytemProxy)
+                    wc.Proxy = WebRequest.DefaultWebProxy;
+                var feedxml = wc.DownloadString(url);
+                var reader = FeedReader.ReadFromString(feedxml);
+                return reader.Title;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return "";
+            }
         }
     }
 }

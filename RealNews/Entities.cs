@@ -9,13 +9,12 @@ namespace RealNews
         public int id;
         public string URL = "";
         public string Title = "";
-        public string IconName;
         public bool RTL;
-        public DateTime LastUpdate;
         public bool DownloadImages = true;
+        public int UpdateEveryMin = 0; // use global settings else e.g. 8*60 min
+        public DateTime LastUpdate;
         public DateTime LastItemDate;
         public string LastError;
-        public int UpdateEveryMin = 0; // use global settings else e.g. 8*60 min
         public int UnreadCount = 0;
         public bool feediconfailed = false;
     }
@@ -58,13 +57,11 @@ namespace RealNews
         }
     }
 
-    class listviewcompare : IComparer
-    {
-        public int Compare(object x, object y)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    
+    //class listviewcompare : IComparer
+    //{
+    //    public int Compare(object x, object y)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}    
 }

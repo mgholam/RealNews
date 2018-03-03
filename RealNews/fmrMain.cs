@@ -18,9 +18,9 @@ using Westwind.Web.Utilities;
 
 namespace RealNews
 {
-    public partial class Form1 : Form
+    public partial class fmrMain : Form
     {
-        public Form1()
+        public fmrMain()
         {
             InitializeComponent();
             //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
@@ -235,7 +235,7 @@ namespace RealNews
                     log("Getting : " + feed.URL);
                     Thread.Sleep(100);
                     Application.DoEvents();
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;// | SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls| SecurityProtocolType.Ssl3;
                     mWebClient wc = new mWebClient();
                     wc.Encoding = Encoding.UTF8;
                     if (Settings.UseSytemProxy)
@@ -364,10 +364,11 @@ namespace RealNews
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
-                        this.Invoke((MethodInvoker)delegate {
+                        this.Invoke((MethodInvoker)delegate
+                        {
                             UpdateFeedCount(f);
                             toolCount.Text = $"{i++} of {c}";
-                            toolProgressBar.Value= i;
+                            toolProgressBar.Value = i;
                         });
                     }));
                 }
@@ -830,12 +831,25 @@ namespace RealNews
 
         private void addNewFeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : add new feed
-            frmFeed f = new frmFeed();
-            f.feed = new Feed();
-            if(f.ShowDialog() == DialogResult.OK)
+            // add new feed
+            frmFeed form = new frmFeed();
+            form.feed = new Feed();
+            if (form.ShowDialog() == DialogResult.OK)
             {
-
+                // fix : check if already exists
+                var f = form.ret;
+                var r = _feeds.Find(x => x.Title == f.Title);
+                if (r != null)
+                {
+                    MessageBox.Show(f.Title + " Already exists", "Error");
+                    return;
+                }
+                _feeds.Add(f);
+                var tn = new TreeNode();
+                tn.Tag = f;
+                tn.Name = f.Title;
+                tn.Text = f.Title;
+                treeView1.Nodes.Add(tn);
             }
         }
 
@@ -846,12 +860,18 @@ namespace RealNews
 
         private void editFeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : edit feed
-            frmFeed f = new frmFeed();
-            f.feed = treeView1.SelectedNode.Tag as Feed;
-            if (f.ShowDialog() == DialogResult.OK)
+            // edit feed
+            frmFeed form = new frmFeed();
+            form.feed = treeView1.SelectedNode.Tag as Feed;
+            if (form.ShowDialog() == DialogResult.OK)
             {
-
+                var f = form.ret;
+                if (form.feed.Title != f.Title)
+                {
+                    // fix : rename files
+                }
+                form.feed.RTL = f.RTL;
+                form.feed.DownloadImages = f.DownloadImages;
             }
         }
 

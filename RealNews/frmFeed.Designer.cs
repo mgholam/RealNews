@@ -35,13 +35,14 @@
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textUpdate = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.chkImages = new System.Windows.Forms.CheckBox();
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.numUpdate = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -92,8 +93,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.numUpdate);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textUpdate);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.chkImages);
             this.groupBox1.Controls.Add(this.chkRTL);
@@ -114,13 +115,6 @@
             this.label4.Size = new System.Drawing.Size(203, 14);
             this.label4.TabIndex = 14;
             this.label4.Text = "Every minutes ( 0 = global default )";
-            // 
-            // textUpdate
-            // 
-            this.textUpdate.Location = new System.Drawing.Point(95, 56);
-            this.textUpdate.Name = "textUpdate";
-            this.textUpdate.Size = new System.Drawing.Size(120, 22);
-            this.textUpdate.TabIndex = 13;
             // 
             // label3
             // 
@@ -167,6 +161,18 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
             // 
+            // numUpdate
+            // 
+            this.numUpdate.Location = new System.Drawing.Point(95, 57);
+            this.numUpdate.Maximum = new decimal(new int[] {
+            1440,
+            0,
+            0,
+            0});
+            this.numUpdate.Name = "numUpdate";
+            this.numUpdate.Size = new System.Drawing.Size(123, 22);
+            this.numUpdate.TabIndex = 15;
+            // 
             // frmFeed
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -186,6 +192,7 @@
             this.Load += new System.EventHandler(this.frmFeed_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,8 +210,8 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textUpdate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkImages;
+        private System.Windows.Forms.NumericUpDown numUpdate;
     }
 }

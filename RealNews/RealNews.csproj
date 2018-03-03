@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\components\HtmlAgilityPack.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RaptorDB">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
@@ -66,11 +67,11 @@
   <ItemGroup>
     <Compile Include="CoreWebServer.cs" />
     <Compile Include="Entities.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="fmrMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="fmrMain.Designer.cs">
+      <DependentUpon>fmrMain.cs</DependentUpon>
     </Compile>
     <Compile Include="frmFeed.cs">
       <SubType>Form</SubType>
@@ -93,8 +94,8 @@
     <Compile Include="Renderer\OfficeColorTable.cs" />
     <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="fmrMain.resx">
+      <DependentUpon>fmrMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFeed.resx">
       <DependentUpon>frmFeed.cs</DependentUpon>
@@ -109,7 +110,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

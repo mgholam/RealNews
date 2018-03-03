@@ -1,6 +1,6 @@
 ﻿namespace RealNews
 {
-    partial class Form1
+    partial class fmrMain
     {
         /// <summary>
         /// Required designer variable.
