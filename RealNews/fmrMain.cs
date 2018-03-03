@@ -23,15 +23,15 @@ namespace RealNews
         public fmrMain()
         {
             InitializeComponent();
-            //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawAll;
             //treeView1.DrawNode += (o, e) =>
             //{
             //    if (!e.Node.TreeView.Focused && e.Node == e.Node.TreeView.SelectedNode)
             //    {
             //        Font treeFont = e.Node.NodeFont ?? e.Node.TreeView.Font;
-            //        //e.Graphics.FillRectangle(Brushes.DarkBlue, e.Bounds);
+            //        e.Graphics.FillRectangle(Brushes.Blue, e.Bounds);
             //        //ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds, SystemColors.HighlightText, SystemColors.Highlight);
-            //        TextRenderer.DrawText(e.Graphics, e.Node.Text, treeFont, e.Bounds, Color.Blue, TextFormatFlags.GlyphOverhangPadding);
+            //        TextRenderer.DrawText(e.Graphics, e.Node.Text, treeFont, e.Bounds, Color.Black, TextFormatFlags.GlyphOverhangPadding);
             //    }
             //    else
             //        e.DrawDefault = true;
