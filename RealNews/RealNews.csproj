@@ -67,11 +67,11 @@
   <ItemGroup>
     <Compile Include="CoreWebServer.cs" />
     <Compile Include="Entities.cs" />
-    <Compile Include="fmrMain.cs">
+    <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fmrMain.Designer.cs">
-      <DependentUpon>fmrMain.cs</DependentUpon>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="frmFeed.cs">
       <SubType>Form</SubType>
@@ -94,8 +94,8 @@
     <Compile Include="Renderer\OfficeColorTable.cs" />
     <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="fmrMain.resx">
-      <DependentUpon>fmrMain.cs</DependentUpon>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFeed.resx">
       <DependentUpon>frmFeed.cs</DependentUpon>

@@ -18,9 +18,9 @@ using Westwind.Web.Utilities;
 
 namespace RealNews
 {
-    public partial class fmrMain : Form
+    public partial class frmMain : Form
     {
-        public fmrMain()
+        public frmMain()
         {
             InitializeComponent();
             //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawAll;
@@ -846,7 +846,7 @@ namespace RealNews
             form.feed = new Feed();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                // fix : check if already exists
+                // check if already exists
                 var f = form.ret;
                 var r = _feeds.Find(x => x.Title == f.Title);
                 if (r != null)
@@ -880,6 +880,7 @@ namespace RealNews
                 {
                     // fix : rename files
                 }
+                form.feed.URL = f.URL;
                 form.feed.RTL = f.RTL;
                 form.feed.DownloadImages = f.DownloadImages;
             }

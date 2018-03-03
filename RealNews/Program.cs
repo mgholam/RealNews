@@ -21,7 +21,7 @@ namespace RealNews
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fmrMain());
+            Application.Run(new frmMain());
         }
 
         static string _path;
