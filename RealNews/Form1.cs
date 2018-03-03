@@ -22,6 +22,19 @@ namespace RealNews
         public Form1()
         {
             InitializeComponent();
+            //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            //treeView1.DrawNode += (o, e) =>
+            //{
+            //    if (!e.Node.TreeView.Focused && e.Node == e.Node.TreeView.SelectedNode)
+            //    {
+            //        Font treeFont = e.Node.NodeFont ?? e.Node.TreeView.Font;
+            //        //e.Graphics.FillRectangle(Brushes.DarkBlue, e.Bounds);
+            //        //ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds, SystemColors.HighlightText, SystemColors.Highlight);
+            //        TextRenderer.DrawText(e.Graphics, e.Node.Text, treeFont, e.Bounds, Color.Blue, TextFormatFlags.GlyphOverhangPadding);
+            //    }
+            //    else
+            //        e.DrawDefault = true;
+            //};
         }
 
         RealNewsWeb web;
@@ -34,7 +47,7 @@ namespace RealNews
         List<FeedItem> _currentList = null;
         List<string> _downloadimglist = new List<string>();
         private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
-
+        private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -85,6 +98,7 @@ namespace RealNews
             web = new RealNewsWeb(Settings.webport);
 
             SkinForm();
+
         }
 
         private void LoadFeeds()
@@ -137,7 +151,7 @@ namespace RealNews
 
         private void downloadfeedicons()
         {
-            WebClient wc = new WebClient();
+            mWebClient wc = new mWebClient();
             wc.Encoding = Encoding.UTF8;
 
             if (Settings.UseSytemProxy)
@@ -208,7 +222,8 @@ namespace RealNews
             }
         }
 
-        private void UpdateFeed(Feed feed)
+
+        private void UpdateFeed(Feed feed, Action<string> log) // fix : force download images
         {
             var feedxml = "";
             if (feed != null && feed.URL != "")
@@ -216,11 +231,11 @@ namespace RealNews
                 try
                 {
                     feed.LastError = "";
-                    toolMessage.Text = "Getting : " + feed.URL;
+                    log("Getting : " + feed.URL);
                     Thread.Sleep(100);
                     Application.DoEvents();
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                    WebClient wc = new WebClient();
+                    mWebClient wc = new mWebClient();
                     wc.Encoding = Encoding.UTF8;
                     if (Settings.UseSytemProxy)
                         wc.Proxy = WebRequest.DefaultWebProxy;
@@ -231,14 +246,12 @@ namespace RealNews
                 catch (Exception ex)
                 {
                     feed.LastError = ex.Message;
+                    log("ERROR : " + feed.Title);
                     return;
                 }
             }
-            //else // testing
-            //{
-            //    feedxml = File.ReadAllText(GetFeedXmlFilename("betanews"));
-            //}
 
+            log("Processing : " + feed.Title);
             var reader = FeedReader.ReadFromString(feedxml);
             List<FeedItem> list = new List<FeedItem>();
             foreach (var item in reader.Items)
@@ -255,26 +268,7 @@ namespace RealNews
                     Author = item.Author
                 };
 
-
-                var p = Html.Helpers.HtmlSanitizer.sanitize(item.Description);
-                Regex r = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-                List<string> imgs = new List<string>();
-                foreach (var img in GetImagesInHTMLString(p))
-                {
-                    imgs.Add(r.Match(img).Groups["href"].Value);
-                }
-
-                foreach (var img in imgs)
-                {
-                    string n = "http://localhost:{port}/api/image?";
-                    if (img.StartsWith("http://"))  // fix : upercase??
-                        p = p.Replace(img, img.Replace("http://", n));
-                    else
-                        p = p.Replace(img, img.Replace("https://", n));
-                }
-                _downloadimglist.AddRange(imgs);
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(p);
+                StringBuilder sb = new StringBuilder(item.Description);
                 if (i.Attachment != "")
                     sb.AppendLine("<br/> <a href='" + i.Attachment + "'>" + i.Attachment + "</a>");
 
@@ -306,15 +300,32 @@ namespace RealNews
                     }
                     sb.AppendLine("</table>");
                 }
+                var tempdesc = sb.ToString();// fix : sanitize here
+                                             //Html.Helpers.HtmlSanitizer.sanitize(sb.ToString()); 
 
-                i.Description = sb.ToString();
+                List<string> imgs = new List<string>();
+                foreach (var img in GetImagesInHTMLString(tempdesc))
+                {
+                    imgs.Add(_imghrefregex.Match(img).Groups["href"].Value);
+                }
+
+                foreach (var img in imgs)
+                {
+                    string n = "http://localhost:{port}/api/image?";
+                    if (img.StartsWith("http://"))  // fix : upercase??
+                        tempdesc = tempdesc.Replace(img, img.Replace("http://", n));
+                    else
+                        tempdesc = tempdesc.Replace(img, img.Replace("https://", n));
+                }
+
+                if (feed.DownloadImages)
+                    _downloadimglist.AddRange(imgs);
+
+
+                i.Description = tempdesc;
                 list.Add(i);
             }
-            string fn = GetFeedFilename("betanews"); // testing
-            if (feed != null && feed.Title != "")
-                fn = GetFeedFilename(feed);
-            File.WriteAllText(fn, JSON.ToNiceJSON(list, new fastJSON.JSONParameters { UseExtensions = false, UseEscapedUnicode = false }), Encoding.UTF8);
-            toolMessage.Text = "Downloading image x of y";
+            log("Downloading image x of y");
             // fix : download images
 
 
@@ -325,26 +336,44 @@ namespace RealNews
 
             if (old != null)
             {
-                var o  = old.Union(list, new FeedItemComparer()).ToList();
+                var o = old.Union(list, new FeedItemComparer()).ToList();
                 o.Sort(new FeedItemSort());
                 list = o;
             }
 
-            _feeditems.TryAdd(feed.Title, list);
+            log("Saving feed : " + feed.Title);
+            string fn = GetFeedFilename(feed);
+            File.WriteAllText(fn, JSON.ToNiceJSON(list, new fastJSON.JSONParameters { UseExtensions = false, UseEscapedUnicode = false }), Encoding.UTF8);
 
-            ShowFeedList(feed);
+            _feeditems.TryAdd(feed.Title, list);
         }
 
+        private object _lock = new object();
         private void UpdateAll()
         {
-            // fix : update all
-            foreach (var f in _feeds)
+            // update all
+            lock (_lock)
             {
-                UpdateFeed(f);
+                List<Task> tasks = new List<Task>();
+                foreach (var f in _feeds)
+                {
+                    tasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        UpdateFeed(f, Log);
+                        this.Invoke((MethodInvoker)delegate { UpdateFeedCount(f); });
+                    }));
+                }
+                Task.WaitAll(tasks.ToArray());
+                Log("Done.");
             }
         }
 
         private void ShowItem(FeedItem item)
+        {
+            ShowItem(item, true);
+        }
+
+        private void ShowItem(FeedItem item, bool isread)
         {
             // show item
             if (item == null)
@@ -361,17 +390,17 @@ namespace RealNews
                 };
             }
 
-            item.isRead = true;
+            item.isRead = isread;
 
             var str = item.Description;
             str = str.Replace("{port}", Settings.webport.ToString());
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<html");
+            sb.Append("<html");
             if (_currentFeed.RTL)
                 sb.Append("dir='rtl'>"); // get if rtl
             else
-                sb.Append(">");
+                sb.AppendLine(">");
             sb.Append("<link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'>");
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
@@ -421,52 +450,71 @@ namespace RealNews
             //treeView1.EndUpdate();
         }
 
+        private void UpdateFeedCount(Feed feed)
+        {
+            List<FeedItem> list = null;
+            if (_feeditems.TryGetValue(feed.Title, out list))
+            {
+                UpdateFeedCount(feed, list);
+            }
+        }
+
         private void UpdateFeedCount()
         {
-            if (_currentList == null || _currentFeed == null)
-                return;
-            List<FeedItem> list = _currentList;
-            treeView1.BeginUpdate();
-            if (list != null)
-            {
-                _currentFeed.UnreadCount = list.Count(x => x.isRead == false);
-                foreach (TreeNode n in treeView1.Nodes)
-                {
-                    if (n.Text.StartsWith(_currentFeed.Title))
-                    {
-                        if (_currentFeed.UnreadCount > 0)
-                        {
-                            n.Text = _currentFeed.Title + $" ({_currentFeed.UnreadCount})";
-                            n.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
-                        }
-                        else
-                        {
-                            n.Text = _currentFeed.Title;
-                            n.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
-                        }
+            UpdateFeedCount(_currentFeed, _currentList);
+        }
 
+        private void UpdateFeedCount(Feed feed, List<FeedItem> list)
+        {
+            try
+            {
+                if (feed == null || list == null)
+                    return;
+                treeView1.BeginUpdate();
+                if (list != null)
+                {
+                    feed.UnreadCount = list.Count(x => x.isRead == false);
+                    foreach (TreeNode n in treeView1.Nodes)
+                    {
+                        if (n.Text.StartsWith(feed.Title))
+                        {
+                            if (feed.UnreadCount > 0)
+                            {
+                                n.Text = feed.Title + $" ({feed.UnreadCount})";
+                                n.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                            }
+                            else
+                            {
+                                n.Text = feed.Title;
+                                n.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                            }
+                        }
                     }
                 }
-            }
 
-            var ur = treeView1.Nodes.Find("Unread", true);
-            if (ur.Length > 0)
-            {
-                long c = 0;
-                foreach (var f in _feeds)
-                    c += f.UnreadCount;
-                if (c > 0)
+                var ur = treeView1.Nodes.Find("Unread", true);
+                if (ur.Length > 0)
                 {
-                    ur[0].Text = $"Unread ({c})";
-                    ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                    long c = 0;
+                    foreach (var f in _feeds)
+                        c += f.UnreadCount;
+                    if (c > 0)
+                    {
+                        ur[0].Text = $"Unread ({c})";
+                        ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        ur[0].Text = "Unread";
+                        ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                    }
                 }
-                else
-                {
-                    ur[0].Text = "Unread";
-                    ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Regular);
-                }
+                treeView1.EndUpdate();
             }
-            treeView1.EndUpdate();
+            catch //(Exception ex)
+            {
+
+            }
         }
 
         private void MoveNextUnread()
@@ -570,45 +618,52 @@ namespace RealNews
 
         private void ShowFeedList(Feed feed)
         {
-            if (feed != null)
+            try
             {
-                List<FeedItem> list = null;
-                if (_feeditems.TryGetValue(feed.Title, out list) == false)
+                if (feed != null)
                 {
-                    if (File.Exists(GetFeedFilename(feed)))
+                    List<FeedItem> list = null;
+                    if (_feeditems.TryGetValue(feed.Title, out list) == false)
                     {
-                        list = JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(feed)));
-                        _feeditems.TryAdd(feed.Title, list);
+                        if (File.Exists(GetFeedFilename(feed)))
+                        {
+                            list = JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(feed)));
+                            _feeditems.TryAdd(feed.Title, list);
+                        }
                     }
-                }
-                listView1.Items.Clear();
-                listView1.View = View.Details;
-                listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
-                listView1.RightToLeftLayout = feed.RTL;
+                    listView1.Items.Clear();
+                    listView1.View = View.Details;
+                    listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
+                    listView1.RightToLeftLayout = feed.RTL;
 
-                if (list != null)
-                {
-                    _currentList = list;
-                    listView1.SuspendLayout();
-                    listView1.BeginUpdate();
-                    foreach (var i in list)
+                    if (list != null)
                     {
-                        var lvi = new ListViewItem();
-                        lvi.Name = "Title";
-                        lvi.Text = i.Title;
-                        lvi.Tag = i;
-                        //lvi.SubItems.Add(i.Title);
-                        lvi.SubItems.Add(i.date.ToString());
-                        listView1.Items.Add(lvi);
-                        //listView1.Items.Add(i.Title);
-                        if (i.isRead == false)
-                            lvi.Font = new Font(lvi.Font, FontStyle.Bold);
+                        _currentList = list;
+                        listView1.SuspendLayout();
+                        listView1.BeginUpdate();
+                        foreach (var i in list)
+                        {
+                            var lvi = new ListViewItem();
+                            lvi.Name = "Title";
+                            lvi.Text = i.Title;
+                            lvi.Tag = i;
+                            //lvi.SubItems.Add(i.Title);
+                            lvi.SubItems.Add(i.date.ToString());
+                            listView1.Items.Add(lvi);
+                            //listView1.Items.Add(i.Title);
+                            if (i.isRead == false)
+                                lvi.Font = new Font(lvi.Font, FontStyle.Bold);
+                        }
+                        listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                        listView1.EndUpdate();
+                        listView1.ResumeLayout();
+                        UpdateFeedCount(feed, list);
                     }
-                    listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                    listView1.EndUpdate();
-                    listView1.ResumeLayout();
-                    UpdateFeedCount();
                 }
+            }
+            catch //(Exception ex)
+            {
+
             }
         }
 
@@ -645,6 +700,11 @@ namespace RealNews
             ImageList imgList = new ImageList();
             imgList.ImageSize = new Size(1, height);
             listView.SmallImageList = imgList;
+        }
+
+        private void Log(string msg)
+        {
+            toolMessage.Text = msg;
         }
         // ---------------------------------------------------------------------------------------------------------
         // UI handlers
@@ -702,7 +762,7 @@ namespace RealNews
 
         private void updateAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateAll();
+            Task.Factory.StartNew(UpdateAll);
         }
 
         private void markAsReadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -715,7 +775,11 @@ namespace RealNews
         private void updateNowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var f = treeView1.SelectedNode.Tag as Feed;
-            UpdateFeed(f);
+            Task.Factory.StartNew(() =>
+            {
+                UpdateFeed(f, Log);
+                this.Invoke((MethodInvoker)delegate { ShowFeedList(f); });
+            });
         }
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -740,6 +804,11 @@ namespace RealNews
 
         private void starToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ToggleStarred();
+        }
+
+        private void ToggleStarred()
+        {
             // toggle star
             var f = listView1.FocusedItem.Tag as FeedItem;
             if (f != null)
@@ -763,6 +832,24 @@ namespace RealNews
         private void editFeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // fix : edit feed
+        }
+
+        private void toggleStarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToggleStarred();
+        }
+
+        private void markUnreadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // mark unread
+            var f = listView1.FocusedItem.Tag as FeedItem;
+            if (f != null)
+            {
+                f.isRead = !f.isRead;
+                UpdateStarCount();
+                ShowItem(f, false);
+                listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Bold);
+            }
         }
     }
 }

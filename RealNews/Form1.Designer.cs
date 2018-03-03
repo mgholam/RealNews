@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Unread");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starred");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Unread");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starred");
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -55,6 +55,9 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toggleStarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.markUnreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,6 +69,7 @@
             this.splitContainer2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -93,17 +97,20 @@
             this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.FullRowSelect = true;
+            this.treeView1.HideSelection = false;
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.rssImages;
+            this.treeView1.Indent = 23;
+            this.treeView1.ItemHeight = 20;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Unread";
-            treeNode1.Text = "Unread";
-            treeNode2.Name = "Starred";
-            treeNode2.Text = "Starred";
+            treeNode3.Name = "Unread";
+            treeNode3.Text = "Unread";
+            treeNode4.Name = "Starred";
+            treeNode4.Text = "Starred";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowLines = false;
             this.treeView1.Size = new System.Drawing.Size(340, 509);
@@ -151,7 +158,7 @@
             // rssImages
             // 
             this.rssImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.rssImages.ImageSize = new System.Drawing.Size(20, 20);
+            this.rssImages.ImageSize = new System.Drawing.Size(16, 16);
             this.rssImages.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // splitContainer2
@@ -178,8 +185,10 @@
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
+            this.listView1.ContextMenuStrip = this.contextMenuStrip2;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(225, 509);
@@ -298,6 +307,29 @@
             this.toolMessage.Size = new System.Drawing.Size(904, 17);
             this.toolMessage.Spring = true;
             this.toolMessage.Text = "loading...";
+            this.toolMessage.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toggleStarToolStripMenuItem,
+            this.markUnreadToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 70);
+            // 
+            // toggleStarToolStripMenuItem
+            // 
+            this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
+            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.toggleStarToolStripMenuItem.Text = "Toggle Star";
+            this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
+            // 
+            // markUnreadToolStripMenuItem
+            // 
+            this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
+            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.markUnreadToolStripMenuItem.Text = "Mark Unread";
+            this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -328,6 +360,7 @@
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -359,6 +392,9 @@
         private System.Windows.Forms.ToolStripMenuItem importOPMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editFeedToolStripMenuItem;
         private System.Windows.Forms.ImageList rssImages;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem toggleStarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem markUnreadToolStripMenuItem;
     }
 }
 
