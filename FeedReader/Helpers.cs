@@ -2,7 +2,7 @@
 {
     using System;
     using System.Globalization;
-    using System.Net.Http;
+    //using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -18,45 +18,45 @@
 
         // The HttpClient instance must be a static field
         // https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
-        private static readonly HttpClient _httpClient = new HttpClient();
+        //private static readonly HttpClient _httpClient = new HttpClient();
 
-        /// <summary>
-        /// Download the content from an url
-        /// </summary>
-        /// <param name="url">correct url</param>
-        /// <returns>Content as string</returns>
-        [Obsolete("Use the DownloadAsync method")]
-        public static string Download(string url)
-        {
-            return DownloadAsync(url).Result;
-        }
+        ///// <summary>
+        ///// Download the content from an url
+        ///// </summary>
+        ///// <param name="url">correct url</param>
+        ///// <returns>Content as string</returns>
+        //[Obsolete("Use the DownloadAsync method")]
+        //public static string Download(string url)
+        //{
+        //    return DownloadAsync(url).Result;
+        //}
 
-        /// <summary>
-        /// Download the content from an url
-        /// </summary>
-        /// <param name="url">correct url</param>
-        /// <returns>Content as string</returns>
-        public static async Task<string> DownloadAsync(string url)
-        {
-            url = System.Net.WebUtility.UrlDecode(url);
-            HttpResponseMessage response;
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-            {
-                request.Headers.TryAddWithoutValidation(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
-                request.Headers.TryAddWithoutValidation(USER_AGENT_NAME, USER_AGENT_VALUE);
+        ///// <summary>
+        ///// Download the content from an url
+        ///// </summary>
+        ///// <param name="url">correct url</param>
+        ///// <returns>Content as string</returns>
+        //public static async Task<string> DownloadAsync(string url)
+        //{
+        //    url = System.Net.WebUtility.UrlDecode(url);
+        //    HttpResponseMessage response;
+        //    using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+        //    {
+        //        request.Headers.TryAddWithoutValidation(ACCEPT_HEADER_NAME, ACCEPT_HEADER_VALUE);
+        //        request.Headers.TryAddWithoutValidation(USER_AGENT_NAME, USER_AGENT_VALUE);
 
-                response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-            }
-            if (!response.IsSuccessStatusCode)
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-                {
-                    response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-                }
-            }
+        //        response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+        //    }
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+        //        {
+        //            response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+        //        }
+        //    }
 
-            return Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync());
-        }
+        //    return Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync());
+        //}
 
         /// <summary>
         /// Tries to parse the string as datetime and returns null if it fails

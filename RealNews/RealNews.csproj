@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>RealNews</RootNamespace>
     <AssemblyName>RealNews</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -41,10 +41,8 @@
       <HintPath>..\components\BizFX.UI.Skin.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\components\FeedReader-master\FeedReader\bin\Debug\net452\HtmlAgilityPack.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\components\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="RaptorDB">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
@@ -74,6 +72,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmFeed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFeed.Designer.cs">
+      <DependentUpon>frmFeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlSanitizer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="mWebClient.cs">
@@ -92,6 +96,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmFeed.resx">
+      <DependentUpon>frmFeed.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -102,6 +109,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -133,7 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FeedReader\FeedReader.csproj">
-      <Project>{2e5024ba-6358-4378-a851-93d3143c1dfa}</Project>
+      <Project>{d5ebea1b-85af-4027-9f85-87aabd5a8610}</Project>
       <Name>FeedReader</Name>
       <Private>False</Private>
     </ProjectReference>

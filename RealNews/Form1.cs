@@ -235,7 +235,7 @@ namespace RealNews
                     log("Getting : " + feed.URL);
                     Thread.Sleep(100);
                     Application.DoEvents();
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;// | SecurityProtocolType.Tls12;
                     mWebClient wc = new mWebClient();
                     wc.Encoding = Encoding.UTF8;
                     if (Settings.UseSytemProxy)
@@ -343,7 +343,7 @@ namespace RealNews
 
             log("Saving feed : " + feed.Title);
             string fn = GetFeedFilename(feed);
-            File.WriteAllText(fn, JSON.ToNiceJSON(list, new fastJSON.JSONParameters { UseExtensions = false, UseEscapedUnicode = false }), Encoding.UTF8);
+            File.WriteAllText(fn, JSON.ToNiceJSON(list, new JSONParameters { UseExtensions = false, UseEscapedUnicode = false }), Encoding.UTF8);
 
             _feeditems.TryAdd(feed.Title, list);
         }
@@ -355,15 +355,24 @@ namespace RealNews
             lock (_lock)
             {
                 List<Task> tasks = new List<Task>();
+                int c = _feeds.Count;
+                int i = 1;
+                toolProgressBar.Maximum = c + 1;
+                toolProgressBar.Value = i;
                 foreach (var f in _feeds)
                 {
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
-                        this.Invoke((MethodInvoker)delegate { UpdateFeedCount(f); });
+                        this.Invoke((MethodInvoker)delegate {
+                            UpdateFeedCount(f);
+                            toolCount.Text = $"{i++} of {c}";
+                            toolProgressBar.Value= i;
+                        });
                     }));
                 }
-                Task.WaitAll(tasks.ToArray());
+                //Task.WaitAll(tasks.ToArray());
+                toolProgressBar.Value = i;
                 Log("Done.");
             }
         }
@@ -762,7 +771,7 @@ namespace RealNews
 
         private void updateAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(UpdateAll);
+            UpdateAll();
         }
 
         private void markAsReadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -822,6 +831,12 @@ namespace RealNews
         private void addNewFeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // fix : add new feed
+            frmFeed f = new frmFeed();
+            f.feed = new Feed();
+            if(f.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
 
         private void importOPMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -832,6 +847,12 @@ namespace RealNews
         private void editFeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // fix : edit feed
+            frmFeed f = new frmFeed();
+            f.feed = treeView1.SelectedNode.Tag as Feed;
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
 
         private void toggleStarToolStripMenuItem_Click(object sender, EventArgs e)

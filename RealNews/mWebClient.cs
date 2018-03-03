@@ -7,7 +7,7 @@ namespace RealNews
     {
         public mWebClient()
         {
-            Timeout = 20 * 1000;
+            Timeout = 10 * 1000;
         }
         public int Timeout { get; set; }
 

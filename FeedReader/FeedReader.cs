@@ -32,86 +32,86 @@
             return new UriBuilder(url).ToString();
         }
 
-        /// <summary>
-        /// Returns the absolute url of a link on a page. If you got the feed links via
-        /// GetFeedUrlsFromUrl(url) and the url is relative, you can use this method to get the full url.
-        /// </summary>
-        /// <param name="pageUrl">the original url to the page</param>
-        /// <param name="feedLink">a referenced feed (link)</param>
-        /// <returns>a feed link</returns>
-        /// <example>GetAbsoluteFeedUrl("codehollow.com", myRelativeFeedLink);</example>
-        public static HtmlFeedLink GetAbsoluteFeedUrl(string pageUrl, HtmlFeedLink feedLink)
-        {
-            string tmpUrl = feedLink.Url.HtmlDecode();
-            pageUrl = GetAbsoluteUrl(pageUrl);
+        ///// <summary>
+        ///// Returns the absolute url of a link on a page. If you got the feed links via
+        ///// GetFeedUrlsFromUrl(url) and the url is relative, you can use this method to get the full url.
+        ///// </summary>
+        ///// <param name="pageUrl">the original url to the page</param>
+        ///// <param name="feedLink">a referenced feed (link)</param>
+        ///// <returns>a feed link</returns>
+        ///// <example>GetAbsoluteFeedUrl("codehollow.com", myRelativeFeedLink);</example>
+        //public static HtmlFeedLink GetAbsoluteFeedUrl(string pageUrl, HtmlFeedLink feedLink)
+        //{
+        //    string tmpUrl = feedLink.Url.HtmlDecode();
+        //    pageUrl = GetAbsoluteUrl(pageUrl);
 
-            if (tmpUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
-                || tmpUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                return feedLink;
+        //    if (tmpUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+        //        || tmpUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        //        return feedLink;
 
-            if (tmpUrl.StartsWith("//", StringComparison.OrdinalIgnoreCase)) // special case
-                tmpUrl = "http:" + tmpUrl;
+        //    if (tmpUrl.StartsWith("//", StringComparison.OrdinalIgnoreCase)) // special case
+        //        tmpUrl = "http:" + tmpUrl;
 
-            if (Uri.TryCreate(tmpUrl, UriKind.RelativeOrAbsolute, out Uri finalUri))
-            {
-                if (finalUri.IsAbsoluteUri)
-                {
-                    return new HtmlFeedLink(feedLink.Title.HtmlDecode(), finalUri.ToString(), feedLink.FeedType);
-                }
-                else if (Uri.TryCreate(pageUrl + '/' + tmpUrl.TrimStart('/'), UriKind.Absolute, out finalUri))
-                    return new HtmlFeedLink(feedLink.Title.HtmlDecode(), finalUri.ToString(), feedLink.FeedType);
-            }
+        //    if (Uri.TryCreate(tmpUrl, UriKind.RelativeOrAbsolute, out Uri finalUri))
+        //    {
+        //        if (finalUri.IsAbsoluteUri)
+        //        {
+        //            return new HtmlFeedLink(feedLink.Title.HtmlDecode(), finalUri.ToString(), feedLink.FeedType);
+        //        }
+        //        else if (Uri.TryCreate(pageUrl + '/' + tmpUrl.TrimStart('/'), UriKind.Absolute, out finalUri))
+        //            return new HtmlFeedLink(feedLink.Title.HtmlDecode(), finalUri.ToString(), feedLink.FeedType);
+        //    }
             
-            throw new UrlNotFoundException($"Could not get the absolute url out of {pageUrl} and {feedLink.Url}");
-        }
+        //    throw new UrlNotFoundException($"Could not get the absolute url out of {pageUrl} and {feedLink.Url}");
+        //}
 
-        /// <summary>
-        /// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
-        /// </summary>
-        /// <param name="url">the url of the page</param>
-        /// <returns>a list of links including the type and title, an empty list if no links are found</returns>
-        /// <example>FeedReader.GetFeedUrlsFromUrl("codehollow.com"); // returns a list of all available feeds at
-        /// https://codehollow.com </example>
-        [Obsolete("Use GetFeedUrlsFromUrlAsync method")]
-        public static IEnumerable<HtmlFeedLink> GetFeedUrlsFromUrl(string url)
-        {
-            return GetFeedUrlsFromUrlAsync(url).Result;
-        }
+        ///// <summary>
+        ///// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
+        ///// </summary>
+        ///// <param name="url">the url of the page</param>
+        ///// <returns>a list of links including the type and title, an empty list if no links are found</returns>
+        ///// <example>FeedReader.GetFeedUrlsFromUrl("codehollow.com"); // returns a list of all available feeds at
+        ///// https://codehollow.com </example>
+        //[Obsolete("Use GetFeedUrlsFromUrlAsync method")]
+        //public static IEnumerable<HtmlFeedLink> GetFeedUrlsFromUrl(string url)
+        //{
+        //    return GetFeedUrlsFromUrlAsync(url).Result;
+        //}
 
-        /// <summary>
-        /// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
-        /// </summary>
-        /// <param name="url">the url of the page</param>
-        /// <returns>a list of links including the type and title, an empty list if no links are found</returns>
-        /// <example>FeedReader.GetFeedUrlsFromUrl("codehollow.com"); // returns a list of all available feeds at
-        /// https://codehollow.com </example>
-        public static async Task<IEnumerable<HtmlFeedLink>> GetFeedUrlsFromUrlAsync(string url)
-        {
-            url = GetAbsoluteUrl(url);
-            string pageContent = await Helpers.DownloadAsync(url);
-            return ParseFeedUrlsFromHtml(pageContent);
-        }
+        ///// <summary>
+        ///// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
+        ///// </summary>
+        ///// <param name="url">the url of the page</param>
+        ///// <returns>a list of links including the type and title, an empty list if no links are found</returns>
+        ///// <example>FeedReader.GetFeedUrlsFromUrl("codehollow.com"); // returns a list of all available feeds at
+        ///// https://codehollow.com </example>
+        //public static async Task<IEnumerable<HtmlFeedLink>> GetFeedUrlsFromUrlAsync(string url)
+        //{
+        //    url = GetAbsoluteUrl(url);
+        //    string pageContent = await Helpers.DownloadAsync(url);
+        //    return ParseFeedUrlsFromHtml(pageContent);
+        //}
 
-        /// <summary>
-        /// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
-        /// </summary>
-        /// <param name="url">the url of the page</param>
-        /// <returns>a list of links, an empty list if no links are found</returns>
-        [Obsolete("Use the ParseFeedUrlsAsStringAsync method")]
-        public static string[] ParseFeedUrlsAsString(string url)
-        {
-            return ParseFeedUrlsAsStringAsync(url).Result;
-        }
+        ///// <summary>
+        ///// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
+        ///// </summary>
+        ///// <param name="url">the url of the page</param>
+        ///// <returns>a list of links, an empty list if no links are found</returns>
+        //[Obsolete("Use the ParseFeedUrlsAsStringAsync method")]
+        //public static string[] ParseFeedUrlsAsString(string url)
+        //{
+        //    return ParseFeedUrlsAsStringAsync(url).Result;
+        //}
 
-        /// <summary>
-        /// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
-        /// </summary>
-        /// <param name="url">the url of the page</param>
-        /// <returns>a list of links, an empty list if no links are found</returns>
-        public static async Task<string[]> ParseFeedUrlsAsStringAsync(string url)
-        {
-            return (await GetFeedUrlsFromUrlAsync(url)).Select(x => x.Url).ToArray();
-        }
+        ///// <summary>
+        ///// Opens a webpage and reads all feed urls from it (link rel="alternate" type="application/...")
+        ///// </summary>
+        ///// <param name="url">the url of the page</param>
+        ///// <returns>a list of links, an empty list if no links are found</returns>
+        //public static async Task<string[]> ParseFeedUrlsAsStringAsync(string url)
+        //{
+        //    return (await GetFeedUrlsFromUrlAsync(url)).Select(x => x.Url).ToArray();
+        //}
 
         /// <summary>
         /// Parses RSS links from html page and returns all links
@@ -149,29 +149,29 @@
             }
         }
 
-        /// <summary>
-        /// reads a feed from an url. the url must be a feed. Use ParseFeedUrlsFromHtml to
-        /// parse the feeds from a url which is not a feed.
-        /// </summary>
-        /// <param name="url">the url to a feed</param>
-        /// <returns>parsed feed</returns>
-        [Obsolete("Use ReadAsync method")]
-        public static Feed Read(string url)
-        {
-            return ReadAsync(url).Result;
-        }
+        ///// <summary>
+        ///// reads a feed from an url. the url must be a feed. Use ParseFeedUrlsFromHtml to
+        ///// parse the feeds from a url which is not a feed.
+        ///// </summary>
+        ///// <param name="url">the url to a feed</param>
+        ///// <returns>parsed feed</returns>
+        //[Obsolete("Use ReadAsync method")]
+        //public static Feed Read(string url)
+        //{
+        //    return ReadAsync(url).Result;
+        //}
 
-        /// <summary>
-        /// reads a feed from an url. the url must be a feed. Use ParseFeedUrlsFromHtml to
-        /// parse the feeds from a url which is not a feed.
-        /// </summary>
-        /// <param name="url">the url to a feed</param>
-        /// <returns>parsed feed</returns>
-        public static async Task<Feed> ReadAsync(string url)
-        {
-            string feedContent = await Helpers.DownloadAsync(GetAbsoluteUrl(url));
-            return ReadFromString(feedContent);
-        }
+        ///// <summary>
+        ///// reads a feed from an url. the url must be a feed. Use ParseFeedUrlsFromHtml to
+        ///// parse the feeds from a url which is not a feed.
+        ///// </summary>
+        ///// <param name="url">the url to a feed</param>
+        ///// <returns>parsed feed</returns>
+        //public static async Task<Feed> ReadAsync(string url)
+        //{
+        //    string feedContent = await Helpers.DownloadAsync(GetAbsoluteUrl(url));
+        //    return ReadFromString(feedContent);
+        //}
 
         /// <summary>
         /// reads a feed from a file

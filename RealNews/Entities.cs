@@ -12,11 +12,10 @@ namespace RealNews
         public string IconName;
         public bool RTL;
         public DateTime LastUpdate;
-        public int UpdateEveryHour;
         public bool DownloadImages = true;
         public DateTime LastItemDate;
         public string LastError;
-        public int UpdateEveryMin = -1; // use global settings else e.g. 8*60 min
+        public int UpdateEveryMin = 0; // use global settings else e.g. 8*60 min
         public int UnreadCount = 0;
         public bool feediconfailed = false;
     }

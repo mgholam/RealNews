@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Unread");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starred");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Unread");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starred");
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -53,11 +53,12 @@
             this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleStarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.markUnreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -104,13 +105,13 @@
             this.treeView1.ItemHeight = 20;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            treeNode3.Name = "Unread";
-            treeNode3.Text = "Unread";
-            treeNode4.Name = "Starred";
-            treeNode4.Text = "Starred";
+            treeNode1.Name = "Unread";
+            treeNode1.Text = "Unread";
+            treeNode2.Name = "Starred";
+            treeNode2.Text = "Starred";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowLines = false;
             this.treeView1.Size = new System.Drawing.Size(340, 509);
@@ -288,7 +289,8 @@
             // 
             this.statusStrip1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1,
+            this.toolProgressBar,
+            this.toolCount,
             this.toolMessage});
             this.statusStrip1.Location = new System.Drawing.Point(0, 533);
             this.statusStrip1.Name = "statusStrip1";
@@ -296,15 +298,15 @@
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripProgressBar1
+            // toolProgressBar
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            this.toolProgressBar.Name = "toolProgressBar";
+            this.toolProgressBar.Size = new System.Drawing.Size(100, 16);
             // 
             // toolMessage
             // 
             this.toolMessage.Name = "toolMessage";
-            this.toolMessage.Size = new System.Drawing.Size(904, 17);
+            this.toolMessage.Size = new System.Drawing.Size(862, 17);
             this.toolMessage.Spring = true;
             this.toolMessage.Text = "loading...";
             this.toolMessage.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -315,21 +317,27 @@
             this.toggleStarToolStripMenuItem,
             this.markUnreadToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(143, 48);
             // 
             // toggleStarToolStripMenuItem
             // 
             this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
-            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.toggleStarToolStripMenuItem.Text = "Toggle Star";
             this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
             // 
             // markUnreadToolStripMenuItem
             // 
             this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
-            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.markUnreadToolStripMenuItem.Text = "Mark Unread";
             this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
+            // 
+            // toolCount
+            // 
+            this.toolCount.Name = "toolCount";
+            this.toolCount.Size = new System.Drawing.Size(11, 17);
+            this.toolCount.Text = " ";
             // 
             // Form1
             // 
@@ -377,7 +385,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem nextToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripProgressBar toolProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel toolMessage;
         private System.Windows.Forms.ToolStripMenuItem updateAllToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -395,6 +403,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem toggleStarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem markUnreadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolCount;
     }
 }
 

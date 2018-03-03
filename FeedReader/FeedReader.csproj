@@ -1,49 +1,102 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net452</TargetFrameworks>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-	<Title>CodeHollow.FeedReader</Title>
-    <Authors>Armin Reiter</Authors>
-    <Company>Armin Reiter</Company>
-    <Product>CodeHollow.FeedReader</Product>
-    <Description>FeedReader is a .net standard 1.3 library used for reading and parsing RSS and ATOM feeds. Supports RSS 0.91, 0.92, 1.0, 2.0 and ATOM. Developed because existing libraries do not work with different languages, encodings or have other issues. Library tested with multiple languages and feeds.</Description>
-	<Copyright>Copyright 2017</Copyright>
-    <PackageLicenseUrl>https://github.com/codehollow/FeedReader/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/codehollow/FeedReader/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/codehollow/FeedReader/</RepositoryUrl>
-    <Version>1.1.0.2</Version>
-    <PackageReleaseNotes>Fixed issue with same request retry (The request message was already sent. Cannot send the same request message multiple times). Thanks @curtiswellborne</PackageReleaseNotes>
-    <PackageTags>feed rss atom</PackageTags>
-    <AssemblyName>CodeHollow.FeedReader</AssemblyName>
-    <RootNamespace>CodeHollow.FeedReader</RootNamespace>
-    <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.1.0.2</AssemblyVersion>
-    <FileVersion>1.1.0.2</FileVersion>
-    <PackageIconUrl>https://raw.github.com/codehollow/FeedReader/master/FeedReader/icon.png</PackageIconUrl>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D5EBEA1B-85AF-4027-9F85-87AABD5A8610}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FeedReader</RootNamespace>
+    <AssemblyName>FeedReader</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.3|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\CodeHollow.FeedReader.xml</DocumentationFile>
-    <NoWarn></NoWarn>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
-    <DocumentationFile>bin\Debug\net452\CodeHollow.FeedReader.xml</DocumentationFile>
-    <NoWarn></NoWarn>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.3|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\CodeHollow.FeedReader.xml</DocumentationFile>
-  </PropertyGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\components\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedItem.cs" />
+    <Compile Include="FeedReader.cs" />
+    <Compile Include="Feeds\0.91\Rss091Feed.cs" />
+    <Compile Include="Feeds\0.91\Rss091FeedImage.cs" />
+    <Compile Include="Feeds\0.91\Rss091FeedItem.cs" />
+    <Compile Include="Feeds\0.92\Rss092Feed.cs" />
+    <Compile Include="Feeds\0.92\Rss092FeedImage.cs" />
+    <Compile Include="Feeds\0.92\Rss092FeedItem.cs" />
+    <Compile Include="Feeds\1.0\Rss10Feed.cs" />
+    <Compile Include="Feeds\1.0\Rss10FeedImage.cs" />
+    <Compile Include="Feeds\1.0\Rss10FeedItem.cs" />
+    <Compile Include="Feeds\1.0\Rss10FeedTextInput.cs" />
+    <Compile Include="Feeds\2.0\Rss20Feed.cs" />
+    <Compile Include="Feeds\2.0\Rss20FeedImage.cs" />
+    <Compile Include="Feeds\2.0\Rss20FeedItem.cs" />
+    <Compile Include="Feeds\Atom\AtomFeed.cs" />
+    <Compile Include="Feeds\Atom\AtomFeedItem.cs" />
+    <Compile Include="Feeds\Atom\AtomLink.cs" />
+    <Compile Include="Feeds\Atom\AtomPerson.cs" />
+    <Compile Include="Feeds\Base\BaseFeed.cs" />
+    <Compile Include="Feeds\Base\BaseFeedItem.cs" />
+    <Compile Include="Feeds\Base\FeedCloud.cs" />
+    <Compile Include="Feeds\Base\FeedImage.cs" />
+    <Compile Include="Feeds\Base\FeedItemEnclosure.cs" />
+    <Compile Include="Feeds\Base\FeedItemSource.cs" />
+    <Compile Include="Feeds\Base\FeedTextInput.cs" />
+    <Compile Include="Feeds\DublinCore.cs" />
+    <Compile Include="Feeds\Itunes\ItunesCategory.cs" />
+    <Compile Include="Feeds\Itunes\ItunesChannel.cs" />
+    <Compile Include="Feeds\Itunes\ItunesExtensions.cs" />
+    <Compile Include="Feeds\Itunes\ItunesImage.cs" />
+    <Compile Include="Feeds\Itunes\ItunesItem.cs" />
+    <Compile Include="Feeds\Itunes\ItunesOwner.cs" />
+    <Compile Include="Feeds\Syndication.cs" />
+    <Compile Include="FeedType.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="HtmlFeedLink.cs" />
+    <Compile Include="Parser\AbstractXmlFeedParser.cs" />
+    <Compile Include="Parser\AtomParser.cs" />
+    <Compile Include="Parser\Exceptions\FeedTypeNotSupportedException.cs" />
+    <Compile Include="Parser\Exceptions\InvalidFeedLinkException.cs" />
+    <Compile Include="Parser\Factory.cs" />
+    <Compile Include="Parser\FeedParser.cs" />
+    <Compile Include="Parser\IFeedParser.cs" />
+    <Compile Include="Parser\Rss091Parser.cs" />
+    <Compile Include="Parser\Rss092Parser.cs" />
+    <Compile Include="Parser\Rss10Parser.cs" />
+    <Compile Include="Parser\Rss20Parser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
