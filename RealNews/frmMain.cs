@@ -20,6 +20,8 @@ namespace RealNews
 {
     public partial class frmMain : Form
     {
+        // fix : show unread list
+        // fix : show starred list
         public frmMain()
         {
             InitializeComponent();
@@ -198,7 +200,6 @@ namespace RealNews
 
         private void ReadOPML(string filename)
         {
-            // fix : do if exists logic here
             if (File.Exists(filename))
             {
                 var hd = new HtmlAgilityPack.HtmlDocument();
@@ -215,11 +216,15 @@ namespace RealNews
                             id = id++
                         };
 
-                        _feeds.Add(feed);
-                        var tn = new TreeNode();
-                        tn.Tag = feed;
-                        tn.Text = feed.Title;
-                        treeView1.Nodes.Add(tn);
+                        var r = _feeds.Find(x => x.URL == feed.URL);
+                        if (r == null)
+                        {
+                            _feeds.Add(feed);
+                            var tn = new TreeNode();
+                            tn.Tag = feed;
+                            tn.Text = feed.Title;
+                            treeView1.Nodes.Add(tn);
+                        }
                     }
                     catch { }
                 }
@@ -425,7 +430,7 @@ namespace RealNews
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<label>STAR</label>"); //fix : better starred
+                sb.Append("<label>STAR</label>"); //fix : better starred ui
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
@@ -446,28 +451,28 @@ namespace RealNews
 
         private void UpdateStarCount()
         {
-            //if (_currentList == null || _currentFeed == null)
-            //    return;
-            //List<FeedItem> list = _currentList;
-            //treeView1.BeginUpdate();
-            //var ur = treeView1.Nodes.Find("Starred", true);
-            //if (ur.Length > 0)
-            //{
-            //    long c = 0;
-            //    foreach (var f in _feeds)
-            //        c += f.;
-            //    if (c > 0)
-            //    {
-            //        ur[0].Text = $"Starred ({c})";
-            //        //ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Bold);
-            //    }
-            //    else
-            //    {
-            //        ur[0].Text = "Starred";
-            //        //ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Regular);
-            //    }
-            //}
-            //treeView1.EndUpdate();
+            if (_currentList == null || _currentFeed == null)
+                return;
+            List<FeedItem> list = _currentList;
+            treeView1.BeginUpdate();
+            _currentFeed.StarredCount = list.Count(x => x.isStarred == true);
+
+            var ur = treeView1.Nodes.Find("Starred", true);
+            if (ur.Length > 0)
+            {
+                long c = 0;
+                foreach (var f in _feeds)
+                    c += f.StarredCount;
+                if (c > 0)
+                {
+                    ur[0].Text = $"Starred ({c})";
+                }
+                else
+                {
+                    ur[0].Text = "Starred";
+                }
+            }
+            treeView1.EndUpdate();
         }
 
         private void UpdateFeedCount(Feed feed)
@@ -865,7 +870,13 @@ namespace RealNews
 
         private void importOPMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : import opml file
+            // import opml file
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "OPML files (*.opml)|*.opml|All files (*.*)|*.*";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                ReadOPML(openFileDialog1.FileName);
+            }
         }
 
         private void editFeedToolStripMenuItem_Click(object sender, EventArgs e)

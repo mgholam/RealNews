@@ -16,6 +16,7 @@ namespace RealNews
         public DateTime LastItemDate;
         public string LastError;
         public int UnreadCount = 0;
+        public int StarredCount = 0;
         public bool feediconfailed = false;
     }
 
@@ -34,7 +35,7 @@ namespace RealNews
         public string Attachment;
 
         public bool isRead = false;
-        public bool isStarred = false; // fix : set starred
+        public bool isStarred = false; 
     }
 
     class FeedItemComparer : IEqualityComparer<FeedItem>
