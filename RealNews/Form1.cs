@@ -14,6 +14,7 @@ using CodeHollow.FeedReader;
 using fastJSON;
 using RaptorDB;
 using System.Threading.Tasks;
+using Westwind.Web.Utilities;
 
 namespace RealNews
 {
@@ -97,8 +98,8 @@ namespace RealNews
             _imgcache = new KeyStoreHF("cache", "images.dat");
             web = new RealNewsWeb(Settings.webport);
 
-            SkinForm();
-
+            //SkinForm();
+            Log(" ");
         }
 
         private void LoadFeeds()
@@ -300,8 +301,7 @@ namespace RealNews
                     }
                     sb.AppendLine("</table>");
                 }
-                var tempdesc = sb.ToString();// fix : sanitize here
-                                             //Html.Helpers.HtmlSanitizer.sanitize(sb.ToString()); 
+                var tempdesc = HtmlSanitizer.SanitizeHtml(sb.ToString());
 
                 List<string> imgs = new List<string>();
                 foreach (var img in GetImagesInHTMLString(tempdesc))
@@ -398,14 +398,14 @@ namespace RealNews
             StringBuilder sb = new StringBuilder();
             sb.Append("<html");
             if (_currentFeed.RTL)
-                sb.Append("dir='rtl'>"); // get if rtl
+                sb.Append(" dir='rtl'>"); // get if rtl
             else
                 sb.AppendLine(">");
             sb.Append("<link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'>");
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<label>STAR</label>");
+                sb.Append("<label>STAR</label>"); //fix : better starred
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
