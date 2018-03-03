@@ -37,6 +37,7 @@
             this.markAsReadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.updateNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -59,7 +60,7 @@
             this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.downloadImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -152,6 +153,11 @@
             this.updateNowToolStripMenuItem.Text = "Update now";
             this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(139, 6);
+            // 
             // editFeedToolStripMenuItem
             // 
             this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
@@ -216,21 +222,22 @@
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toggleStarToolStripMenuItem,
-            this.markUnreadToolStripMenuItem});
+            this.markUnreadToolStripMenuItem,
+            this.downloadImagesToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(143, 48);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(170, 92);
             // 
             // toggleStarToolStripMenuItem
             // 
             this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
-            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.toggleStarToolStripMenuItem.Text = "Toggle Star";
             this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
             // 
             // markUnreadToolStripMenuItem
             // 
             this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
-            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.markUnreadToolStripMenuItem.Text = "Mark Unread";
             this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
             // 
@@ -344,12 +351,14 @@
             this.toolMessage.Text = "loading...";
             this.toolMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // toolStripMenuItem2
+            // downloadImagesToolStripMenuItem
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(139, 6);
+            this.downloadImagesToolStripMenuItem.Name = "downloadImagesToolStripMenuItem";
+            this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.downloadImagesToolStripMenuItem.Text = "Download Images";
+            this.downloadImagesToolStripMenuItem.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem_Click);
             // 
-            // fmrMain
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -360,7 +369,7 @@
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "fmrMain";
+            this.Name = "frmMain";
             this.Text = "Real News";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -415,6 +424,7 @@
         private System.Windows.Forms.ToolStripMenuItem markUnreadToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolCount;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem;
     }
 }
 

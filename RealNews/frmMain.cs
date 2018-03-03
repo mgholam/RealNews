@@ -60,6 +60,7 @@ namespace RealNews
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("feeds\\icons");
             Directory.CreateDirectory("configs");
+
             if (File.Exists("configs\\style.css") == false)
                 File.WriteAllText("configs\\style.css", Properties.Resources.style);
 
@@ -909,10 +910,15 @@ namespace RealNews
             if (f != null)
             {
                 f.isRead = !f.isRead;
-                UpdateStarCount();
+                UpdateFeedCount();
                 ShowItem(f, false);
                 listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Bold);
             }
+        }
+
+        private void downloadImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // fix : download image for item now
         }
     }
 }
