@@ -105,9 +105,10 @@ namespace RealNews
             SkinForm();
             _lastFormState = this.WindowState;
             Log(" ");
+            webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
         }
 
-        private string _currhtml;
+        private string _currhtml= "<html></html>";
         private string ShowFeedItemHtml()
         {
             return _currhtml;
@@ -454,7 +455,6 @@ namespace RealNews
             sb.AppendLine("</html>");
 
             _currhtml = sb.ToString();
-            webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
             webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
 
             if (item.isRead != isread)
