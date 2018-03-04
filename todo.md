@@ -10,7 +10,8 @@
 - read OPML
 - refine styling
 - download images @time
-- minimize to tray
+- ~~minimize to tray~~
+- ​
 - ​
 
 

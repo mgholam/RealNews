@@ -108,7 +108,7 @@ namespace RealNews
             webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
         }
 
-        private string _currhtml= "<html></html>";
+        private string _currhtml = "<html></html>";
         private string ShowFeedItemHtml()
         {
             return _currhtml;
@@ -793,7 +793,7 @@ namespace RealNews
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
             if (//_rendering == false && 
-                e.Url.ToString().StartsWith("http://localhost:"+Settings.webport)==false)
+                e.Url.ToString().StartsWith("http://localhost:" + Settings.webport) == false)
             {
                 e.Cancel = true;
                 Process.Start(e.Url.ToString());
@@ -1005,7 +1005,9 @@ namespace RealNews
                 List<string> imgs = new List<string>();
                 foreach (var img in GetImagesInHTMLString(f.Description))
                 {
-                    imgs.Add(_imghrefregex.Match(img).Groups["href"].Value);
+                    var s = _imghrefregex.Match(img).Groups["href"].Value;
+                    if (_imgcache.ContainsHF(s) == false)
+                        imgs.Add(s);
                 }
 
                 foreach (var i in imgs) // fix : put in thread

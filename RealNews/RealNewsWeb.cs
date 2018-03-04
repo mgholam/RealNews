@@ -35,6 +35,7 @@ namespace RealNews
             handler.Add("image", ctx =>
             {
                 string gstr = ctx.Request.Url.GetComponents(UriComponents.Query, UriFormat.Unescaped);
+                gstr = gstr.Replace("Â", ""); // KLUDGE : don't know why its there
                 var o = _imgcache.GetObjectHF(gstr) as ImgCache;
                 byte[] b = null;
                 if (o == null)
