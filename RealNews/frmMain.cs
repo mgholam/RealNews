@@ -274,7 +274,7 @@ namespace RealNews
                 {
                     Title = item.Title,
                     date = item.PublishingDate != null ? item.PublishingDate.Value : DateTime.Now,
-                    feedid = feed.id,
+                    FeedName = feed.Title,
                     Id = item.Id,
                     Link = item.Link,
                     Attachment = item.SpecificItem.Enclosure != null ? item.SpecificItem.Enclosure.Url : "",
@@ -445,6 +445,9 @@ namespace RealNews
             sb.Append("<label>");
             sb.Append("" + item.date);
             sb.Append("</label>");
+            sb.Append("<label>");
+            sb.Append("" + item.FeedName);
+            sb.Append("</label>");
             sb.Append("</div>");
             sb.AppendLine(str);
             sb.AppendLine("</html>");
@@ -456,11 +459,7 @@ namespace RealNews
 
         private void UpdateStarCount()
         {
-            //if (_currentList == null || _currentFeed == null)
-            //    return;
-            //List<FeedItem> list = _currentList;
             treeView1.BeginUpdate();
-            //_currentFeed.StarredCount = list.Count(x => x.isStarred == true);
 
             var ur = treeView1.Nodes.Find("Starred", true);
             if (ur.Length > 0)
@@ -589,8 +588,6 @@ namespace RealNews
                 l.Font = new Font(listView1.Font, FontStyle.Regular);
                 listView1.SelectedItems.Clear();
 
-                //if (listView1.FocusedItem != null)
-                //    listView1.FocusedItem.Focused = false;
                 listView1.FocusedItem = l;
             }
         }
@@ -683,6 +680,21 @@ namespace RealNews
                 _currentList = list;
                 listView1.SuspendLayout();
                 listView1.BeginUpdate();
+                listView1.Groups.Clear();
+                var today = new ListViewGroup("Today");
+                today.HeaderAlignment = HorizontalAlignment.Left;
+                var yesterday = new ListViewGroup("Yesterday");
+                yesterday.HeaderAlignment = HorizontalAlignment.Left;
+                var thisweek = new ListViewGroup("This Week");
+                thisweek.HeaderAlignment = HorizontalAlignment.Left;
+                var older = new ListViewGroup("Older");
+                older.HeaderAlignment = HorizontalAlignment.Left;
+                
+                listView1.Groups.Add(today);
+                listView1.Groups.Add(yesterday);
+                listView1.Groups.Add(thisweek);
+                listView1.Groups.Add(older);
+                listView1.ShowGroups = true;
                 foreach (var i in list)
                 {
                     var lvi = new ListViewItem();
@@ -690,6 +702,17 @@ namespace RealNews
                     lvi.Text = i.Title;
                     lvi.Tag = i;
                     lvi.SubItems.Add(i.date.ToString());
+                    var grp = today;
+                    var d = DateTime.Now.Subtract(i.date).TotalDays;
+                    if (d < 1)
+                        grp = today;
+                    else if (d >= 1 & d < 2)
+                        grp = yesterday;
+                    else if (d >= 2 && d < 7)
+                        grp = thisweek;
+                    else
+                        grp = older;
+                    lvi.Group = grp;
                     listView1.Items.Add(lvi);
                     if (i.isRead == false)
                         lvi.Font = new Font(lvi.Font, FontStyle.Bold);

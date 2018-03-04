@@ -31,7 +31,8 @@ namespace RealNews
         public string Id;
 
         public string Description;
-        public int feedid;
+        //public int feedid;
+        public string FeedName;
         public string Attachment;
 
         public bool isRead = false;
