@@ -20,8 +20,6 @@ namespace RealNews
 {
     public partial class frmMain : Form
     {
-        // fix : show unread list
-        // fix : show starred list
         public frmMain()
         {
             InitializeComponent();
@@ -118,6 +116,11 @@ namespace RealNews
                 foreach (var f in _feeds)
                 {
                     var fn = "feeds\\icons\\" + GetFeedFilenameOnly(f) + ".ico";
+                    if (File.Exists(GetFeedFilename(f)))
+                    {
+                        var list = JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(f)));
+                        _feeditems.TryAdd(f.Title, list);
+                    }
                     int imgidx = 0;
                     if (File.Exists(fn))
                     {
@@ -148,6 +151,7 @@ namespace RealNews
                     ShowFeedList(f);
                 }
                 treeView1.EndUpdate();
+                UpdateStarCount();
                 Task.Factory.StartNew(downloadfeedicons);
             }
             splitContainer1.Visible = true;
@@ -251,7 +255,7 @@ namespace RealNews
                         wc.Proxy = WebRequest.DefaultWebProxy;
                     feedxml = wc.DownloadString(feed.URL);
                     feed.LastUpdate = DateTime.Now;
-                    File.WriteAllText(GetFeedXmlFilename(feed), feedxml, Encoding.UTF8);
+                    //File.WriteAllText(GetFeedXmlFilename(feed), feedxml, Encoding.UTF8);
                 }
                 catch (Exception ex)
                 {
@@ -431,7 +435,7 @@ namespace RealNews
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<label>STAR</label>"); //fix : better starred ui
+                sb.Append("<label>STAR</label>"); // fix : better starred ui
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
@@ -452,18 +456,18 @@ namespace RealNews
 
         private void UpdateStarCount()
         {
-            if (_currentList == null || _currentFeed == null)
-                return;
-            List<FeedItem> list = _currentList;
+            //if (_currentList == null || _currentFeed == null)
+            //    return;
+            //List<FeedItem> list = _currentList;
             treeView1.BeginUpdate();
-            _currentFeed.StarredCount = list.Count(x => x.isStarred == true);
+            //_currentFeed.StarredCount = list.Count(x => x.isStarred == true);
 
             var ur = treeView1.Nodes.Find("Starred", true);
             if (ur.Length > 0)
             {
                 long c = 0;
-                foreach (var f in _feeds)
-                    c += f.StarredCount;
+                foreach (var f in _feeditems)
+                    c += f.Value.Count(x=> x.isStarred);
                 if (c > 0)
                 {
                     ur[0].Text = $"Starred ({c})";
@@ -657,39 +661,42 @@ namespace RealNews
                             _feeditems.TryAdd(feed.Title, list);
                         }
                     }
-                    listView1.Items.Clear();
-                    listView1.View = View.Details;
                     listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
                     listView1.RightToLeftLayout = feed.RTL;
-
-                    if (list != null)
-                    {
-                        _currentList = list;
-                        listView1.SuspendLayout();
-                        listView1.BeginUpdate();
-                        foreach (var i in list)
-                        {
-                            var lvi = new ListViewItem();
-                            lvi.Name = "Title";
-                            lvi.Text = i.Title;
-                            lvi.Tag = i;
-                            //lvi.SubItems.Add(i.Title);
-                            lvi.SubItems.Add(i.date.ToString());
-                            listView1.Items.Add(lvi);
-                            //listView1.Items.Add(i.Title);
-                            if (i.isRead == false)
-                                lvi.Font = new Font(lvi.Font, FontStyle.Bold);
-                        }
-                        listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                        listView1.EndUpdate();
-                        listView1.ResumeLayout();
-                        UpdateFeedCount(feed, list);
-                    }
+                    ShowFeedList(list);
+                    UpdateFeedCount(feed, list);
                 }
             }
             catch //(Exception ex)
             {
 
+            }
+        }
+
+        private void ShowFeedList(List<FeedItem> list)
+        {
+            listView1.Items.Clear();
+            listView1.View = View.Details;
+
+            if (list != null)
+            {
+                _currentList = list;
+                listView1.SuspendLayout();
+                listView1.BeginUpdate();
+                foreach (var i in list)
+                {
+                    var lvi = new ListViewItem();
+                    lvi.Name = "Title";
+                    lvi.Text = i.Title;
+                    lvi.Tag = i;
+                    lvi.SubItems.Add(i.date.ToString());
+                    listView1.Items.Add(lvi);
+                    if (i.isRead == false)
+                        lvi.Font = new Font(lvi.Font, FontStyle.Bold);
+                }
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                listView1.EndUpdate();
+                listView1.ResumeLayout();
             }
         }
 
@@ -705,14 +712,14 @@ namespace RealNews
         {
             return "feeds\\lists\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".list";
         }
-        private string GetFeedXmlFilename(Feed f)
-        {
-            return "feeds\\temp\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
-        }
-        private string GetFeedXmlFilename(string title)
-        {
-            return "feeds\\temp\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
-        }
+        //private string GetFeedXmlFilename(Feed f)
+        //{
+        //    return "feeds\\temp\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
+        //}
+        //private string GetFeedXmlFilename(string title)
+        //{
+        //    return "feeds\\temp\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
+        //}
 
         private static void SetDoubleBuffering(System.Windows.Forms.Control control, bool value)
         {
@@ -731,6 +738,18 @@ namespace RealNews
         private void Log(string msg)
         {
             toolMessage.Text = msg;
+        }
+
+        private void ToggleStarred()
+        {
+            // toggle star
+            var f = listView1.FocusedItem.Tag as FeedItem;
+            if (f != null)
+            {
+                f.isStarred = !f.isStarred;
+                UpdateStarCount();
+                ShowItem(f);
+            }
         }
         // ---------------------------------------------------------------------------------------------------------
         // UI handlers
@@ -754,8 +773,31 @@ namespace RealNews
         {
             // after feed select -> show feed item list 
             var feed = e.Node.Tag as Feed;
-            _currentFeed = feed;
-            ShowFeedList(feed);
+            if (feed != null)
+            {
+                _currentFeed = feed;
+                ShowFeedList(feed);
+            }
+            else
+            {
+                listView1.RightToLeft = RightToLeft.No;
+                listView1.RightToLeftLayout = false;
+                List<FeedItem> list = new List<FeedItem>();
+                if (e.Node.Name == "Unread")
+                {
+                    foreach (var f in _feeditems)
+                        list.AddRange(f.Value.FindAll(x => x.isRead == false));
+
+                    ShowFeedList(list);
+                }
+                else if (e.Node.Name == "Starred")
+                {
+                    foreach (var f in _feeditems)
+                        list.AddRange(f.Value.FindAll(x => x.isStarred == true));
+
+                    ShowFeedList(list);
+                }
+            }
         }
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -831,18 +873,6 @@ namespace RealNews
         private void starToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToggleStarred();
-        }
-
-        private void ToggleStarred()
-        {
-            // toggle star
-            var f = listView1.FocusedItem.Tag as FeedItem;
-            if (f != null)
-            {
-                f.isStarred = !f.isStarred;
-                UpdateStarCount();
-                ShowItem(f);
-            }
         }
 
         private void addNewFeedToolStripMenuItem_Click(object sender, EventArgs e)
