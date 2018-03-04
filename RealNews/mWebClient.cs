@@ -8,7 +8,8 @@ namespace RealNews
         public mWebClient()
         {
             Timeout = 10 * 1000;
-            this.Encoding = System.Text.Encoding.UTF8;
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;// KLUDGE : https security for .net 4
+            base.Encoding = System.Text.Encoding.UTF8;
             if (Settings.UseSytemProxy)
                 Proxy = WebRequest.DefaultWebProxy;
         }

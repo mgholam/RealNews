@@ -43,7 +43,6 @@ namespace RealNews
         private KeyStoreHF _imgcache;
         List<Feed> _feeds = new List<Feed>();
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
-        //bool _rendering = false;
         Feed _currentFeed = null;
         List<FeedItem> _currentList = null;
         List<string> _downloadimglist = new List<string>();
@@ -244,7 +243,6 @@ namespace RealNews
             }
         }
 
-
         private void UpdateFeed(Feed feed, Action<string> log) // fix : force download images
         {
             var feedxml = "";
@@ -256,7 +254,6 @@ namespace RealNews
                     log("Getting : " + feed.URL);
                     Thread.Sleep(100);
                     Application.DoEvents();
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                     mWebClient wc = new mWebClient();
                     feedxml = wc.DownloadString(feed.URL);
                     feed.LastUpdate = DateTime.Now;
@@ -433,7 +430,8 @@ namespace RealNews
             if (_currentFeed.RTL)
                 sb.Append(" dir='rtl'>"); // get if rtl
             else
-                sb.AppendLine("><meta http-equiv='cache-control' content='no-cache'>");
+                sb.AppendLine(">");
+            sb.Append("<head><meta charset='UTF-8'><meta http-equiv='cache-control' content='no-cache'></head>");
             sb.Append("<link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'>");
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
@@ -456,10 +454,8 @@ namespace RealNews
             sb.AppendLine("</html>");
 
             _currhtml = sb.ToString();
-            //_rendering = true;
             webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
             webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
-            //_rendering = false;
 
             if (item.isRead != isread)
             {
@@ -1012,7 +1008,7 @@ namespace RealNews
                     imgs.Add(_imghrefregex.Match(img).Groups["href"].Value);
                 }
 
-                foreach (var i in imgs)
+                foreach (var i in imgs) // fix : put in thread
                 {
                     string r = i.Replace(_localhostimageurl, "");
                     try
@@ -1028,6 +1024,7 @@ namespace RealNews
                     }
                     catch
                     {
+                        Log("Error downloading images");
                     }
                 }
                 ShowItem(f);
