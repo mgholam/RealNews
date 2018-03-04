@@ -101,36 +101,6 @@ namespace RealNews.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;html dir=&quot;rtl&quot;&gt;
-        ///&lt;script src=&quot;badcode.js&quot;&gt;&lt;/script&gt;
-        ///&lt;IMG SRC=&quot;javascript:alert(&apos;XSS&apos;);&quot;&gt;
-        ///&lt;img width=&quot;150&quot; height=&quot;150&quot; src=&quot;https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-150x150.png&quot; class=&quot;webfeedsFeaturedVisual wp-post-image&quot; alt=&quot;Alcohol 120 Percent&quot; style=&quot;display: block; margin-bottom: 5px; clear:both;max-width: 100%;&quot; srcset=&quot;https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Percent-150x150.png 150w, https://downloadly.ir/wp-content/uploads/2014/04/Alcohol-120-Perc [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to What goes into a Docker stack? Carl and Richard talk to Rob Richardson about how containers are evolving in the .NET world. Rob talks about how the Windows side of Docker is actually getting stronger - most developers using Docker use Linux as the template OS. The conversation focuses on moving existing .NET applications into Docker - aka, without .NET Core. It&apos;s certainly possible, and you get some of the container advantages. But with containers comes new thinking around architecture, the ability to organ [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string String2 {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to As the maker of Windows, Office, and Xbox, Microsoft is undoubtedly against software piracy. When people pirate its games and other software, it arguably takes money out of the companyâ€™s pockets. Believe it or not though, Microsoft is actually promoting piracy! No, not software piracy, but traditional piracy, like with actual pirates. Well, the historical/make-believe type at least. You know, peg legs, eye patches, parrots and such. You see, today it announces theآ Xbox One S Sea Of Thieves Bundle. &quot;As we [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string String3 {
-            get {
-                return ResourceManager.GetString("String3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to body {
         ///    font-family: Tahoma;
         ///    font-weight: normal;
@@ -167,6 +137,26 @@ namespace RealNews.Properties {
         internal static string style {
             get {
                 return ResourceManager.GetString("style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon tray {
+            get {
+                object obj = ResourceManager.GetObject("tray", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon trayhighlight {
+            get {
+                object obj = ResourceManager.GetObject("trayhighlight", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

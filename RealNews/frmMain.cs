@@ -49,11 +49,13 @@ namespace RealNews
         List<string> _downloadimglist = new List<string>();
         private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
+        private FormWindowState _lastFormState = FormWindowState.Normal;
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            notifyIcon1.Icon = Properties.Resources.tray;
+
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("feeds\\icons");
@@ -100,6 +102,7 @@ namespace RealNews
             web = new RealNewsWeb(Settings.webport);
 
             SkinForm();
+            _lastFormState = this.WindowState;
             Log(" ");
         }
 
@@ -466,7 +469,7 @@ namespace RealNews
             {
                 long c = 0;
                 foreach (var f in _feeditems)
-                    c += f.Value.Count(x=> x.isStarred);
+                    c += f.Value.Count(x => x.isStarred);
                 if (c > 0)
                 {
                     ur[0].Text = $"Starred ({c})";
@@ -689,7 +692,7 @@ namespace RealNews
                 thisweek.HeaderAlignment = HorizontalAlignment.Left;
                 var older = new ListViewGroup("Older");
                 older.HeaderAlignment = HorizontalAlignment.Left;
-                
+
                 listView1.Groups.Add(today);
                 listView1.Groups.Add(yesterday);
                 listView1.Groups.Add(thisweek);
@@ -789,7 +792,16 @@ namespace RealNews
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Shutdown();
+            if (_exit == true)
+                Shutdown();
+            else
+            {
+                //  minimize
+                _lastFormState = this.WindowState;
+                e.Cancel = true;
+                notifyIcon1.Visible = true;
+                this.Hide();
+            }
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -835,8 +847,10 @@ namespace RealNews
                 Settings.feeditemlistwidth = e.SplitX;
         }
 
+        private bool _exit = false;
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            _exit = true;
             this.Close();
         }
 
@@ -889,6 +903,8 @@ namespace RealNews
 
         private void listView1_KeyUp(object sender, KeyEventArgs e)
         {
+            if (listView1.FocusedItem == null)
+                return;
             ShowItem(listView1.FocusedItem.Tag as FeedItem);
             listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
         }
@@ -972,6 +988,27 @@ namespace RealNews
         private void downloadImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // fix : download image for item now
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            // show form
+            this.Show();
+            this.WindowState = _lastFormState;
+        }
+
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == this.WindowState)
+            {
+                notifyIcon1.Visible = true;
+                this.Hide();
+            }
+            //else if (FormWindowState.Normal == this.WindowState || )
+            else
+            {
+                notifyIcon1.Visible = false;
+            }
         }
     }
 }

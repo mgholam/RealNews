@@ -125,9 +125,6 @@
     <None Include="Resources\style.css" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\rss.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\rss.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +135,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <Content Include="Resources\tray.ico" />
+    <Content Include="Resources\trayhighlight.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FeedReader\FeedReader.csproj">
