@@ -50,6 +50,7 @@ namespace RealNews
         private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
+        private JSONParameters jp = new JSONParameters { UseExtensions = false };
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -163,10 +164,7 @@ namespace RealNews
         private void downloadfeedicons()
         {
             mWebClient wc = new mWebClient();
-            wc.Encoding = Encoding.UTF8;
 
-            if (Settings.UseSytemProxy)
-                wc.Proxy = WebRequest.DefaultWebProxy;
             foreach (var f in _feeds)
             {
                 var fn = "feeds\\icons\\" + GetFeedFilenameOnly(f) + ".ico";
@@ -253,9 +251,6 @@ namespace RealNews
                     Application.DoEvents();
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                     mWebClient wc = new mWebClient();
-                    wc.Encoding = Encoding.UTF8;
-                    if (Settings.UseSytemProxy)
-                        wc.Proxy = WebRequest.DefaultWebProxy;
                     feedxml = wc.DownloadString(feed.URL);
                     feed.LastUpdate = DateTime.Now;
                     //File.WriteAllText(GetFeedXmlFilename(feed), feedxml, Encoding.UTF8);
@@ -532,7 +527,7 @@ namespace RealNews
                     foreach (var f in _feeditems)
                         tot += f.Value.Count;
 
-                    foreach (var f in _feeds) 
+                    foreach (var f in _feeds)
                         c += f.UnreadCount;
 
                     if (c > 0)
@@ -606,7 +601,6 @@ namespace RealNews
                 Settings.Maximized = false;
             else
                 Settings.Maximized = true;
-            var jp = new JSONParameters { UseExtensions = false };
             File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
             File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
             File.WriteAllText("feeds\\downloadimg.list", JSON.ToJSON(_downloadimglist, jp));
@@ -992,7 +986,7 @@ namespace RealNews
 
         private void downloadImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : download image for item now
+            // fix : force download image for item now
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -1009,10 +1003,37 @@ namespace RealNews
                 notifyIcon1.Visible = true;
                 this.Hide();
             }
-            //else if (FormWindowState.Normal == this.WindowState || )
             else
-            {
                 notifyIcon1.Visible = false;
+        }
+
+        private void cleanupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // cleanup old items
+            int c = 0;
+            foreach (var f in _feeditems)
+                c += f.Value.Count(x =>
+                    DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
+                    && x.isStarred == false
+                    && x.isRead == true);
+            if (c == 0)
+            {
+                MessageBox.Show("No items to remove.");
+                return;
+            }
+            var r = MessageBox.Show($"Do you want to remove {c} items?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+            if (r == DialogResult.Yes)
+            {
+                foreach (var f in _feeditems)
+                {
+                    f.Value.RemoveAll(x =>
+                       DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
+                       && x.isStarred == false
+                       && x.isRead == true);
+                    File.WriteAllText(GetFeedFilename(f.Key), JSON.ToNiceJSON(f.Value, jp));
+                }
+
+                UpdateFeedCount();
             }
         }
     }

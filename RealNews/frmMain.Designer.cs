@@ -61,6 +61,7 @@
             this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -262,7 +263,8 @@
             this.fileToolStripMenuItem,
             this.nextToolStripMenuItem,
             this.updateAllToolStripMenuItem,
-            this.starToolStripMenuItem});
+            this.starToolStripMenuItem,
+            this.cleanupToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1021, 24);
@@ -360,6 +362,13 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
+            // cleanupToolStripMenuItem
+            // 
+            this.cleanupToolStripMenuItem.Name = "cleanupToolStripMenuItem";
+            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.cleanupToolStripMenuItem.Text = "Cleanup";
+            this.cleanupToolStripMenuItem.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -428,6 +437,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem;
     }
 }
 

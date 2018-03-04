@@ -8,6 +8,9 @@ namespace RealNews
         public mWebClient()
         {
             Timeout = 10 * 1000;
+            this.Encoding = System.Text.Encoding.UTF8;
+            if (Settings.UseSytemProxy)
+                Proxy = WebRequest.DefaultWebProxy;
         }
         public int Timeout { get; set; }
 

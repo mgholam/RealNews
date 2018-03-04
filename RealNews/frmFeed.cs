@@ -68,9 +68,6 @@ namespace RealNews
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls  | SecurityProtocolType.Ssl3;
                 mWebClient wc = new mWebClient();
-                wc.Encoding = Encoding.UTF8;
-                if (Settings.UseSytemProxy)
-                    wc.Proxy = WebRequest.DefaultWebProxy;
                 var feedxml = wc.DownloadString(url);
                 var reader = FeedReader.ReadFromString(feedxml);
                 return reader.Title;

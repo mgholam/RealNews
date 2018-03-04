@@ -8,5 +8,7 @@
         public static bool Maximized = true;
         public static bool UseSytemProxy = true;
         public static int GlobalUpdateEveryMin = 4*60;
+
+        public static int CleanupItemAfterDays = 14;
     }
 }
