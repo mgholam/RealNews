@@ -422,6 +422,7 @@ namespace RealNews
                 };
             }
 
+            Log("");
 
             var str = item.Description;
             str = str.Replace("{port}", Settings.webport.ToString());
@@ -1009,20 +1010,33 @@ namespace RealNews
                     if (_imgcache.ContainsHF(s) == false)
                         imgs.Add(s);
                 }
-
+                string err = "";
                 foreach (var i in imgs) // fix : put in thread
                 {
                     string r = i.Replace(_localhostimageurl, "");
                     try
                     {
-                        var b = wc.DownloadData("http://" + r);
-                        var o = new ImgCache
+                        string url = "http://" + r;
+                        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                        req.Method = "HEAD";
+                        long len;
+                        using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
                         {
-                            FeedName = f.FeedName,
-                            Title = f.Title,
-                            data = b
-                        };
-                        _imgcache.SetObjectHF(r, o);
+                            len = resp.ContentLength;
+                        }
+                        if (len < Settings.DownloadImagesUnderKB * 1024)
+                        {
+                            var b = wc.DownloadData(url);
+                            var o = new ImgCache
+                            {
+                                FeedName = f.FeedName,
+                                Title = f.Title,
+                                data = b
+                            };
+                            _imgcache.SetObjectHF(r, o);
+                        }
+                        else
+                            err= $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len/1024).ToString("#,#")}KB.";
                     }
                     catch
                     {
@@ -1030,6 +1044,8 @@ namespace RealNews
                     }
                 }
                 ShowItem(f);
+                if (err != "")
+                    Log(err);
             }
         }
 
