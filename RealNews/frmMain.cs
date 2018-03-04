@@ -527,17 +527,22 @@ namespace RealNews
                 var ur = treeView1.Nodes.Find("Unread", true);
                 if (ur.Length > 0)
                 {
-                    long c = 0;
-                    foreach (var f in _feeds)
+                    int c = 0;
+                    int tot = 0;
+                    foreach (var f in _feeditems)
+                        tot += f.Value.Count;
+
+                    foreach (var f in _feeds) 
                         c += f.UnreadCount;
+
                     if (c > 0)
                     {
-                        ur[0].Text = $"Unread ({c})";
+                        ur[0].Text = $"Unread ({c} of {tot})";
                         ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Bold);
                     }
                     else
                     {
-                        ur[0].Text = "Unread";
+                        ur[0].Text = $"Unread (0 of {tot})";
                         ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Regular);
                     }
                 }
