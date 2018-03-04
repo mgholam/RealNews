@@ -18,7 +18,7 @@ namespace RealNews
         {
             WebRequest lWebRequest = base.GetWebRequest(uri);
             lWebRequest.Timeout = Timeout;
-            ((HttpWebRequest)lWebRequest).ReadWriteTimeout = Timeout;
+            //((HttpWebRequest)lWebRequest).ReadWriteTimeout = Timeout;
             return lWebRequest;
         }
     }

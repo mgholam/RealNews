@@ -43,7 +43,7 @@ namespace RealNews
         private KeyStoreHF _imgcache;
         List<Feed> _feeds = new List<Feed>();
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
-        bool _rendering = false;
+        //bool _rendering = false;
         Feed _currentFeed = null;
         List<FeedItem> _currentList = null;
         List<string> _downloadimglist = new List<string>();
@@ -51,6 +51,7 @@ namespace RealNews
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
         private JSONParameters jp = new JSONParameters { UseExtensions = false };
+        private string _localhostimageurl = "http://localhost:{port}/api/image?";
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -99,12 +100,18 @@ namespace RealNews
 
             loaded = true;
 
-            _imgcache = new KeyStoreHF("cache", "images.dat");
-            web = new RealNewsWeb(Settings.webport);
+            _imgcache = new KeyStoreHF("cache");
+            web = new RealNewsWeb(Settings.webport, _imgcache, ShowFeedItemHtml);
 
             SkinForm();
             _lastFormState = this.WindowState;
             Log(" ");
+        }
+
+        private string _currhtml;
+        private string ShowFeedItemHtml()
+        {
+            return _currhtml;
         }
 
         private void LoadFeeds()
@@ -322,11 +329,10 @@ namespace RealNews
 
                 foreach (var img in imgs)
                 {
-                    string n = "http://localhost:{port}/api/image?";
                     if (img.StartsWith("http://"))  // fix : upercase??
-                        tempdesc = tempdesc.Replace(img, img.Replace("http://", n));
+                        tempdesc = tempdesc.Replace(img, img.Replace("http://", _localhostimageurl));
                     else
-                        tempdesc = tempdesc.Replace(img, img.Replace("https://", n));
+                        tempdesc = tempdesc.Replace(img, img.Replace("https://", _localhostimageurl));
                 }
 
                 if (feed.DownloadImages)
@@ -418,7 +424,6 @@ namespace RealNews
                 };
             }
 
-            item.isRead = isread;
 
             var str = item.Description;
             str = str.Replace("{port}", Settings.webport.ToString());
@@ -428,7 +433,7 @@ namespace RealNews
             if (_currentFeed.RTL)
                 sb.Append(" dir='rtl'>"); // get if rtl
             else
-                sb.AppendLine(">");
+                sb.AppendLine("><meta http-equiv='cache-control' content='no-cache'>");
             sb.Append("<link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'>");
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
@@ -450,9 +455,17 @@ namespace RealNews
             sb.AppendLine(str);
             sb.AppendLine("</html>");
 
-            DisplayHtml(sb.ToString());
+            _currhtml = sb.ToString();
+            //_rendering = true;
+            webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
+            webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
+            //_rendering = false;
 
-            UpdateFeedCount();
+            if (item.isRead != isread)
+            {
+                item.isRead = isread;
+                UpdateFeedCount();
+            }
         }
 
         private void UpdateStarCount()
@@ -628,22 +641,23 @@ namespace RealNews
             return images;
         }
 
-        private void DisplayHtml(string html)
-        {
-            _rendering = true;
-            webBrowser1.Navigate("about:blank");
-            try
-            {
-                if (webBrowser1.Document != null)
-                {
-                    webBrowser1.Document.Write(string.Empty);
-                }
-            }
-            catch //(Exception e)
-            { } // do nothing with this
-            webBrowser1.DocumentText = html;
-            _rendering = false;
-        }
+        //private void DisplayHtml(string html)
+        //{
+        //    _rendering = true;
+        //    webBrowser1.Navigate("about:blank");
+        //    try
+        //    {
+        //        if (webBrowser1.Document != null)
+        //        {
+        //            webBrowser1.Document.Write(string.Empty);
+        //        }
+        //    }
+        //    catch //(Exception e)
+        //    { } // do nothing with this
+        //    webBrowser1.DocumentText = html;
+        //    //webBrowser1.Invalidate();
+        //    _rendering = false;
+        //}
 
         private void ShowFeedList(Feed feed)
         {
@@ -741,10 +755,10 @@ namespace RealNews
         //{
         //    return "feeds\\temp\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
         //}
-        //private string GetFeedXmlFilename(string title)
-        //{
-        //    return "feeds\\temp\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
-        //}
+        private string GetTempHTMLFilename(string title)
+        {
+            return "feeds\\temp\\" + title + ".html";
+        }
 
         private static void SetDoubleBuffering(System.Windows.Forms.Control control, bool value)
         {
@@ -782,7 +796,8 @@ namespace RealNews
 
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (_rendering == false && e.Url.ToString() != "about:blank")
+            if (//_rendering == false && 
+                e.Url.ToString().StartsWith("http://localhost:"+Settings.webport)==false)
             {
                 e.Cancel = true;
                 Process.Start(e.Url.ToString());
@@ -986,7 +1001,37 @@ namespace RealNews
 
         private void downloadImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : force download image for item now
+            // force download image for item now
+            var f = listView1.FocusedItem.Tag as FeedItem;
+            if (f != null)
+            {
+                mWebClient wc = new mWebClient();
+                List<string> imgs = new List<string>();
+                foreach (var img in GetImagesInHTMLString(f.Description))
+                {
+                    imgs.Add(_imghrefregex.Match(img).Groups["href"].Value);
+                }
+
+                foreach (var i in imgs)
+                {
+                    string r = i.Replace(_localhostimageurl, "");
+                    try
+                    {
+                        var b = wc.DownloadData("http://" + r);
+                        var o = new ImgCache
+                        {
+                            FeedName = f.FeedName,
+                            Title = f.Title,
+                            data = b
+                        };
+                        _imgcache.SetObjectHF(r, o);
+                    }
+                    catch
+                    {
+                    }
+                }
+                ShowItem(f);
+            }
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)

@@ -39,6 +39,13 @@ namespace RealNews
         public bool isStarred = false; 
     }
 
+    public class ImgCache
+    {
+        public string FeedName;
+        public string Title;
+        public byte[] data;
+    }
+
     class FeedItemComparer : IEqualityComparer<FeedItem>
     {
         public bool Equals(FeedItem p1, FeedItem p2)
