@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\output\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -40,9 +40,6 @@
     <Reference Include="BizFX.UI.Skin">
       <HintPath>..\components\BizFX.UI.Skin.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\components\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="RaptorDB">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
@@ -144,6 +141,11 @@
     <ProjectReference Include="..\FeedReader\FeedReader.csproj">
       <Project>{d5ebea1b-85af-4027-9f85-87aabd5a8610}</Project>
       <Name>FeedReader</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HtmlAgilityPackMin\HtmlAgilityPackMin.csproj">
+      <Project>{c1249498-c665-47da-8e18-143ff74f75a4}</Project>
+      <Name>HtmlAgilityPackMin</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

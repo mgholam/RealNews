@@ -1,4 +1,6 @@
-﻿namespace RealNews
+﻿using System;
+
+namespace RealNews
 {
     public class Settings
     {
@@ -17,5 +19,9 @@
         public static int CleanupItemAfterDays = 14;
 
         public static int DownloadImagesUnderKB = 200;
+
+        public static string StartDownloadImgTime = "03:00";
+        public static string EndDownloadImgTime = "06:00";
+
     }
 }

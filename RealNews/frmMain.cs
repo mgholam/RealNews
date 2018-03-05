@@ -216,7 +216,7 @@ namespace RealNews
             if (File.Exists(filename))
             {
                 var hd = new HtmlAgilityPack.HtmlDocument();
-                hd.Load(filename, Encoding.UTF8);
+                hd.LoadHtml(File.ReadAllText(filename, Encoding.UTF8));
                 int id = 1;
                 foreach (var f in hd.DocumentNode.SelectNodes("//outline"))
                 {
