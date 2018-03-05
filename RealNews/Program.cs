@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RealNews
@@ -12,16 +13,25 @@ namespace RealNews
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        static Mutex mutex = new Mutex(true, "RealNews");
+
         [STAThread]
         static void Main()
         {
-            _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            if (_path.EndsWith("\\") == false) _path += "\\";
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            if (mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                if (_path.EndsWith("\\") == false) _path += "\\";
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new frmMain());
+            }
+            else
+            {
+                MessageBox.Show("only one instance at a time");
+            }
         }
 
         static string _path;
