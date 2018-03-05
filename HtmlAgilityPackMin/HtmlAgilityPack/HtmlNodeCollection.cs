@@ -340,7 +340,7 @@ namespace HtmlAgilityPack
         /// <returns></returns>
         public int GetNodeIndex(HtmlNode node)
         {
-            // TODO: should we rewrite this? what would be the key of a node?
+            // TODOx: should we rewrite this? what would be the key of a node?
             for (int i = 0; i < _items.Count; i++)
                 if (node == _items[i])
                     return i;

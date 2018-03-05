@@ -116,7 +116,7 @@ namespace HtmlAgilityPack
         /// <summary>
         /// Defines if LI, TR, TH, TD tags must be partially fixed when nesting errors are detected. Default is false.
         /// </summary>
-        public bool OptionFixNestedTags; // fix li, tr, th, td tags
+        public bool OptionFixNestedTags; // fixx li, tr, th, td tags
 
         /// <summary>
         /// Defines if output must conform to XML, instead of HTML.
@@ -1652,7 +1652,7 @@ namespace HtmlAgilityPack
                 }
             }
 
-            // TODO: Add implicit end here?
+            // TODOx: Add implicit end here?
 
 
             // finish the current work

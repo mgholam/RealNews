@@ -12,7 +12,7 @@ namespace HtmlAgilityPack
     /// <summary>
     /// A utility class to compute CRC32.
     /// </summary>
-    [System.Obsolete("This type should not be used; it is intended for internal use in HTML Agility Pack.")]
+    //[System.Obsolete("This type should not be used; it is intended for internal use in HTML Agility Pack.")]
 #if !(NETSTANDARD1_3 || NETSTANDARD1_6) || WINDOWS_UWP
     [CLSCompliant(false)]
 #endif

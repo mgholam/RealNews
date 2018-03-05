@@ -756,7 +756,7 @@ namespace HtmlAgilityPack
             StackFrame sf = new StackFrame(1);
             string name = sf.GetMethod().Name;
 #else
-            string name = "";
+            //string name = "";
 #endif
             string nodename = _currentnode == null ? "(null)" : _currentnode.Name;
             string nodevalue;
