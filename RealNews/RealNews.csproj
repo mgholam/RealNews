@@ -43,7 +43,6 @@
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\components\HtmlAgilityPack.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="RaptorDB">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
@@ -82,6 +81,9 @@
     <Compile Include="HtmlSanitizer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="mWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="placeholdertextbox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />

@@ -1036,11 +1036,11 @@ namespace RealNews
                             _imgcache.SetObjectHF(r, o);
                         }
                         else
-                            err= $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len/1024).ToString("#,#")}KB.";
+                            err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
                     }
                     catch
                     {
-                        Log("Error downloading images");
+                        err = "Error downloading images";
                     }
                 }
                 ShowItem(f);
@@ -1095,6 +1095,30 @@ namespace RealNews
 
                 UpdateFeedCount();
             }
+        }
+
+        private void txtSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                List<FeedItem> list = new List<FeedItem>();
+                string s = txtSearch.Text;
+                if (s == "")
+                    return;
+                foreach (var f in _feeditems)
+                {
+                    list.AddRange(f.Value.FindAll(x =>
+                        x.Title.ToLower().Contains(s) 
+                        || x.Description.ToLower().Contains(s)));
+                }
+                ShowFeedList(list);
+                Log($"{list.Count} items found.");
+            }
+        }
+
+        private void txtSearch_Enter(object sender, EventArgs e)
+        {
+            txtSearch.SelectAll();
         }
     }
 }

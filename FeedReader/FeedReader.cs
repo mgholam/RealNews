@@ -113,41 +113,41 @@
         //    return (await GetFeedUrlsFromUrlAsync(url)).Select(x => x.Url).ToArray();
         //}
 
-        /// <summary>
-        /// Parses RSS links from html page and returns all links
-        /// </summary>
-        /// <param name="htmlContent">the content of the html page</param>
-        /// <returns>all RSS/feed links</returns>
-        public static IEnumerable<HtmlFeedLink> ParseFeedUrlsFromHtml(string htmlContent)
-        {
-            // sample link:
-            // <link rel="alternate" type="application/rss+xml" title="Microsoft Bot Framework Blog" href="http://blog.botframework.com/feed.xml">
-            // <link rel="alternate" type="application/atom+xml" title="Aktuelle News von heise online" href="https://www.heise.de/newsticker/heise-atom.xml">
-            var htmlDoc = new HtmlAgilityPack.HtmlDocument()
-            {
-                OptionAutoCloseOnEnd = true,
-                OptionFixNestedTags = true
-            };
+        ///// <summary>
+        ///// Parses RSS links from html page and returns all links
+        ///// </summary>
+        ///// <param name="htmlContent">the content of the html page</param>
+        ///// <returns>all RSS/feed links</returns>
+        //public static IEnumerable<HtmlFeedLink> ParseFeedUrlsFromHtml(string htmlContent)
+        //{
+        //    // sample link:
+        //    // <link rel="alternate" type="application/rss+xml" title="Microsoft Bot Framework Blog" href="http://blog.botframework.com/feed.xml">
+        //    // <link rel="alternate" type="application/atom+xml" title="Aktuelle News von heise online" href="https://www.heise.de/newsticker/heise-atom.xml">
+        //    var htmlDoc = new HtmlAgilityPack.HtmlDocument()
+        //    {
+        //        OptionAutoCloseOnEnd = true,
+        //        OptionFixNestedTags = true
+        //    };
 
-            htmlDoc.LoadHtml(htmlContent);
+        //    htmlDoc.LoadHtml(htmlContent);
 
-            if (htmlDoc.DocumentNode != null)
-            {
-                var nodes = htmlDoc.DocumentNode.SelectNodes("//link").Where(
-                    x => x.Attributes["type"] != null &&
-                    (x.Attributes["type"].Value.Contains("application/rss") || x.Attributes["type"].Value.Contains("application/atom")));
+        //    if (htmlDoc.DocumentNode != null)
+        //    {
+        //        var nodes = htmlDoc.DocumentNode.SelectNodes("//link").Where(
+        //            x => x.Attributes["type"] != null &&
+        //            (x.Attributes["type"].Value.Contains("application/rss") || x.Attributes["type"].Value.Contains("application/atom")));
 
-                foreach (var node in nodes)
-                {
-                    yield return new HtmlFeedLink()
-                    {
-                        Title = node.Attributes["title"]?.Value?.HtmlDecode(),
-                        Url = node.Attributes["href"]?.Value.HtmlDecode(),
-                        FeedType = GetFeedTypeFromLinkType(node.Attributes["type"].Value.HtmlDecode())
-                    };
-                }
-            }
-        }
+        //        foreach (var node in nodes)
+        //        {
+        //            yield return new HtmlFeedLink()
+        //            {
+        //                Title = node.Attributes["title"]?.Value?.HtmlDecode(),
+        //                Url = node.Attributes["href"]?.Value.HtmlDecode(),
+        //                FeedType = GetFeedTypeFromLinkType(node.Attributes["type"].Value.HtmlDecode())
+        //            };
+        //        }
+        //    }
+        //}
 
         ///// <summary>
         ///// reads a feed from an url. the url must be a feed. Use ParseFeedUrlsFromHtml to

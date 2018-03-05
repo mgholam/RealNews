@@ -40,6 +40,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
+            this.txtSearch = new PlaceHolderTextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -56,12 +57,12 @@
             this.nextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -86,11 +87,12 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            this.splitContainer1.Panel1.Controls.Add(this.txtSearch);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1021, 509);
+            this.splitContainer1.Size = new System.Drawing.Size(1021, 508);
             this.splitContainer1.SplitterDistance = 340;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
@@ -107,7 +109,7 @@
             this.treeView1.ImageList = this.rssImages;
             this.treeView1.Indent = 23;
             this.treeView1.ItemHeight = 20;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Location = new System.Drawing.Point(0, 26);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "Unread";
             treeNode1.Text = "Unread";
@@ -118,7 +120,7 @@
             treeNode2});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowLines = false;
-            this.treeView1.Size = new System.Drawing.Size(340, 509);
+            this.treeView1.Size = new System.Drawing.Size(340, 482);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
@@ -172,6 +174,20 @@
             this.rssImages.ImageSize = new System.Drawing.Size(16, 16);
             this.rssImages.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtSearch.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.txtSearch.ForeColor = System.Drawing.Color.Gray;
+            this.txtSearch.Location = new System.Drawing.Point(0, 0);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.PlaceHolderText = "Search...";
+            this.txtSearch.Size = new System.Drawing.Size(340, 26);
+            this.txtSearch.TabIndex = 1;
+            this.txtSearch.Text = "Search...";
+            this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -185,7 +201,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.webBrowser1);
-            this.splitContainer2.Size = new System.Drawing.Size(676, 509);
+            this.splitContainer2.Size = new System.Drawing.Size(676, 508);
             this.splitContainer2.SplitterDistance = 225;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
@@ -205,7 +221,7 @@
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(225, 509);
+            this.listView1.Size = new System.Drawing.Size(225, 508);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -252,7 +268,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 22);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(446, 509);
+            this.webBrowser1.Size = new System.Drawing.Size(446, 508);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
             // 
@@ -325,34 +341,41 @@
             this.starToolStripMenuItem.Text = "Toggle Star";
             this.starToolStripMenuItem.Click += new System.EventHandler(this.starToolStripMenuItem_Click);
             // 
+            // cleanupToolStripMenuItem
+            // 
+            this.cleanupToolStripMenuItem.Name = "cleanupToolStripMenuItem";
+            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.cleanupToolStripMenuItem.Text = "Cleanup";
+            this.cleanupToolStripMenuItem.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
-            this.statusStrip1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusStrip1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolProgressBar,
             this.toolCount,
             this.toolMessage});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 533);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 532);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1021, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1021, 23);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolProgressBar
             // 
             this.toolProgressBar.Name = "toolProgressBar";
-            this.toolProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.toolProgressBar.Size = new System.Drawing.Size(100, 17);
             // 
             // toolCount
             // 
             this.toolCount.Name = "toolCount";
-            this.toolCount.Size = new System.Drawing.Size(11, 17);
+            this.toolCount.Size = new System.Drawing.Size(13, 18);
             this.toolCount.Text = " ";
             // 
             // toolMessage
             // 
             this.toolMessage.Name = "toolMessage";
-            this.toolMessage.Size = new System.Drawing.Size(893, 17);
+            this.toolMessage.Size = new System.Drawing.Size(891, 18);
             this.toolMessage.Spring = true;
             this.toolMessage.Text = "loading...";
             this.toolMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -361,13 +384,6 @@
             // 
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
-            // 
-            // cleanupToolStripMenuItem
-            // 
-            this.cleanupToolStripMenuItem.Name = "cleanupToolStripMenuItem";
-            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.cleanupToolStripMenuItem.Text = "Cleanup";
-            this.cleanupToolStripMenuItem.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -387,6 +403,7 @@
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -410,7 +427,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -438,6 +454,8 @@
         private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem;
+        private System.Windows.Forms.TreeView treeView1;
+        private PlaceHolderTextBox txtSearch;
     }
 }
 
