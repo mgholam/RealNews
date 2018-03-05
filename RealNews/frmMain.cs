@@ -195,9 +195,10 @@ namespace RealNews
             }
 
             if (update)
-                //this.Invoke((MethodInvoker)delegate 
-                Invoke( ()=>
-                    { LoadFeeds(); Log("Feed icons downloaded."); });
+                Invoke( ()=> {
+                    LoadFeeds();
+                    Log("Feed icons downloaded.");
+                });
         }
 
         private void SkinForm()
@@ -374,6 +375,7 @@ namespace RealNews
                 List<Task> tasks = new List<Task>();
                 int c = _feeds.Count;
                 int i = 1;
+                toolProgressBar.Visible = true;
                 toolProgressBar.Maximum = c + 1;
                 toolProgressBar.Value = i;
                 foreach (var f in _feeds)
@@ -381,7 +383,6 @@ namespace RealNews
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
-                        //this.Invoke((MethodInvoker)delegate
                         Invoke(()=>
                         {
                             UpdateFeedCount(f);
@@ -393,9 +394,9 @@ namespace RealNews
                 Task.Factory.StartNew(() =>
                 {
                     Task.WaitAll(tasks.ToArray());
-                    //this.Invoke((MethodInvoker)delegate
                     Invoke(() =>
                     {
+                        toolProgressBar.Visible = false;
                         toolProgressBar.Value = 0;
                         toolCount.Text = "";
                         Log("Update Done.");
@@ -617,7 +618,6 @@ namespace RealNews
             foreach (var i in _feeditems)
             {
                 File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
-                //File.WriteAllBytes(GetFeedFilename(i.Key) + ".bin", fastBinaryJSON.BJSON.ToBJSON(i.Value, new fastBinaryJSON.BJSONParameters { UseExtensions = false, UseUnicodeStrings = false }));
             }
         }
 
@@ -646,24 +646,6 @@ namespace RealNews
 
             return images;
         }
-
-        //private void DisplayHtml(string html)
-        //{
-        //    _rendering = true;
-        //    webBrowser1.Navigate("about:blank");
-        //    try
-        //    {
-        //        if (webBrowser1.Document != null)
-        //        {
-        //            webBrowser1.Document.Write(string.Empty);
-        //        }
-        //    }
-        //    catch //(Exception e)
-        //    { } // do nothing with this
-        //    webBrowser1.DocumentText = html;
-        //    //webBrowser1.Invalidate();
-        //    _rendering = false;
-        //}
 
         private void ShowFeedList(Feed feed)
         {
@@ -802,8 +784,7 @@ namespace RealNews
 
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (//_rendering == false && 
-                e.Url.ToString().StartsWith("http://localhost:" + Settings.webport) == false)
+            if (e.Url.ToString().StartsWith("http://localhost:" + Settings.webport) == false)
             {
                 e.Cancel = true;
                 Process.Start(e.Url.ToString());
@@ -903,7 +884,6 @@ namespace RealNews
             Task.Factory.StartNew(() =>
             {
                 UpdateFeed(f, Log);
-                //this.Invoke((MethodInvoker)delegate 
                 Invoke(() => { ShowFeedList(f); });
             });
         }
@@ -987,12 +967,6 @@ namespace RealNews
                         File.Move(GetFeedFilename(old), GetFeedFilename(f.Title));
                     }
                     catch { }
-                    //try
-                    //{
-                    //    var fn = "feeds\\icons\\" + GetFeedFilenameOnly(old) + ".ico";
-                    //    File.Move(fn, GetFeedFilename(f.Title));
-                    //}
-                    //catch { }
                     var l = _feeditems[old];
                     _feeditems.TryRemove(old, out l);
                     _feeditems.TryAdd(f.Title, l);
