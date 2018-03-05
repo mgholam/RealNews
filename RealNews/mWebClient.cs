@@ -17,10 +17,16 @@ namespace RealNews
 
         protected override WebRequest GetWebRequest(Uri uri)
         {
-            WebRequest lWebRequest = base.GetWebRequest(uri);
-            lWebRequest.Timeout = Timeout;
-            //((HttpWebRequest)lWebRequest).ReadWriteTimeout = Timeout;
-            return lWebRequest;
+            WebRequest request = base.GetWebRequest(uri);
+            var http = request as HttpWebRequest;
+            if (http != null)
+            {
+                http.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                http.ReadWriteTimeout = Timeout;
+            }
+
+            request.Timeout = Timeout;
+            return request;
         }
     }
 }

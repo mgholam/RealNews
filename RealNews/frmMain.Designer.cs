@@ -259,6 +259,7 @@
             // webBrowser1
             // 
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 22);
             this.webBrowser1.Name = "webBrowser1";
@@ -370,7 +371,7 @@
             // toolMessage
             // 
             this.toolMessage.Name = "toolMessage";
-            this.toolMessage.Size = new System.Drawing.Size(860, 18);
+            this.toolMessage.Size = new System.Drawing.Size(993, 18);
             this.toolMessage.Spring = true;
             this.toolMessage.Text = "loading...";
             this.toolMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

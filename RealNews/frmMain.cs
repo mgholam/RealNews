@@ -195,7 +195,8 @@ namespace RealNews
             }
 
             if (update)
-                Invoke( ()=> {
+                Invoke(() =>
+                {
                     LoadFeeds();
                     Log("Feed icons downloaded.");
                 });
@@ -267,7 +268,7 @@ namespace RealNews
                 catch (Exception ex)
                 {
                     feed.LastError = ex.Message;
-                    log("ERROR : " + feed.Title);
+                    log($"ERROR {feed.Title}  : {ex.Message}");
                     return;
                 }
             }
@@ -383,7 +384,7 @@ namespace RealNews
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
-                        Invoke(()=>
+                        Invoke(() =>
                         {
                             UpdateFeedCount(f);
                             toolCount.Text = $"{i++} of {c}";
@@ -764,7 +765,7 @@ namespace RealNews
 
         private void Log(string msg)
         {
-            toolMessage.Text = msg;
+            Invoke(() => { toolMessage.Text = msg; });
         }
 
         private void ToggleStarred()
@@ -1018,7 +1019,7 @@ namespace RealNews
                    {
                        mWebClient wc = new mWebClient();
                        string err = "";
-                       foreach (var i in imgs) 
+                       foreach (var i in imgs)
                        {
                            string r = i.Replace(_localhostimageurl, "");
                            try
