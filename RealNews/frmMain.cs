@@ -195,7 +195,9 @@ namespace RealNews
             }
 
             if (update)
-                this.Invoke((MethodInvoker)delegate { LoadFeeds(); Log("Feed icons downloaded."); });
+                //this.Invoke((MethodInvoker)delegate 
+                Invoke( ()=>
+                    { LoadFeeds(); Log("Feed icons downloaded."); });
         }
 
         private void SkinForm()
@@ -379,7 +381,8 @@ namespace RealNews
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
-                        this.Invoke((MethodInvoker)delegate
+                        //this.Invoke((MethodInvoker)delegate
+                        Invoke(()=>
                         {
                             UpdateFeedCount(f);
                             toolCount.Text = $"{i++} of {c}";
@@ -390,7 +393,8 @@ namespace RealNews
                 Task.Factory.StartNew(() =>
                 {
                     Task.WaitAll(tasks.ToArray());
-                    this.Invoke((MethodInvoker)delegate
+                    //this.Invoke((MethodInvoker)delegate
+                    Invoke(() =>
                     {
                         toolProgressBar.Value = 0;
                         toolCount.Text = "";
@@ -899,7 +903,8 @@ namespace RealNews
             Task.Factory.StartNew(() =>
             {
                 UpdateFeed(f, Log);
-                this.Invoke((MethodInvoker)delegate { ShowFeedList(f); });
+                //this.Invoke((MethodInvoker)delegate 
+                Invoke(() => { ShowFeedList(f); });
             });
         }
 
@@ -1028,7 +1033,6 @@ namespace RealNews
             var f = listView1.FocusedItem.Tag as FeedItem;
             if (f != null)
             {
-                mWebClient wc = new mWebClient();
                 List<string> imgs = new List<string>();
                 foreach (var img in GetImagesInHTMLString(f.Description))
                 {
@@ -1036,50 +1040,60 @@ namespace RealNews
                     if (_imgcache.ContainsHF(s) == false)
                         imgs.Add(s);
                 }
-                string err = "";
-                foreach (var i in imgs) // fix : put in thread
-                {
-                    string r = i.Replace(_localhostimageurl, "");
-                    try
-                    {
-                        string url = "http://" + r;
-                        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                        req.Method = "HEAD";
-                        long len;
-                        using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
-                        {
-                            len = resp.ContentLength;
-                        }
-                        if (len < Settings.DownloadImagesUnderKB * 1024)
-                        {
-                            var b = wc.DownloadData(url);
-                            var o = new ImgCache
-                            {
-                                FeedName = f.FeedName,
-                                Title = f.Title,
-                                data = b
-                            };
-                            _imgcache.SetObjectHF(r, o);
-                        }
-                        else
-                            err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
-                    }
-                    catch
-                    {
-                        err = "Error downloading images";
-                    }
-                }
-                ShowItem(f);
-                if (err != "")
-                    Log(err);
+                Task.Factory.StartNew(() =>
+                   {
+                       mWebClient wc = new mWebClient();
+                       string err = "";
+                       foreach (var i in imgs) 
+                       {
+                           string r = i.Replace(_localhostimageurl, "");
+                           try
+                           {
+                               string url = "http://" + r;
+                               HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                               req.Method = "HEAD";
+                               long len;
+                               using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
+                               {
+                                   len = resp.ContentLength;
+                               }
+                               if (len < Settings.DownloadImagesUnderKB * 1024)
+                               {
+                                   var b = wc.DownloadData(url);
+                                   var o = new ImgCache
+                                   {
+                                       FeedName = f.FeedName,
+                                       Title = f.Title,
+                                       data = b
+                                   };
+                                   _imgcache.SetObjectHF(r, o);
+                               }
+                               else
+                                   err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
+                           }
+                           catch
+                           {
+                               err = "Error downloading images";
+                           }
+                       }
+                       Invoke(() =>
+                       {
+                           ShowItem(f);
+                           if (err != "")
+                               Log(err);
+                       });
+                   });
             }
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
-            // show form
-            this.Show();
-            this.WindowState = _lastFormState;
+            if (e.Button == MouseButtons.Left)
+            {
+                // show form
+                this.Show();
+                this.WindowState = _lastFormState;
+            }
         }
 
         private void frmMain_Resize(object sender, EventArgs e)
@@ -1145,6 +1159,24 @@ namespace RealNews
         private void txtSearch_Enter(object sender, EventArgs e)
         {
             txtSearch.SelectAll();
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            _exit = true;
+            this.Close();
+        }
+
+        private void restoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // show form
+            this.Show();
+            this.WindowState = _lastFormState;
+        }
+
+        private void Invoke(Action a)
+        {
+            this.Invoke((Delegate)a);
         }
     }
 }
