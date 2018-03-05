@@ -42,7 +42,7 @@ namespace BSE.Windows.Forms
         /// Initialize a new instance of the Office2007Renderer class.
         /// </summary>
 		public Office2007Renderer()
-			: base(new BSE.Windows.Forms.Office2007BlueColorTable())
+			: base(new BSE.Windows.Forms.Office2007BlackColorTable())
 		{
 			this.ColorTable.UseSystemColors = false;
 		}

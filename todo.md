@@ -1,7 +1,7 @@
 # TODO
 
 - tree folders and move items
-- rename dll files
+- ~~rename dll files~~
 - about & version control
 - write OPML
 - dark UI
@@ -9,7 +9,7 @@
 - window form font settings
 - read OPML
 - refine styling
-- download images @time
+- download images @starttime @endtime
 - ~~minimize to tray~~
 - ​
 - ​

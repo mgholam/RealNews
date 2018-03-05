@@ -78,21 +78,9 @@ namespace RealNews
             rssImages.Images.Add(Properties.Resources.rss);
             rssImages.Images.Add(Properties.Resources.news_new);
             rssImages.Images.Add(Properties.Resources.star_yellow);
-            var tt = treeView1.Nodes.Find("Unread", true);
-            if (tt.Length > 0)
-            {
-                tt[0].ImageIndex = 1;
-                tt[0].SelectedImageIndex = 1;
-            }
-
-            tt = treeView1.Nodes.Find("Starred", true);
-            if (tt.Length > 0)
-            {
-                tt[0].ImageIndex = 2;
-                tt[0].SelectedImageIndex = 2;
-            }
 
             LoadFeeds();
+            Task.Factory.StartNew(downloadfeedicons);
 
             splitContainer1.SplitterDistance = Settings.treeviewwidth;
             splitContainer2.SplitterDistance = Settings.feeditemlistwidth;
@@ -124,6 +112,16 @@ namespace RealNews
             {
                 _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
                 treeView1.BeginUpdate();
+                treeView1.Nodes.Clear();
+                var tn = treeView1.Nodes.Add("Unread");
+                tn.ImageIndex = 1;
+                tn.Name = "Unread";
+                tn.SelectedImageIndex = 1;
+                tn = treeView1.Nodes.Add("Starred");
+                tn.Name = "Starred";
+                tn.ImageIndex = 2;
+                tn.SelectedImageIndex = 2;
+
                 foreach (var f in _feeds)
                 {
                     var fn = "feeds\\icons\\" + GetFeedFilenameOnly(f) + ".ico";
@@ -142,7 +140,7 @@ namespace RealNews
                         }
                         catch { }
                     }
-                    var tn = new TreeNode();
+                    tn = new TreeNode();
                     tn.Tag = f;
                     tn.Name = f.Title;
                     if (imgidx > 0)
@@ -163,7 +161,6 @@ namespace RealNews
                 }
                 treeView1.EndUpdate();
                 UpdateStarCount();
-                Task.Factory.StartNew(downloadfeedicons);
             }
             splitContainer1.Visible = true;
         }
@@ -171,7 +168,7 @@ namespace RealNews
         private void downloadfeedicons()
         {
             mWebClient wc = new mWebClient();
-
+            bool update = false;
             foreach (var f in _feeds)
             {
                 var fn = "feeds\\icons\\" + GetFeedFilenameOnly(f) + ".ico";
@@ -187,6 +184,7 @@ namespace RealNews
                 try
                 {
                     wc.DownloadFile(s, fn);
+                    update = true;
                 }
                 catch
                 {
@@ -195,6 +193,9 @@ namespace RealNews
                     f.feediconfailed = true;
                 }
             }
+
+            if (update)
+                this.Invoke((MethodInvoker)delegate { LoadFeeds(); Log("Feed icons downloaded."); });
         }
 
         private void SkinForm()
@@ -327,7 +328,7 @@ namespace RealNews
 
                 foreach (var img in imgs)
                 {
-                    if (img.StartsWith("http://"))  // fix : upercase??
+                    if (img.StartsWith("http://"))  // FEATURE : upercase??
                         tempdesc = tempdesc.Replace(img, img.Replace("http://", _localhostimageurl));
                     else
                         tempdesc = tempdesc.Replace(img, img.Replace("https://", _localhostimageurl));
@@ -336,11 +337,10 @@ namespace RealNews
                 if (feed.DownloadImages)
                     _downloadimglist.AddRange(imgs);
 
-
                 i.Description = tempdesc;
                 list.Add(i);
             }
-            log("Downloading image x of y");
+            //log("Downloading image x of y");
             // fix : download images
 
 
@@ -605,12 +605,8 @@ namespace RealNews
             }
         }
 
-        private void Shutdown()
+        private void SaveFeeds()
         {
-            if (this.WindowState == FormWindowState.Normal)
-                Settings.Maximized = false;
-            else
-                Settings.Maximized = true;
             File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
             File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
             File.WriteAllText("feeds\\downloadimg.list", JSON.ToJSON(_downloadimglist, jp));
@@ -619,6 +615,15 @@ namespace RealNews
                 File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
                 //File.WriteAllBytes(GetFeedFilename(i.Key) + ".bin", fastBinaryJSON.BJSON.ToBJSON(i.Value, new fastBinaryJSON.BJSONParameters { UseExtensions = false, UseUnicodeStrings = false }));
             }
+        }
+
+        private void Shutdown()
+        {
+            if (this.WindowState == FormWindowState.Normal)
+                Settings.Maximized = false;
+            else
+                Settings.Maximized = true;
+            SaveFeeds();
             _imgcache.Shutdown();
         }
 
@@ -970,11 +975,32 @@ namespace RealNews
                 var f = form.ret;
                 if (form.feed.Title != f.Title)
                 {
-                    // fix : rename files
+                    // rename files
+                    string old = form.feed.Title;
+                    try
+                    {
+                        File.Move(GetFeedFilename(old), GetFeedFilename(f.Title));
+                    }
+                    catch { }
+                    //try
+                    //{
+                    //    var fn = "feeds\\icons\\" + GetFeedFilenameOnly(old) + ".ico";
+                    //    File.Move(fn, GetFeedFilename(f.Title));
+                    //}
+                    //catch { }
+                    var l = _feeditems[old];
+                    _feeditems.TryRemove(old, out l);
+                    _feeditems.TryAdd(f.Title, l);
+                    _feeds.Find(x => x.Title == old).Title = f.Title;
+
+                    treeView1.SelectedNode.Name = f.Title;
+                    form.feed.Title = f.Title;
+                    UpdateFeedCount(form.feed);
                 }
                 form.feed.URL = f.URL;
                 form.feed.RTL = f.RTL;
                 form.feed.DownloadImages = f.DownloadImages;
+                SaveFeeds();
             }
         }
 
@@ -1108,7 +1134,7 @@ namespace RealNews
                 foreach (var f in _feeditems)
                 {
                     list.AddRange(f.Value.FindAll(x =>
-                        x.Title.ToLower().Contains(s) 
+                        x.Title.ToLower().Contains(s)
                         || x.Description.ToLower().Contains(s)));
                 }
                 ShowFeedList(list);

@@ -87,9 +87,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RealNewsWeb.cs" />
     <Compile Include="Renderer\Office2007BlackColorTable.cs" />
-    <Compile Include="Renderer\Office2007BlueColorTable.cs" />
     <Compile Include="Renderer\Office2007Rendererbse.cs" />
-    <Compile Include="Renderer\Office2007SilverColorTable.cs" />
     <Compile Include="Renderer\OfficeColorTable.cs" />
     <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
