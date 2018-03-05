@@ -1153,5 +1153,19 @@ namespace RealNews
         {
             this.Invoke((Delegate)a);
         }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // fix : settings form here
+            frmSettings f = new frmSettings();
+            f.ShowDialog();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // fix : about here
+            AboutBox1 a = new AboutBox1();
+            a.ShowDialog();
+        }
     }
 }

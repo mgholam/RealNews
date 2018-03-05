@@ -11,7 +11,8 @@
 - refine styling
 - download images @starttime @endtime
 - ~~minimize to tray~~
-- ​
+- bypass localhost in proxy
+- menu icons
 - ​
 
 
