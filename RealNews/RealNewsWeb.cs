@@ -21,11 +21,6 @@ namespace RealNews
 
         public override void InitializeCommandHandler(Dictionary<string, Handler> handler, Dictionary<string, string> apihelp)
         {
-            handler.Add("hello", ctx =>
-            {
-                WriteResponse(ctx, 200, "hello");
-            });
-
             handler.Add("show", ctx =>
             {
                 OutPutContentType(ctx, ".html");

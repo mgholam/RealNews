@@ -45,7 +45,7 @@ namespace RealNews
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
         Feed _currentFeed = null;
         List<FeedItem> _currentList = null;
-        List<string> _downloadimglist = new List<string>();
+        ConcurrentQueue<string> _downloadimglist = new ConcurrentQueue<string>();
         private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
@@ -106,8 +106,10 @@ namespace RealNews
         {
             splitContainer1.Visible = false;
             if (File.Exists("feeds\\downloadimg.list"))
-                _downloadimglist = JSON.ToObject<List<string>>(File.ReadAllText("feeds\\downloadimg.list"));
-
+            {
+                var l = JSON.ToObject<List<string>>(File.ReadAllText("feeds\\downloadimg.list"));
+                _downloadimglist = new ConcurrentQueue<string>(l);
+            }
             if (File.Exists("feeds\\feeds.list"))
             {
                 _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
@@ -339,7 +341,7 @@ namespace RealNews
                 }
 
                 if (feed.DownloadImages)
-                    _downloadimglist.AddRange(imgs);
+                    imgs.ForEach(x => _downloadimglist.Enqueue(x));
 
                 i.Description = tempdesc;
                 list.Add(i);
@@ -861,11 +863,11 @@ namespace RealNews
             MoveNextUnread();
         }
 
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Space)
-                MoveNextUnread();
-        }
+        //private void Form1_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    if (e.KeyCode == Keys.Space)
+        //        MoveNextUnread();
+        //}
 
         private void updateAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1166,6 +1168,17 @@ namespace RealNews
             // fix : about here
             AboutBox1 a = new AboutBox1();
             a.ShowDialog();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if(keyData == Keys.Space)
+            {
+                MoveNextUnread();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

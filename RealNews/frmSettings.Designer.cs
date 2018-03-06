@@ -37,7 +37,7 @@
             this.ClientSize = new System.Drawing.Size(494, 352);
             this.Name = "frmSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "frmSettings";
+            this.Text = "Settings";
             this.Load += new System.EventHandler(this.frmSettings_Load);
             this.ResumeLayout(false);
 
