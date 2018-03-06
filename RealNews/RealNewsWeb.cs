@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 
@@ -48,6 +49,13 @@ namespace RealNews
             {
                 OutPutContentType(ctx, ".css");
                 WriteResponse(ctx, 200, File.ReadAllText("configs\\style.css"));
+            }
+            else if(path =="api/star.png")
+            {
+                OutPutContentType(ctx, ".png");
+                var ms = new MemoryStream();
+                Properties.Resources.star.Save(ms, ImageFormat.Png);
+                WriteResponse(ctx, 200, ms.ToArray(),false);
             }
             else
                 base.ServeFile(ctx, path);

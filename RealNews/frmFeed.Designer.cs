@@ -41,6 +41,8 @@
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblLastError = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -93,6 +95,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblLastError);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.numUpdate);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
@@ -109,7 +113,7 @@
             // 
             // numUpdate
             // 
-            this.numUpdate.Location = new System.Drawing.Point(95, 57);
+            this.numUpdate.Location = new System.Drawing.Point(95, 53);
             this.numUpdate.Maximum = new decimal(new int[] {
             1440,
             0,
@@ -122,7 +126,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(221, 59);
+            this.label4.Location = new System.Drawing.Point(221, 55);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(203, 14);
             this.label4.TabIndex = 14;
@@ -131,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(40, 59);
+            this.label3.Location = new System.Drawing.Point(40, 55);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 14);
             this.label3.TabIndex = 12;
@@ -140,7 +144,7 @@
             // chkImages
             // 
             this.chkImages.AutoSize = true;
-            this.chkImages.Location = new System.Drawing.Point(95, 93);
+            this.chkImages.Location = new System.Drawing.Point(95, 84);
             this.chkImages.Name = "chkImages";
             this.chkImages.Size = new System.Drawing.Size(123, 18);
             this.chkImages.TabIndex = 11;
@@ -150,7 +154,7 @@
             // chkRTL
             // 
             this.chkRTL.AutoSize = true;
-            this.chkRTL.Location = new System.Drawing.Point(250, 93);
+            this.chkRTL.Location = new System.Drawing.Point(250, 84);
             this.chkRTL.Name = "chkRTL";
             this.chkRTL.Size = new System.Drawing.Size(96, 18);
             this.chkRTL.TabIndex = 10;
@@ -159,7 +163,7 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(93, 24);
+            this.txtName.Location = new System.Drawing.Point(93, 20);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(501, 22);
             this.txtName.TabIndex = 9;
@@ -167,11 +171,29 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(49, 27);
+            this.label2.Location = new System.Drawing.Point(49, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 14);
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(30, 108);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 14);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Last Error";
+            // 
+            // lblLastError
+            // 
+            this.lblLastError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblLastError.Location = new System.Drawing.Point(90, 108);
+            this.lblLastError.Name = "lblLastError";
+            this.lblLastError.Size = new System.Drawing.Size(572, 25);
+            this.lblLastError.TabIndex = 17;
+            this.lblLastError.Text = "-";
             // 
             // frmFeed
             // 
@@ -213,5 +235,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkImages;
         private System.Windows.Forms.NumericUpDown numUpdate;
+        private System.Windows.Forms.Label lblLastError;
+        private System.Windows.Forms.Label label5;
     }
 }

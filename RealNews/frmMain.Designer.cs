@@ -70,6 +70,7 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.logMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -344,7 +345,8 @@
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cleanupToolStripMenuItem1,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.logMessagesToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -352,14 +354,14 @@
             // cleanupToolStripMenuItem1
             // 
             this.cleanupToolStripMenuItem1.Name = "cleanupToolStripMenuItem1";
-            this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(119, 22);
+            this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.cleanupToolStripMenuItem1.Text = "Cleanup";
             this.cleanupToolStripMenuItem1.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -452,6 +454,13 @@
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
+            // logMessagesToolStripMenuItem
+            // 
+            this.logMessagesToolStripMenuItem.Name = "logMessagesToolStripMenuItem";
+            this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.logMessagesToolStripMenuItem.Text = "Log messages";
+            this.logMessagesToolStripMenuItem.Click += new System.EventHandler(this.logMessagesToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -529,6 +538,7 @@
         private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logMessagesToolStripMenuItem;
     }
 }
 

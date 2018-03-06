@@ -91,6 +91,16 @@ namespace RealNews.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap star {
+            get {
+                object obj = ResourceManager.GetObject("star", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon star_yellow {
@@ -107,7 +117,7 @@ namespace RealNews.Properties {
         ///}
         ///
         ///.title {
-        ///    background-color: lavender;
+        ///    background-color: aliceblue;
         ///    padding: 10px;
         ///    margin-bottom: 15px;
         ///}
@@ -127,12 +137,12 @@ namespace RealNews.Properties {
         ///    }
         ///
         ///.extradata {
-        ///    background-color: #bbb;
+        ///    background-color: whitesmoke;
         ///    font-size: x-small;
         ///    margin-top : 30px;
         ///}
         ///
-        ///    .extradata [rest of string was truncated]&quot;;.
+        ///    .ex [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string style {
             get {

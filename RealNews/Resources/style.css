@@ -4,7 +4,7 @@ body {
 }
 
 .title {
-    background-color: lavender;
+    background-color: aliceblue;
     padding: 10px;
     margin-bottom: 15px;
 }
@@ -24,7 +24,7 @@ body {
     }
 
 .extradata {
-    background-color: #bbb;
+    background-color: whitesmoke;
     font-size: x-small;
     margin-top : 30px;
 }

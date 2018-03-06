@@ -18,6 +18,7 @@ using Westwind.Web.Utilities;
 
 namespace RealNews
 {
+    // fix : put in memory log 
     public partial class frmMain : Form
     {
         public frmMain()
@@ -46,7 +47,7 @@ namespace RealNews
         Feed _currentFeed = null;
         List<FeedItem> _currentList = null;
         ConcurrentQueue<string> _downloadimglist = new ConcurrentQueue<string>();
-        private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
+        //private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
         private JSONParameters jp = new JSONParameters { UseExtensions = false };
@@ -446,7 +447,7 @@ namespace RealNews
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<label>STAR</label>"); // fix : better starred ui
+                sb.Append("<img src='star.png' />");
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
@@ -863,12 +864,6 @@ namespace RealNews
             MoveNextUnread();
         }
 
-        //private void Form1_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    if (e.KeyCode == Keys.Space)
-        //        MoveNextUnread();
-        //}
-
         private void updateAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateAll();
@@ -1018,49 +1013,57 @@ namespace RealNews
                         imgs.Add(s);
                 }
                 Task.Factory.StartNew(() =>
-                   {
-                       mWebClient wc = new mWebClient();
-                       string err = "";
-                       foreach (var i in imgs)
-                       {
-                           string r = i.Replace(_localhostimageurl, "");
-                           try
-                           {
-                               string url = "http://" + r;
-                               HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                               req.Method = "HEAD";
-                               long len;
-                               using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
-                               {
-                                   len = resp.ContentLength;
-                               }
-                               if (len < Settings.DownloadImagesUnderKB * 1024)
-                               {
-                                   var b = wc.DownloadData(url);
-                                   var o = new ImgCache
-                                   {
-                                       FeedName = f.FeedName,
-                                       Title = f.Title,
-                                       data = b
-                                   };
-                                   _imgcache.SetObjectHF(r, o);
-                               }
-                               else
-                                   err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
-                           }
-                           catch
-                           {
-                               err = "Error downloading images";
-                           }
-                       }
-                       Invoke(() =>
-                       {
-                           ShowItem(f);
-                           if (err != "")
-                               Log(err);
-                       });
-                   });
+                {
+                    string err = "";
+                    foreach (var i in imgs)
+                    {
+                        string key = i.Replace(_localhostimageurl, "");
+                        string url = "http://" + key;
+                        err = DownloadImage(f, key, url);
+                    }
+                    Invoke(() =>
+                    {
+                        ShowItem(f);
+                        if (err != "")
+                            Log(err);
+                    });
+                });
             }
+        }
+
+        private string DownloadImage(FeedItem f, string key, string url)
+        {
+            string err = "";
+            try
+            {
+                mWebClient wc = new mWebClient();
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.Method = "HEAD";
+                long len;
+                using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
+                {
+                    len = resp.ContentLength;
+                }
+                if (len < Settings.DownloadImagesUnderKB * 1024)
+                {
+                    var b = wc.DownloadData(url);
+                    var o = new ImgCache
+                    {
+                        FeedName = f.FeedName,
+                        Title = f.Title,
+                        data = b
+                    };
+                    _imgcache.SetObjectHF(key, o);
+                }
+                else
+                    err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
+            }
+            catch
+            {
+                err = "Error downloading images";
+            }
+
+            return err;
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -1103,6 +1106,7 @@ namespace RealNews
             {
                 foreach (var f in _feeditems)
                 {
+                    // fix : remove images from cache also
                     f.Value.RemoveAll(x =>
                        DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
                        && x.isStarred == false
@@ -1172,13 +1176,18 @@ namespace RealNews
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if(keyData == Keys.Space)
+            if (keyData == Keys.Space)
             {
                 MoveNextUnread();
                 return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void logMessagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // fix : show log form
         }
     }
 }

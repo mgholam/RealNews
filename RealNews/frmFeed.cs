@@ -29,6 +29,7 @@ namespace RealNews
 
             txtURL.Text = feed.URL;
             txtName.Text = feed.Title;
+            lblLastError.Text = feed.LastError;
             chkRTL.Checked = feed.RTL;
             chkImages.Checked = feed.DownloadImages;
         }

@@ -37,10 +37,6 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BizFX.UI.Skin">
-      <HintPath>..\components\BizFX.UI.Skin.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="RaptorDB">
       <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
       <Private>False</Private>
@@ -150,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\star.png" />
     <Content Include="Resources\tray.ico" />
     <Content Include="Resources\trayhighlight.ico" />
   </ItemGroup>
