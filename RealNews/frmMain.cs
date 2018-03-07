@@ -52,12 +52,20 @@ namespace RealNews
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
         private ImageCache _imageCache;
         private static ILog _log = LogManager.GetLogger(typeof(frmMain));
+        private DateTime _lastUpdate = DateTime.Now;
+        private System.Timers.Timer _minuteTimer;
+        private bool _newItemsExist = false;
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
+            notifyIcon1.Visible = true;
+            _minuteTimer = new System.Timers.Timer(1000);
+            _minuteTimer.Elapsed += _minuteTimer_Elapsed;
+            _minuteTimer.AutoReset = true;
+            _minuteTimer.Enabled = true;
 
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
@@ -97,6 +105,45 @@ namespace RealNews
             _lastFormState = this.WindowState;
             Log(" ");
             webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
+        }
+
+        private object _minlock = new object();
+        private int _minCount = 0;
+        private void _minuteTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            _minCount++;
+            // tray icon yellow
+            if (_newItemsExist)
+                notifyIcon1.Icon = Properties.Resources.trayhighlight;
+            else
+                notifyIcon1.Icon = Properties.Resources.tray;
+
+            if (_minCount < 60)
+                return;
+            _minCount = 0;
+            lock (_minlock)
+            {
+                var now = DateTime.Now;
+
+                if (now.Subtract(_lastUpdate).TotalMinutes > Settings.GlobalUpdateEveryMin)
+                {
+                    UpdateAll();
+                    _lastUpdate = now;
+                }
+
+                foreach (var f in _feeds)
+                {
+                    if (f.UpdateEveryMin > 0)
+                    {
+                        if (now.Subtract(f.LastUpdate).TotalMinutes > f.UpdateEveryMin)
+                            Task.Factory.StartNew(() => UpdateFeed(f, Log));
+                    }
+                }
+
+                // fix : download images
+
+
+            }
         }
 
         private string _currhtml = "<html></html>";
@@ -348,10 +395,6 @@ namespace RealNews
                 i.Description = tempdesc;
                 list.Add(i);
             }
-            //log("Downloading image x of y");
-            // fix : download images
-
-
             // check and add to existing list
             List<FeedItem> old = null;
             if (_feeditems.ContainsKey(feed.Title))
@@ -363,6 +406,9 @@ namespace RealNews
                 o.Sort(new FeedItemSort());
                 list = o;
             }
+
+            if (list.Count(x => x.isRead == false) > 0)
+                _newItemsExist = true;
 
             log("Saving feed : " + feed.Title);
             string fn = GetFeedFilename(feed);
@@ -404,6 +450,7 @@ namespace RealNews
                         toolProgressBar.Visible = false;
                         toolProgressBar.Value = 0;
                         toolCount.Text = "";
+                        _lastUpdate = DateTime.Now;
                         Log("Update Done.");
                     });
                 });
@@ -421,7 +468,7 @@ namespace RealNews
             {
                 webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
             }
-            catch (Exception ex){
+            catch {//(Exception ex){
                 //_log.Error(ex);
             }
             // show item
@@ -611,6 +658,7 @@ namespace RealNews
 
         private void ShowNextItem()
         {
+            _newItemsExist = false; // reset tray icon
             var item = _currentList.Find(x => x.isRead == false);
             if (item == null)
                 return;
@@ -868,6 +916,7 @@ namespace RealNews
         }
 
         private bool _exit = false;
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _exit = true;
@@ -1121,7 +1170,7 @@ namespace RealNews
             {
                 foreach (var f in _feeditems)
                 {
-                    // fix : remove images from cache also
+                    // FEATURE : cleanup -> remove images from cache also
                     f.Value.RemoveAll(x =>
                        DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
                        && x.isStarred == false

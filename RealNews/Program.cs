@@ -13,16 +13,19 @@ namespace RealNews
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static Mutex mutex = new Mutex(true, "RealNews");
+        static Mutex mutex = null;
+        private static ILog _log = LogManager.GetLogger(typeof(Program));
 
         [STAThread]
         static void Main()
         {
+            mutex = new Mutex(true, "RealNews");// + Assembly.GetExecutingAssembly().Location);
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 if (_path.EndsWith("\\") == false) _path += "\\";
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -32,6 +35,11 @@ namespace RealNews
             {
                 MessageBox.Show("only one instance at a time");
             }
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            _log.Error(e);
         }
 
         static string _path;

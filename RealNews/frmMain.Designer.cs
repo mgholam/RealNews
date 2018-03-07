@@ -418,7 +418,7 @@
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.trayMenu;
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Text = "Real News";
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // trayMenu
