@@ -71,7 +71,7 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadImagesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtSearch = new PlaceHolderTextBox();
+            this.txtSearch = new myTextBox();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -460,16 +460,16 @@
             // 
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtSearch.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.txtSearch.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
             this.txtSearch.ForeColor = System.Drawing.Color.Gray;
             this.txtSearch.Location = new System.Drawing.Point(0, 0);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PlaceHolderText = "Search...";
+            this.txtSearch.placeHolderTextBox1.PlaceHolderText = "Search...";
             this.txtSearch.Size = new System.Drawing.Size(340, 26);
             this.txtSearch.TabIndex = 1;
-            this.txtSearch.Text = "Search...";
-            this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            this.txtSearch.placeHolderTextBox1.Text = "Search...";
+            this.txtSearch.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.txtSearch.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // editToolStripMenuItem
             // 
@@ -547,7 +547,7 @@
         private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.TreeView treeView1;
-        private PlaceHolderTextBox txtSearch;
+        private myTextBox txtSearch;
         private System.Windows.Forms.ContextMenuStrip trayMenu;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem restoreToolStripMenuItem;

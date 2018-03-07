@@ -8,7 +8,7 @@ namespace RealNews
 {
     class ImageCache
     {
-        public ImageCache(string file)
+        public ImageCache()//(string file)
         {
         }
 
@@ -17,6 +17,8 @@ namespace RealNews
             public string folder;
             public string fn;
         }
+
+        private string _path = "cache/";
 
 
         private urlhash FixName(string url)
@@ -40,8 +42,8 @@ namespace RealNews
 
             var key = FixName(url);
 
-            Directory.CreateDirectory("cache/" + key.folder);
-            File.WriteAllBytes("cache/" + key.fn, data);
+            Directory.CreateDirectory(_path + key.folder);
+            File.WriteAllBytes(_path + key.fn, data);
             return;
         }
 
@@ -52,7 +54,7 @@ namespace RealNews
 
             var key = FixName(url);
 
-            return File.Exists( "cache/" + key.fn);
+            return File.Exists(_path + key.fn);
         }
 
         public byte[] Get(string url)
@@ -61,15 +63,15 @@ namespace RealNews
                 return null;
 
             var key = FixName(url);
-            if (File.Exists("cache/" + key.fn))
-                return File.ReadAllBytes("cache/" + key.fn);
+            if (File.Exists(_path + key.fn))
+                return File.ReadAllBytes(_path + key.fn);
             else
                 return null;
         }
 
-        public void Shutdown()
-        {
+        //public void Shutdown()
+        //{
 
-        }
+        //}
     }
 }

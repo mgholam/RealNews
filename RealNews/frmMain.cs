@@ -89,7 +89,7 @@ namespace RealNews
 
             loaded = true;
 
-            _imageCache = new ImageCache("cache/imgcache.zip");
+            _imageCache = new ImageCache();
 
             web = new RealNewsWeb(Settings.webport, _imageCache, ShowFeedItemHtml);
 
@@ -268,7 +268,6 @@ namespace RealNews
                     mWebClient wc = new mWebClient();
                     feedxml = wc.DownloadString(feed.URL);
                     feed.LastUpdate = DateTime.Now;
-                    //File.WriteAllText(GetFeedXmlFilename(feed), feedxml, Encoding.UTF8);
                 }
                 catch (Exception ex)
                 {
@@ -418,8 +417,13 @@ namespace RealNews
 
         private void ShowItem(FeedItem item, bool isread)
         {
-            webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
-
+            try
+            {
+                webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
+            }
+            catch (Exception ex){
+                //_log.Error(ex);
+            }
             // show item
             if (item == null)
             {
@@ -641,8 +645,7 @@ namespace RealNews
             else
                 Settings.Maximized = true;
             SaveFeeds();
-            //_imgcache.Shutdown();
-            _imageCache.Shutdown();
+            //_imageCache.Shutdown();
         }
 
         private List<string> GetImagesInHTMLString(string htmlString)
@@ -1151,7 +1154,7 @@ namespace RealNews
 
         private void txtSearch_Enter(object sender, EventArgs e)
         {
-            txtSearch.SelectAll();
+            txtSearch.placeHolderTextBox1.SelectAll();
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1188,10 +1191,9 @@ namespace RealNews
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Space && txtSearch.Focused == false)
+            if (keyData == Keys.Space && txtSearch.placeHolderTextBox1.Focused == false)
             {
                 MoveNextUnread();
-                //return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -1259,7 +1261,14 @@ namespace RealNews
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "On", null);
+            try
+            {
+                webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "On", null);
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+            }
         }
     }
 }

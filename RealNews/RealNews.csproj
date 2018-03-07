@@ -92,6 +92,12 @@
     <Compile Include="mWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="myTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="myTextBox.Designer.cs">
+      <DependentUpon>myTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="placeholdertextbox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="myTextBox.resx">
+      <DependentUpon>myTextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -24,7 +24,7 @@ public class PlaceHolderTextBox : TextBox
     }
 
     //when the control loses focus, the placeholder is shown
-    private void setPlaceholder()
+    public void setPlaceholder()
     {
         if (string.IsNullOrEmpty(base.Text))
         {

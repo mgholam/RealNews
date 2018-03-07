@@ -66,7 +66,7 @@
             this.KeyPreview = true;
             this.Name = "frmLog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "frmLog";
+            this.Text = "Log Messages";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.frmLog_Load);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmLog_KeyUp);
