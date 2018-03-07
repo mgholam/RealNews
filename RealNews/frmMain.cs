@@ -12,7 +12,6 @@ using System.Threading;
 using System.Windows.Forms;
 using CodeHollow.FeedReader;
 using fastJSON;
-using RaptorDB;
 using System.Threading.Tasks;
 using Westwind.Web.Utilities;
 
@@ -41,7 +40,7 @@ namespace RealNews
 
         RealNewsWeb web;
         bool loaded = false;
-        private KeyStoreHF _imgcache;
+        //private KeyStoreHF _imgcache;
         List<Feed> _feeds = new List<Feed>();
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
         Feed _currentFeed = null;
@@ -52,9 +51,14 @@ namespace RealNews
         private FormWindowState _lastFormState = FormWindowState.Normal;
         private JSONParameters jp = new JSONParameters { UseExtensions = false };
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
+        private ImageCache _imageCache;
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
 
@@ -88,8 +92,19 @@ namespace RealNews
 
             loaded = true;
 
-            _imgcache = new KeyStoreHF("cache");
-            web = new RealNewsWeb(Settings.webport, _imgcache, ShowFeedItemHtml);
+            //_imgcache = new KeyStoreHF("cache");
+            _imageCache = new ImageCache("cache/imgcache.zip");
+            //var zf = ZipStorer.Open("cache/imgcache.zip", FileAccess.Read);
+            //foreach(var z in zf.ReadCentralDir())
+            //{
+            //    _imageCache.Add(z.FilenameInZip, zf.GetBytes(z));
+            //}
+            //foreach(var k in _imgcache.GetKeysHF())
+            //{
+            //    var o = (ImgCache)_imgcache.GetObjectHF(k);
+            //    _imageCache.Add(k, o.data);
+            //}
+            web = new RealNewsWeb(Settings.webport, _imageCache, ShowFeedItemHtml);
 
             SkinForm();
             _lastFormState = this.WindowState;
@@ -416,6 +431,8 @@ namespace RealNews
 
         private void ShowItem(FeedItem item, bool isread)
         {
+            webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
+
             // show item
             if (item == null)
             {
@@ -577,10 +594,15 @@ namespace RealNews
             if (_currentFeed.UnreadCount == 0)
             {
                 // find next feed
-                int i = 0;// _feeds.FindIndex(x => x.Title == _currentFeed.Title);
-                //i++;
-                while (i < _feeds.Count)
+                int i = _feeds.FindIndex(x => x.Title == _currentFeed.Title);
+                int c = _feeds.Count;
+                i++;
+                while (c > 0)
                 {
+                    if (i == _feeds.Count)
+                        i = 0;
+                    c--;
+
                     _currentFeed = _feeds[i++];
                     if (_currentFeed.UnreadCount > 0)
                     {
@@ -632,7 +654,8 @@ namespace RealNews
             else
                 Settings.Maximized = true;
             SaveFeeds();
-            _imgcache.Shutdown();
+            //_imgcache.Shutdown();
+            _imageCache.Shutdown();
         }
 
         private List<string> GetImagesInHTMLString(string htmlString)
@@ -1009,7 +1032,7 @@ namespace RealNews
                 foreach (var img in GetImagesInHTMLString(f.Description))
                 {
                     var s = _imghrefregex.Match(img).Groups["href"].Value;
-                    if (_imgcache.ContainsHF(s) == false)
+                    if (_imageCache.Contains(s) == false)
                         imgs.Add(s);
                 }
                 Task.Factory.StartNew(() =>
@@ -1034,6 +1057,7 @@ namespace RealNews
         private string DownloadImage(FeedItem f, string key, string url)
         {
             string err = "";
+
             try
             {
                 mWebClient wc = new mWebClient();
@@ -1047,13 +1071,13 @@ namespace RealNews
                 if (len < Settings.DownloadImagesUnderKB * 1024)
                 {
                     var b = wc.DownloadData(url);
-                    var o = new ImgCache
-                    {
-                        FeedName = f.FeedName,
-                        Title = f.Title,
-                        data = b
-                    };
-                    _imgcache.SetObjectHF(key, o);
+                    //var o = new ImgCache
+                    //{
+                    //    FeedName = f.FeedName,
+                    //    Title = f.Title,
+                    //    data = b
+                    //};
+                    _imageCache.Add(key, b);
                 }
                 else
                     err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
@@ -1062,7 +1086,6 @@ namespace RealNews
             {
                 err = "Error downloading images";
             }
-
             return err;
         }
 
@@ -1176,10 +1199,10 @@ namespace RealNews
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Space)
+            if (keyData == Keys.Space && txtSearch.Focused == false)
             {
                 MoveNextUnread();
-                return true;
+                //return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -1188,6 +1211,62 @@ namespace RealNews
         private void logMessagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // fix : show log form
+        }
+
+        private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var dr = MessageBox.Show("download now?", "?", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                toolProgressBar.Maximum = _downloadimglist.Count;
+                toolProgressBar.Value = 0;
+
+                mWebClient wc = new mWebClient();
+
+                while (_downloadimglist.Count > 0)
+                {
+                    if (DateTime.Now.Hour > 6)
+                        return;
+                    wc.Timeout = 4000;
+                    string url = "";
+                    _downloadimglist.TryDequeue(out url);
+                    if (url != "" && url != null && _imageCache.Contains(url) == false)
+                    {
+                        try
+                        {
+                            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                            req.Method = "HEAD";
+                            req.Timeout = wc.Timeout;
+                            long len;
+                            using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
+                            {
+                                len = resp.ContentLength;
+                            }
+                            if (len < Settings.DownloadImagesUnderKB * 1024)
+                            {
+                                var b = wc.DownloadData(url);
+                                _imageCache.Add(url, b);
+                            }
+                            else
+                                Log($"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.");
+                        }
+                        catch
+                        {
+                            Log("Error downloading images");
+                        }
+                        toolProgressBar.Visible = true;
+                        toolCount.Text = "" + _downloadimglist.Count;
+                        toolProgressBar.Maximum = _downloadimglist.Count;
+                        toolProgressBar.Value++;
+                        Application.DoEvents();
+                    }
+                }
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "On", null);
         }
     }
 }

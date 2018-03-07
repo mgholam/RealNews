@@ -10,7 +10,7 @@ namespace RealNews
     {
         public RealNewsWeb(
             int HttpPort,
-            RaptorDB.Common.IKeyStoreHF imgcache,
+            ImageCache imgcache,
             Func<string> show
             ) : base(HttpPort, true, true, AuthenticationSchemes.Anonymous, "api", "main.html")
         {
@@ -18,7 +18,7 @@ namespace RealNews
             _show = show;
         }
         private Func<string> _show;
-        private RaptorDB.Common.IKeyStoreHF _imgcache;
+        private ImageCache _imgcache;
 
         public override void InitializeCommandHandler(Dictionary<string, Handler> handler, Dictionary<string, string> apihelp)
         {
@@ -31,14 +31,11 @@ namespace RealNews
             handler.Add("image", ctx =>
             {
                 string gstr = ctx.Request.Url.GetComponents(UriComponents.Query, UriFormat.Unescaped);
-                gstr = gstr.Replace("Â", ""); // KLUDGE : don't know why its there
-                var o = _imgcache.GetObjectHF(gstr) as ImgCache;
-                byte[] b = null;
+                //gstr = gstr.Replace("Â", ""); // KLUDGE : don't know why its there
+                var o = _imgcache.Get(gstr);
                 if (o == null)
-                    b = Properties.Resources.notfound;
-                else
-                    b = o.data;
-                WriteResponse(ctx, 200, b, false);
+                    o = Properties.Resources.notfound;
+                WriteResponse(ctx, 200, o, false);
                 //WriteResponse(ctx, 404, "");
             });
         }

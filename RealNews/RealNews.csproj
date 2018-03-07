@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,12 +38,8 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RaptorDB">
-      <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RaptorDB.Common">
-      <HintPath>..\..\10. RaptorDB Doc\RaptorDB\Output\RaptorDB.Common.dll</HintPath>
+    <Reference Include="fastJSON">
+      <HintPath>..\..\04. fastJSON\output\net40\fastJSON.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -84,6 +81,7 @@
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlSanitizer.cs" />
+    <Compile Include="ImageCache.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="mWebClient.cs">
       <SubType>Component</SubType>
