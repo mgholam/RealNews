@@ -17,7 +17,6 @@ using Westwind.Web.Utilities;
 
 namespace RealNews
 {
-    // fix : put in memory log 
     public partial class frmMain : Form
     {
         public frmMain()
@@ -52,13 +51,11 @@ namespace RealNews
         private JSONParameters jp = new JSONParameters { UseExtensions = false };
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
         private ImageCache _imageCache;
+        private static ILog _log = LogManager.GetLogger(typeof(frmMain));
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-
-
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
 
@@ -92,18 +89,8 @@ namespace RealNews
 
             loaded = true;
 
-            //_imgcache = new KeyStoreHF("cache");
             _imageCache = new ImageCache("cache/imgcache.zip");
-            //var zf = ZipStorer.Open("cache/imgcache.zip", FileAccess.Read);
-            //foreach(var z in zf.ReadCentralDir())
-            //{
-            //    _imageCache.Add(z.FilenameInZip, zf.GetBytes(z));
-            //}
-            //foreach(var k in _imgcache.GetKeysHF())
-            //{
-            //    var o = (ImgCache)_imgcache.GetObjectHF(k);
-            //    _imageCache.Add(k, o.data);
-            //}
+
             web = new RealNewsWeb(Settings.webport, _imageCache, ShowFeedItemHtml);
 
             SkinForm();
@@ -791,6 +778,8 @@ namespace RealNews
 
         private void Log(string msg)
         {
+            if (msg != "")
+                _log.Info(msg);
             Invoke(() => { toolMessage.Text = msg; });
         }
 
@@ -1210,7 +1199,9 @@ namespace RealNews
 
         private void logMessagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : show log form
+            // show log form
+            frmLog f = new frmLog();
+            f.Show();
         }
 
         private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1220,9 +1211,11 @@ namespace RealNews
             {
                 toolProgressBar.Maximum = _downloadimglist.Count;
                 toolProgressBar.Value = 0;
+                toolProgressBar.Visible = true;
 
                 mWebClient wc = new mWebClient();
-
+                int c = 0;
+                int tot = _downloadimglist.Count;
                 while (_downloadimglist.Count > 0)
                 {
                     if (DateTime.Now.Hour > 6)
@@ -1230,6 +1223,7 @@ namespace RealNews
                     wc.Timeout = 4000;
                     string url = "";
                     _downloadimglist.TryDequeue(out url);
+                    c++;
                     if (url != "" && url != null && _imageCache.Contains(url) == false)
                     {
                         try
@@ -1252,14 +1246,13 @@ namespace RealNews
                         }
                         catch
                         {
-                            Log("Error downloading images");
+                            Log("Error downloading images : " + url);
                         }
-                        toolProgressBar.Visible = true;
-                        toolCount.Text = "" + _downloadimglist.Count;
-                        toolProgressBar.Maximum = _downloadimglist.Count;
-                        toolProgressBar.Value++;
-                        Application.DoEvents();
                     }
+                    toolCount.Text = $"{c} of {tot}";
+                    toolProgressBar.Maximum = _downloadimglist.Count;
+                    toolProgressBar.Value = c;
+                    Application.DoEvents();
                 }
             }
         }
