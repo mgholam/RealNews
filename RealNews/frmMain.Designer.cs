@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Unread");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starred");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Unread");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starred");
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -40,6 +40,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
+            this.txtSearch = new RealNews.myTextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -61,6 +62,8 @@
             this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.downloadImagesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
@@ -70,9 +73,6 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.downloadImagesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtSearch = new myTextBox();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -123,13 +123,13 @@
             this.treeView1.ItemHeight = 20;
             this.treeView1.Location = new System.Drawing.Point(0, 26);
             this.treeView1.Name = "treeView1";
-            treeNode3.Name = "Unread";
-            treeNode3.Text = "Unread";
-            treeNode4.Name = "Starred";
-            treeNode4.Text = "Starred";
+            treeNode1.Name = "Unread";
+            treeNode1.Text = "Unread";
+            treeNode2.Name = "Starred";
+            treeNode2.Text = "Starred";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowLines = false;
             this.treeView1.Size = new System.Drawing.Size(340, 482);
@@ -185,6 +185,23 @@
             this.rssImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.rssImages.ImageSize = new System.Drawing.Size(16, 16);
             this.rssImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtSearch.ForeColor = System.Drawing.Color.Gray;
+            this.txtSearch.Location = new System.Drawing.Point(0, 0);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(340, 26);
+            this.txtSearch.TabIndex = 1;
+            this.txtSearch.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.txtSearch.ForeColor = System.Drawing.Color.Gray;
+            this.txtSearch.Location = new System.Drawing.Point(0, 0);
+            this.txtSearch.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.txtSearch.placeHolderTextBox1.Text = "Search...";
+            this.txtSearch.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.txtSearch.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // splitContainer2
             // 
@@ -382,6 +399,21 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // downloadImagesToolStripMenuItem1
+            // 
+            this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
+            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(113, 20);
+            this.downloadImagesToolStripMenuItem1.Text = "download images";
+            this.downloadImagesToolStripMenuItem1.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem1_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -419,6 +451,7 @@
             // 
             this.notifyIcon1.ContextMenuStrip = this.trayMenu;
             this.notifyIcon1.Text = "Real News";
+            this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
             // trayMenu
@@ -449,36 +482,6 @@
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
-            // downloadImagesToolStripMenuItem1
-            // 
-            this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
-            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(113, 20);
-            this.downloadImagesToolStripMenuItem1.Text = "download images";
-            this.downloadImagesToolStripMenuItem1.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem1_Click);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtSearch.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.txtSearch.ForeColor = System.Drawing.Color.Gray;
-            this.txtSearch.Location = new System.Drawing.Point(0, 0);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.txtSearch.Size = new System.Drawing.Size(340, 26);
-            this.txtSearch.TabIndex = 1;
-            this.txtSearch.placeHolderTextBox1.Text = "Search...";
-            this.txtSearch.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.txtSearch.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -495,7 +498,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);

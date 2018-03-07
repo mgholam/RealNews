@@ -19,6 +19,9 @@ namespace RealNews
 {
     public partial class frmMain : Form
     {
+
+        // fix : designer problem with mytextbox
+        // fix : download image thread
         public frmMain()
         {
             InitializeComponent();
@@ -39,13 +42,11 @@ namespace RealNews
 
         RealNewsWeb web;
         bool loaded = false;
-        //private KeyStoreHF _imgcache;
         List<Feed> _feeds = new List<Feed>();
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
         Feed _currentFeed = null;
         List<FeedItem> _currentList = null;
         ConcurrentQueue<string> _downloadimglist = new ConcurrentQueue<string>();
-        //private BizFX.UI.Skin.SkinningManager _skin = new BizFX.UI.Skin.SkinningManager();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
         private JSONParameters jp = new JSONParameters { UseExtensions = false };
@@ -55,6 +56,7 @@ namespace RealNews
         private DateTime _lastUpdate = DateTime.Now;
         private System.Timers.Timer _minuteTimer;
         private bool _newItemsExist = false;
+        private bool _DoDownloadImages = false;
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -140,9 +142,14 @@ namespace RealNews
                     }
                 }
 
-                // fix : download images
+                // download images
+                var start = TimeSpan.Parse(Settings.StartDownloadImgTime);
+                var end = TimeSpan.Parse(Settings.EndDownloadImgTime);
+                TimeSpan timeBetween = now.TimeOfDay;
 
-
+                _DoDownloadImages = false;
+                if (timeBetween >= start && timeBetween < end)
+                    _DoDownloadImages = true;
             }
         }
 
@@ -468,7 +475,8 @@ namespace RealNews
             {
                 webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
             }
-            catch {//(Exception ex){
+            catch
+            {//(Exception ex){
                 //_log.Error(ex);
             }
             // show item
@@ -829,7 +837,7 @@ namespace RealNews
 
         private void Log(string msg)
         {
-            if (msg != "")
+            if (msg != "" && msg!= " ")
                 _log.Info(msg);
             Invoke(() => { toolMessage.Text = msg; });
         }
@@ -1142,13 +1150,11 @@ namespace RealNews
 
         private void frmMain_Resize(object sender, EventArgs e)
         {
+            notifyIcon1.Visible = true;
             if (FormWindowState.Minimized == this.WindowState)
             {
-                notifyIcon1.Visible = true;
                 this.Hide();
             }
-            else
-                notifyIcon1.Visible = false;
         }
 
         private void cleanupToolStripMenuItem_Click(object sender, EventArgs e)
