@@ -23,5 +23,7 @@ namespace RealNews
         public static string StartDownloadImgTime = "03:00";
         public static string EndDownloadImgTime = "06:00";
 
+        public static int DownloadImgThreads = 20;
+
     }
 }

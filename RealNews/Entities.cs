@@ -31,20 +31,12 @@ namespace RealNews
         public string Id;
 
         public string Description;
-        //public int feedid;
         public string FeedName;
         public string Attachment;
 
         public bool isRead = false;
         public bool isStarred = false; 
     }
-
-    //public class ImgCache
-    //{
-    //    public string FeedName;
-    //    public string Title;
-    //    public byte[] data;
-    //}
 
     class FeedItemComparer : IEqualityComparer<FeedItem>
     {
@@ -65,12 +57,4 @@ namespace RealNews
             return y.date.CompareTo(x.date);
         }
     }
-
-    //class listviewcompare : IComparer
-    //{
-    //    public int Compare(object x, object y)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}    
 }

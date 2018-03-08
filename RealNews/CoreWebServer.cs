@@ -268,7 +268,6 @@ namespace RealNews
                 {
                     _server.Prefixes.Add("http://localhost:" + _port + "/");
                     _server.Prefixes.Add("http://127.0.0.1:" + _port + "/");
-                    //_server.Prefixes.Add("http://" + Environment.MachineName + ":" + _port + "/");
                 }
                 else
                     _server.Prefixes.Add("http://*:" + _port + "/");

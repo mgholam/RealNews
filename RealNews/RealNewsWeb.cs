@@ -31,12 +31,10 @@ namespace RealNews
             handler.Add("image", ctx =>
             {
                 string gstr = ctx.Request.Url.GetComponents(UriComponents.Query, UriFormat.Unescaped);
-                //gstr = gstr.Replace("Â", ""); // KLUDGE : don't know why its there
                 var o = _imgcache.Get(gstr);
                 if (o == null)
                     o = Properties.Resources.notfound;
                 WriteResponse(ctx, 200, o, false);
-                //WriteResponse(ctx, 404, "");
             });
         }
 

@@ -404,7 +404,7 @@
             this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
             this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(113, 20);
             this.downloadImagesToolStripMenuItem1.Text = "download images";
-            this.downloadImagesToolStripMenuItem1.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem1_Click);
+            this.downloadImagesToolStripMenuItem1.Visible = false;
             // 
             // editToolStripMenuItem
             // 

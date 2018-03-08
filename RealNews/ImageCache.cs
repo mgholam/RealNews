@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace RealNews
 {
     class ImageCache
     {
-        public ImageCache()//(string file)
+        public ImageCache()
         {
         }
 
@@ -68,10 +64,5 @@ namespace RealNews
             else
                 return null;
         }
-
-        //public void Shutdown()
-        //{
-
-        //}
     }
 }

@@ -21,7 +21,6 @@ namespace RealNews
     {
 
         // fix : designer problem with mytextbox
-        // fix : download image thread
         public frmMain()
         {
             InitializeComponent();
@@ -57,6 +56,7 @@ namespace RealNews
         private System.Timers.Timer _minuteTimer;
         private bool _newItemsExist = false;
         private bool _DoDownloadImages = false;
+        private bool _run = true;
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -107,6 +107,130 @@ namespace RealNews
             _lastFormState = this.WindowState;
             Log(" ");
             webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
+
+            Task.Factory.StartNew(DownloadThread);
+        }
+
+        private void DownloadThread()
+        {
+            while (_run)
+            {
+                if (_DoDownloadImages && _downloadimglist.Count > 0)
+                {
+                    // download image thread
+                    int c = 0;
+                    int tot = _downloadimglist.Count;
+                    Invoke(() =>
+                    {
+                        toolProgressBar.Maximum = tot;
+                        toolProgressBar.Value = 0;
+                        toolProgressBar.Visible = true;
+                    });
+
+                    while (_DoDownloadImages && _run)
+                    {
+                        List<Task> tlist = new List<Task>();
+                        for (int i = 0; i < Settings.DownloadImgThreads && _downloadimglist.Count > 0; i++)
+                        {
+                            tlist.Add(Task.Factory.StartNew(() =>
+                            {
+                                string url = "";
+                                _downloadimglist.TryDequeue(out url);
+                                c++;
+                                downloadImageFile(url);
+                                Invoke(() =>
+                                {
+                                    toolCount.Text = $"{c} of {tot}";
+                                    toolProgressBar.Maximum = tot;
+                                    toolProgressBar.Value = c;
+                                });
+                            }));
+                        }
+                        Task.WaitAll(tlist.ToArray());
+                    }
+                }
+                else
+                {
+                    Invoke(() =>
+                    {
+                        toolProgressBar.Visible = false;
+                    });
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+
+        //private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
+        //{
+        //    var dr = MessageBox.Show("download now?", "?", MessageBoxButtons.YesNo);
+        //    if (dr == DialogResult.Yes)
+        //    {
+        //        toolProgressBar.Maximum = _downloadimglist.Count;
+        //        toolProgressBar.Value = 0;
+        //        toolProgressBar.Visible = true;
+
+        //        int c = 0;
+        //        int tot = _downloadimglist.Count;
+        //        while (_downloadimglist.Count > 0)
+        //        {
+        //            if (DateTime.Now.Hour > 6)
+        //                return;
+        //            string url = "";
+        //            _downloadimglist.TryDequeue(out url);
+        //            c++;
+        //            if (url != "" && url != null && _imageCache.Contains(url) == false)
+        //            {
+        //                downloadImageFile(url);
+        //            }
+        //            toolCount.Text = $"{c} of {tot}";
+        //            toolProgressBar.Maximum = _downloadimglist.Count;
+        //            toolProgressBar.Value = c;
+        //            Application.DoEvents();
+        //        }
+        //    }
+        //}
+
+        private void downloadImageFile(string url)
+        {
+            if (url == "" || url == null)
+                return;
+
+            string key = url.Replace("http://", "").Replace("https://", "");
+
+            Log(DownloadImage(key, url));
+        }
+
+        private string DownloadImage(string key, string url)
+        {
+            string err = "";
+
+            try
+            {
+                mWebClient wc = new mWebClient();
+                wc.Timeout = 4000;
+                long len;
+
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.Method = "HEAD";
+                using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
+                {
+                    len = resp.ContentLength;
+                }
+
+                if (len < Settings.DownloadImagesUnderKB * 1024)
+                {
+                    var b = wc.DownloadData(url);
+                    _imageCache.Add(key, b);
+                }
+                else
+                    err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
+            }
+            catch
+            {
+                err = "Error downloading images";
+            }
+            return err;
         }
 
         private object _minlock = new object();
@@ -308,7 +432,7 @@ namespace RealNews
             }
         }
 
-        private void UpdateFeed(Feed feed, Action<string> log) // fix : force download images
+        private void UpdateFeed(Feed feed, Action<string> log) 
         {
             var feedxml = "";
             if (feed != null && feed.URL != "")
@@ -471,6 +595,8 @@ namespace RealNews
 
         private void ShowItem(FeedItem item, bool isread)
         {
+            if (isread)
+                _newItemsExist = false;
             try
             {
                 webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
@@ -696,6 +822,7 @@ namespace RealNews
 
         private void Shutdown()
         {
+            _run = false;
             if (this.WindowState == FormWindowState.Normal)
                 Settings.Maximized = false;
             else
@@ -837,7 +964,7 @@ namespace RealNews
 
         private void Log(string msg)
         {
-            if (msg != "" && msg!= " ")
+            if (msg != "" && msg != " ")
                 _log.Info(msg);
             Invoke(() => { toolMessage.Text = msg; });
         }
@@ -1091,7 +1218,7 @@ namespace RealNews
                     {
                         string key = i.Replace(_localhostimageurl, "");
                         string url = "http://" + key;
-                        err = DownloadImage(f, key, url);
+                        err = DownloadImage(key, url);
                     }
                     Invoke(() =>
                     {
@@ -1101,41 +1228,6 @@ namespace RealNews
                     });
                 });
             }
-        }
-
-        private string DownloadImage(FeedItem f, string key, string url)
-        {
-            string err = "";
-
-            try
-            {
-                mWebClient wc = new mWebClient();
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                req.Method = "HEAD";
-                long len;
-                using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
-                {
-                    len = resp.ContentLength;
-                }
-                if (len < Settings.DownloadImagesUnderKB * 1024)
-                {
-                    var b = wc.DownloadData(url);
-                    //var o = new ImgCache
-                    //{
-                    //    FeedName = f.FeedName,
-                    //    Title = f.Title,
-                    //    data = b
-                    //};
-                    _imageCache.Add(key, b);
-                }
-                else
-                    err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
-            }
-            catch
-            {
-                err = "Error downloading images";
-            }
-            return err;
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -1259,59 +1351,6 @@ namespace RealNews
             // show log form
             frmLog f = new frmLog();
             f.Show();
-        }
-
-        private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            var dr = MessageBox.Show("download now?", "?", MessageBoxButtons.YesNo);
-            if (dr == DialogResult.Yes)
-            {
-                toolProgressBar.Maximum = _downloadimglist.Count;
-                toolProgressBar.Value = 0;
-                toolProgressBar.Visible = true;
-
-                mWebClient wc = new mWebClient();
-                int c = 0;
-                int tot = _downloadimglist.Count;
-                while (_downloadimglist.Count > 0)
-                {
-                    if (DateTime.Now.Hour > 6)
-                        return;
-                    wc.Timeout = 4000;
-                    string url = "";
-                    _downloadimglist.TryDequeue(out url);
-                    c++;
-                    if (url != "" && url != null && _imageCache.Contains(url) == false)
-                    {
-                        try
-                        {
-                            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                            req.Method = "HEAD";
-                            req.Timeout = wc.Timeout;
-                            long len;
-                            using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
-                            {
-                                len = resp.ContentLength;
-                            }
-                            if (len < Settings.DownloadImagesUnderKB * 1024)
-                            {
-                                var b = wc.DownloadData(url);
-                                _imageCache.Add(url, b);
-                            }
-                            else
-                                Log($"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.");
-                        }
-                        catch
-                        {
-                            Log("Error downloading images : " + url);
-                        }
-                    }
-                    toolCount.Text = $"{c} of {tot}";
-                    toolProgressBar.Maximum = _downloadimglist.Count;
-                    toolProgressBar.Value = c;
-                    Application.DoEvents();
-                }
-            }
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
