@@ -52,7 +52,7 @@ namespace RealNews
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
         private ImageCache _imageCache;
         private static ILog _log = LogManager.GetLogger(typeof(frmMain));
-        private DateTime _lastUpdate = DateTime.Now;
+        //private DateTime _lastUpdate = DateTime.Now;
         private System.Timers.Timer _minuteTimer;
         private bool _newItemsExist = false;
         private bool _DoDownloadImages = false;
@@ -251,10 +251,10 @@ namespace RealNews
             {
                 var now = DateTime.Now;
 
-                if (now.Subtract(_lastUpdate).TotalMinutes > Settings.GlobalUpdateEveryMin)
+                if (now.Subtract(Settings.LastUpdateTime).TotalMinutes > Settings.GlobalUpdateEveryMin)
                 {
                     UpdateAll();
-                    _lastUpdate = now;
+                    Settings.LastUpdateTime = now;
                 }
 
                 foreach (var f in _feeds)
@@ -432,7 +432,7 @@ namespace RealNews
             }
         }
 
-        private void UpdateFeed(Feed feed, Action<string> log) 
+        private void UpdateFeed(Feed feed, Action<string> log)
         {
             var feedxml = "";
             if (feed != null && feed.URL != "")
@@ -581,7 +581,7 @@ namespace RealNews
                         toolProgressBar.Visible = false;
                         toolProgressBar.Value = 0;
                         toolCount.Text = "";
-                        _lastUpdate = DateTime.Now;
+                        Settings.LastUpdateTime = DateTime.Now;
                         Log("Update Done.");
                     });
                 });
@@ -597,6 +597,9 @@ namespace RealNews
         {
             if (isread)
                 _newItemsExist = false;
+
+            SetProxyBypass();
+
             try
             {
                 webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
@@ -661,6 +664,27 @@ namespace RealNews
                 item.isRead = isread;
                 UpdateFeedCount();
             }
+        }
+
+        private void SetProxyBypass()
+        {
+            // fix : proxy bypass local 
+
+            //try
+            //{
+                //RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
+                //if (key != null)
+                //{
+                //    var p = key.GetValue("ProxyServer");
+                //    var o = (int)key.GetValue("ProxyEnable");
+                //    if (o == 1)
+                //    {
+                //        key.SetValue("ProxyOverride", "<local>");
+                //        ProxyRoutines.SetProxy("" + p, "<local>");
+                //    }
+                //}
+            //}
+            //catch { }
         }
 
         private void UpdateStarCount()

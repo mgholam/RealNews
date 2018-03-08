@@ -20,6 +20,8 @@ namespace RealNews
 
         public static int DownloadImagesUnderKB = 200;
 
+        public static DateTime LastUpdateTime = DateTime.Now;
+
         public static string StartDownloadImgTime = "03:00";
         public static string EndDownloadImgTime = "06:00";
 
