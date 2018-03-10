@@ -64,10 +64,6 @@ namespace RealNews
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
             notifyIcon1.Visible = true;
-            _minuteTimer = new System.Timers.Timer(1000);
-            _minuteTimer.Elapsed += _minuteTimer_Elapsed;
-            _minuteTimer.AutoReset = true;
-            _minuteTimer.Enabled = true;
 
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
@@ -109,6 +105,11 @@ namespace RealNews
             webBrowser1.Navigate("http://localhost:" + Settings.webport + "/api/show");
 
             Task.Factory.StartNew(DownloadThread);
+
+            _minuteTimer = new System.Timers.Timer(1000);
+            _minuteTimer.Elapsed += _minuteTimer_Elapsed;
+            _minuteTimer.AutoReset = true;
+            _minuteTimer.Enabled = true;
         }
 
         private void DownloadThread()
@@ -129,10 +130,9 @@ namespace RealNews
 
                     while (_DoDownloadImages && _run)
                     {
-                        List<Task> tlist = new List<Task>();
-                        for (int i = 0; i < Settings.DownloadImgThreads && _downloadimglist.Count > 0; i++)
+                        for (int i = 0; i < 200 && _downloadimglist.Count > 0; i++)
                         {
-                            tlist.Add(Task.Factory.StartNew(() =>
+                            Task.Factory.StartNew(() =>
                             {
                                 string url = "";
                                 _downloadimglist.TryDequeue(out url);
@@ -140,14 +140,20 @@ namespace RealNews
                                 downloadImageFile(url);
                                 Invoke(() =>
                                 {
-                                    toolCount.Text = $"{c} of {tot}";
+                                    toolCount.Text = $"{_downloadimglist.Count} images left";
                                     toolProgressBar.Maximum = tot;
                                     toolProgressBar.Value = c;
                                 });
-                            }));
+                            });
                         }
-                        Task.WaitAll(tlist.ToArray());
+                        Thread.Sleep(4000);
                     }
+                    Invoke(() =>
+                    {
+                        toolCount.Text = "";
+                        toolProgressBar.Visible = false;
+                        Log("Images done.");
+                    });
                 }
                 else
                 {
@@ -207,11 +213,9 @@ namespace RealNews
 
             try
             {
-                mWebClient wc = new mWebClient();
-                wc.Timeout = 4000;
                 long len;
-
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.Timeout = 4000;
                 req.Method = "HEAD";
                 using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
                 {
@@ -220,8 +224,11 @@ namespace RealNews
 
                 if (len < Settings.DownloadImagesUnderKB * 1024)
                 {
-                    var b = wc.DownloadData(url);
-                    _imageCache.Add(key, b);
+                    mWebClient wc = new mWebClient();
+                    wc.Timeout = 10000;
+                    //var b = wc.DownloadData(url);
+                    //_imageCache.Add(key, b);
+                    wc.DownloadFileAsync(new Uri(url), _imageCache.GetFilename(key));
                 }
                 else
                     err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
@@ -339,11 +346,16 @@ namespace RealNews
                     else
                         tn.Text = f.Title;
                     treeView1.Nodes.Add(tn);
-                    _currentFeed = f;
-                    ShowFeedList(f);
+                    //_currentFeed = f;
+                    //ShowFeedList(f);
                 }
                 treeView1.EndUpdate();
+            }
+            if (_feeds.Count > 0)
+            {
+                _currentFeed = _feeds[0];
                 UpdateStarCount();
+                UpdateFeedCount();
             }
             splitContainer1.Visible = true;
         }
@@ -521,7 +533,11 @@ namespace RealNews
                 }
 
                 if (feed.DownloadImages)
-                    imgs.ForEach(x => _downloadimglist.Enqueue(x));
+                    imgs.ForEach(x =>
+                    {
+                        if (_imageCache.Contains(x) == false)
+                            _downloadimglist.Enqueue(x);
+                    });
 
                 i.Description = tempdesc;
                 list.Add(i);
@@ -657,7 +673,10 @@ namespace RealNews
             sb.AppendLine("</html>");
 
             _currhtml = sb.ToString();
+            webBrowser1.SuspendLayout();
             webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
+            webBrowser1.Document.Window.ScrollTo(0, 0);
+            webBrowser1.ResumeLayout();
 
             if (item.isRead != isread)
             {
@@ -672,17 +691,17 @@ namespace RealNews
 
             //try
             //{
-                //RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
-                //if (key != null)
-                //{
-                //    var p = key.GetValue("ProxyServer");
-                //    var o = (int)key.GetValue("ProxyEnable");
-                //    if (o == 1)
-                //    {
-                //        key.SetValue("ProxyOverride", "<local>");
-                //        ProxyRoutines.SetProxy("" + p, "<local>");
-                //    }
-                //}
+            //RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
+            //if (key != null)
+            //{
+            //    var p = key.GetValue("ProxyServer");
+            //    var o = (int)key.GetValue("ProxyEnable");
+            //    if (o == 1)
+            //    {
+            //        key.SetValue("ProxyOverride", "<local>");
+            //        ProxyRoutines.SetProxy("" + p, "<local>");
+            //    }
+            //}
             //}
             //catch { }
         }
@@ -837,7 +856,7 @@ namespace RealNews
         {
             File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
             File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
-            File.WriteAllText("feeds\\downloadimg.list", JSON.ToJSON(_downloadimglist, jp));
+            File.WriteAllText("feeds\\downloadimg.list", JSON.ToNiceJSON(_downloadimglist, jp));
             foreach (var i in _feeditems)
             {
                 File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));

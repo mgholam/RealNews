@@ -16,7 +16,6 @@ namespace RealNews
 
         private string _path = "cache/";
 
-
         private urlhash FixName(string url)
         {
             string fol = url.Substring(0, url.IndexOf('/'));
@@ -30,6 +29,17 @@ namespace RealNews
             return r;
         }
 
+        public string GetFilename(string url)
+        {
+            if (url == null)
+                return _path + "null.jpg";
+
+            var key = FixName(url);
+
+            Directory.CreateDirectory(_path + key.folder);
+
+            return _path + key.fn;
+        }
 
         public void Add(string url, byte[] data)
         {
@@ -39,7 +49,9 @@ namespace RealNews
             var key = FixName(url);
 
             Directory.CreateDirectory(_path + key.folder);
+
             File.WriteAllBytes(_path + key.fn, data);
+
             return;
         }
 
@@ -59,6 +71,7 @@ namespace RealNews
                 return null;
 
             var key = FixName(url);
+
             if (File.Exists(_path + key.fn))
                 return File.ReadAllBytes(_path + key.fn);
             else
