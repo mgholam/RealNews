@@ -20,7 +20,6 @@ namespace RealNews
     public partial class frmMain : Form
     {
 
-        // fix : designer problem with mytextbox
         public frmMain()
         {
             InitializeComponent();
@@ -687,7 +686,7 @@ namespace RealNews
 
         private void SetProxyBypass()
         {
-            // fix : proxy bypass local 
+            // feature : proxy bypass local 
 
             //try
             //{
@@ -1328,7 +1327,7 @@ namespace RealNews
             if (e.KeyCode == Keys.Enter)
             {
                 List<FeedItem> list = new List<FeedItem>();
-                string s = txtSearch.Text;
+                string s = placeHolderTextBox1.Text;
                 if (s == "")
                     return;
                 foreach (var f in _feeditems)
@@ -1344,7 +1343,7 @@ namespace RealNews
 
         private void txtSearch_Enter(object sender, EventArgs e)
         {
-            txtSearch.placeHolderTextBox1.SelectAll();
+            placeHolderTextBox1.SelectAll();
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1381,7 +1380,7 @@ namespace RealNews
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Space && txtSearch.placeHolderTextBox1.Focused == false)
+            if (keyData == Keys.Space && placeHolderTextBox1.Focused == false)
             {
                 MoveNextUnread();
             }
@@ -1406,6 +1405,12 @@ namespace RealNews
             {
                 _log.Error(ex);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            placeHolderTextBox1.Text = "";
+            placeHolderTextBox1.setPlaceholder();
         }
     }
 }
