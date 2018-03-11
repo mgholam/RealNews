@@ -10,7 +10,7 @@ namespace RealNews
             Timeout = 10 * 1000;
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;// KLUDGE : https security for .net 4
             base.Encoding = System.Text.Encoding.UTF8;
-            if (Settings.UseSytemProxy)
+            if (Settings.UseSytemProxy) // FEATURE : else define a proxy
                 Proxy = WebRequest.DefaultWebProxy;
         }
         public int Timeout { get; set; }

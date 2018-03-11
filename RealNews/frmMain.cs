@@ -133,8 +133,7 @@ namespace RealNews
                         {
                             Task.Factory.StartNew(() =>
                             {
-                                string url = "";
-                                _downloadimglist.TryDequeue(out url);
+                                _downloadimglist.TryDequeue(out string url);
                                 c++;
                                 downloadImageFile(url);
                                 Invoke(() =>
@@ -232,9 +231,9 @@ namespace RealNews
                 else
                     err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
             }
-            catch
+            catch(Exception ex)
             {
-                err = "Error downloading images";
+                err = "Error downloading images : " + ex.Message;
             }
             return err;
         }
@@ -503,8 +502,7 @@ namespace RealNews
 
                         else if (j.Key.ToLower().Contains("length") || j.Key.ToLower() == "size")
                         {
-                            long val = 0;
-                            if (long.TryParse(j.Value, out val))
+                            if (long.TryParse(j.Value, out long val))
                                 sb.Append(val.ToString("#,#"));
                             else
                                 sb.Append(j.Value);
@@ -729,8 +727,7 @@ namespace RealNews
 
         private void UpdateFeedCount(Feed feed)
         {
-            List<FeedItem> list = null;
-            if (_feeditems.TryGetValue(feed.Title, out list))
+            if (_feeditems.TryGetValue(feed.Title, out List<FeedItem> list))
             {
                 UpdateFeedCount(feed, list);
             }
@@ -1367,9 +1364,10 @@ namespace RealNews
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : settings form here
+            // settings form here
             frmSettings f = new frmSettings();
-            f.ShowDialog();
+            if (f.ShowDialog() == DialogResult.OK)
+                File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
