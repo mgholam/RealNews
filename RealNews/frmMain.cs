@@ -267,7 +267,10 @@ namespace RealNews
                     if (f.UpdateEveryMin > 0)
                     {
                         if (now.Subtract(f.LastUpdate).TotalMinutes > f.UpdateEveryMin)
-                            Task.Factory.StartNew(() => UpdateFeed(f, Log));
+                            Task.Factory.StartNew(() => {
+                                UpdateFeed(f, Log);
+                                UpdateFeedCount(f);
+                            });
                     }
                 }
 
@@ -842,9 +845,8 @@ namespace RealNews
             if (l != null)
             {
                 l.Font = new Font(listView1.Font, FontStyle.Regular);
-                listView1.SelectedItems.Clear();
-
                 listView1.FocusedItem = l;
+//                listView1.SelectedItems.Clear();
             }
         }
 
@@ -1334,6 +1336,7 @@ namespace RealNews
                         x.Title.ToLower().Contains(s)
                         || x.Description.ToLower().Contains(s)));
                 }
+                treeView1.SelectedNode = null;
                 ShowFeedList(list);
                 Log($"{list.Count} items found.");
             }
@@ -1372,7 +1375,7 @@ namespace RealNews
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // fix : about here
+            // about box
             AboutBox1 a = new AboutBox1();
             a.ShowDialog();
         }
