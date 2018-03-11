@@ -1217,6 +1217,7 @@ namespace RealNews
                 }
                 form.feed.URL = f.URL;
                 form.feed.RTL = f.RTL;
+                form.feed.UpdateEveryMin = f.UpdateEveryMin;
                 form.feed.DownloadImages = f.DownloadImages;
                 SaveFeeds();
             }
