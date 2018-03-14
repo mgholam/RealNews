@@ -47,6 +47,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblLastUpdated = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWebPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDownloadSize)).BeginInit();
@@ -85,23 +86,24 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(307, 51);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(84, 14);
+            this.label4.Size = new System.Drawing.Size(50, 14);
             this.label4.TabIndex = 17;
-            this.label4.Text = "Every minutes";
+            this.label4.Text = "minutes";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(81, 51);
+            this.label3.Location = new System.Drawing.Point(44, 51);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 14);
+            this.label3.Size = new System.Drawing.Size(117, 14);
             this.label3.TabIndex = 16;
-            this.label3.Text = "Global Update";
+            this.label3.Text = "Global Update Every";
             // 
             // chkUseSystemProxy
             // 
             this.chkUseSystemProxy.AutoSize = true;
-            this.chkUseSystemProxy.Location = new System.Drawing.Point(170, 15);
+            this.chkUseSystemProxy.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkUseSystemProxy.Location = new System.Drawing.Point(59, 12);
             this.chkUseSystemProxy.Name = "chkUseSystemProxy";
             this.chkUseSystemProxy.Size = new System.Drawing.Size(124, 18);
             this.chkUseSystemProxy.TabIndex = 19;
@@ -231,11 +233,23 @@
             this.lblLastUpdated.TabIndex = 25;
             this.lblLastUpdated.Text = "-";
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(307, 13);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(79, 14);
+            this.linkLabel1.TabIndex = 31;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Edit Style.css";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 341);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.button3);
@@ -290,5 +304,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblLastUpdated;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

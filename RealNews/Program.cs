@@ -19,7 +19,8 @@ namespace RealNews
         [STAThread]
         static void Main()
         {
-            mutex = new Mutex(true, "RealNews");// + Assembly.GetExecutingAssembly().Location);
+            var p = "RealNews";// Assembly.GetExecutingAssembly().Location;
+            mutex = new Mutex(true,p);
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);

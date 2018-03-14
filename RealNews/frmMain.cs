@@ -687,7 +687,7 @@ namespace RealNews
 
         private void SetProxyBypass()
         {
-            // feature : proxy bypass local 
+            // FEATURE : proxy bypass local 
 
             //try
             //{
@@ -940,6 +940,7 @@ namespace RealNews
                 listView1.Groups.Add(thisweek);
                 listView1.Groups.Add(older);
                 listView1.ShowGroups = true;
+                //List<ListViewItem> a = new List<ListViewItem>();
                 foreach (var i in list)
                 {
                     var lvi = new ListViewItem();
@@ -959,9 +960,11 @@ namespace RealNews
                         grp = older;
                     lvi.Group = grp;
                     listView1.Items.Add(lvi);
+                    //a.Add(lvi);
                     if (i.isRead == false)
                         lvi.Font = new Font(lvi.Font, FontStyle.Bold);
                 }
+                //listView1.Items.AddRange(a.ToArray());
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.EndUpdate();
                 listView1.ResumeLayout();
@@ -1262,6 +1265,7 @@ namespace RealNews
                         string url = "http://" + key;
                         err = DownloadImage(key, url);
                     }
+                    Thread.Sleep(4000);
                     Invoke(() =>
                     {
                         ShowItem(f);
@@ -1413,6 +1417,12 @@ namespace RealNews
         {
             placeHolderTextBox1.Text = "";
             placeHolderTextBox1.setPlaceholder();
+        }
+
+        private void placeHolderTextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                e.SuppressKeyPress = true;
         }
     }
 }

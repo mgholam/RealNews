@@ -1,5 +1,6 @@
 ﻿using CodeHollow.FeedReader;
 using System;
+using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
 
@@ -24,6 +25,7 @@ namespace RealNews
 
         private void frmFeed_Load(object sender, EventArgs e)
         {
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             if (feed == null)
                 feed = new Feed();
 

@@ -34,6 +34,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblLastError = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.numUpdate = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,8 +43,6 @@
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblLastError = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -111,6 +111,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Details";
             // 
+            // lblLastError
+            // 
+            this.lblLastError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblLastError.Location = new System.Drawing.Point(90, 108);
+            this.lblLastError.Name = "lblLastError";
+            this.lblLastError.Size = new System.Drawing.Size(572, 25);
+            this.lblLastError.TabIndex = 17;
+            this.lblLastError.Text = "-";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(30, 108);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 14);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Last Error";
+            // 
             // numUpdate
             // 
             this.numUpdate.Location = new System.Drawing.Point(95, 53);
@@ -128,18 +146,18 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(221, 55);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(203, 14);
+            this.label4.Size = new System.Drawing.Size(169, 14);
             this.label4.TabIndex = 14;
-            this.label4.Text = "Every minutes ( 0 = global default )";
+            this.label4.Text = "minutes ( 0 = global default )";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(40, 55);
+            this.label3.Location = new System.Drawing.Point(8, 55);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 14);
+            this.label3.Size = new System.Drawing.Size(81, 14);
             this.label3.TabIndex = 12;
-            this.label3.Text = "Update";
+            this.label3.Text = "Update Every";
             // 
             // chkImages
             // 
@@ -176,24 +194,6 @@
             this.label2.Size = new System.Drawing.Size(38, 14);
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(30, 108);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 14);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Last Error";
-            // 
-            // lblLastError
-            // 
-            this.lblLastError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblLastError.Location = new System.Drawing.Point(90, 108);
-            this.lblLastError.Name = "lblLastError";
-            this.lblLastError.Size = new System.Drawing.Size(572, 25);
-            this.lblLastError.TabIndex = 17;
-            this.lblLastError.Text = "-";
             // 
             // frmFeed
             // 

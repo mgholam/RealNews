@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -58,6 +59,11 @@ namespace RealNews
             {
                 MessageBox.Show("Invalid settings");
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("notepad.exe","configs/style.css");
         }
     }
 }
