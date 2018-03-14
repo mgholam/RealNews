@@ -165,36 +165,6 @@ namespace RealNews
             }
         }
 
-        //private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
-        //{
-        //    var dr = MessageBox.Show("download now?", "?", MessageBoxButtons.YesNo);
-        //    if (dr == DialogResult.Yes)
-        //    {
-        //        toolProgressBar.Maximum = _downloadimglist.Count;
-        //        toolProgressBar.Value = 0;
-        //        toolProgressBar.Visible = true;
-
-        //        int c = 0;
-        //        int tot = _downloadimglist.Count;
-        //        while (_downloadimglist.Count > 0)
-        //        {
-        //            if (DateTime.Now.Hour > 6)
-        //                return;
-        //            string url = "";
-        //            _downloadimglist.TryDequeue(out url);
-        //            c++;
-        //            if (url != "" && url != null && _imageCache.Contains(url) == false)
-        //            {
-        //                downloadImageFile(url);
-        //            }
-        //            toolCount.Text = $"{c} of {tot}";
-        //            toolProgressBar.Maximum = _downloadimglist.Count;
-        //            toolProgressBar.Value = c;
-        //            Application.DoEvents();
-        //        }
-        //    }
-        //}
-
         private void downloadImageFile(string url)
         {
             if (url == "" || url == null)
@@ -347,8 +317,6 @@ namespace RealNews
                     else
                         tn.Text = f.Title;
                     treeView1.Nodes.Add(tn);
-                    //_currentFeed = f;
-                    //ShowFeedList(f);
                 }
                 treeView1.EndUpdate();
             }
@@ -614,8 +582,6 @@ namespace RealNews
             if (isread)
                 _newItemsExist = false;
 
-            SetProxyBypass();
-
             try
             {
                 webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
@@ -683,27 +649,6 @@ namespace RealNews
                 item.isRead = isread;
                 UpdateFeedCount();
             }
-        }
-
-        private void SetProxyBypass()
-        {
-            // FEATURE : proxy bypass local 
-
-            //try
-            //{
-            //RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
-            //if (key != null)
-            //{
-            //    var p = key.GetValue("ProxyServer");
-            //    var o = (int)key.GetValue("ProxyEnable");
-            //    if (o == 1)
-            //    {
-            //        key.SetValue("ProxyOverride", "<local>");
-            //        ProxyRoutines.SetProxy("" + p, "<local>");
-            //    }
-            //}
-            //}
-            //catch { }
         }
 
         private void UpdateStarCount()
@@ -846,7 +791,6 @@ namespace RealNews
             {
                 l.Font = new Font(listView1.Font, FontStyle.Regular);
                 listView1.FocusedItem = l;
-//                listView1.SelectedItems.Clear();
             }
         }
 
@@ -869,7 +813,6 @@ namespace RealNews
             else
                 Settings.Maximized = true;
             SaveFeeds();
-            //_imageCache.Shutdown();
         }
 
         private List<string> GetImagesInHTMLString(string htmlString)
@@ -926,6 +869,7 @@ namespace RealNews
                 listView1.SuspendLayout();
                 listView1.BeginUpdate();
                 listView1.Groups.Clear();
+                listView1.ListViewItemSorter = null;
                 var today = new ListViewGroup("Today");
                 today.HeaderAlignment = HorizontalAlignment.Left;
                 var yesterday = new ListViewGroup("Yesterday");
@@ -940,14 +884,14 @@ namespace RealNews
                 listView1.Groups.Add(thisweek);
                 listView1.Groups.Add(older);
                 listView1.ShowGroups = true;
-                //List<ListViewItem> a = new List<ListViewItem>();
+                List<ListViewItem> a = new List<ListViewItem>();
                 foreach (var i in list)
                 {
                     var lvi = new ListViewItem();
                     lvi.Name = "Title";
                     lvi.Text = i.Title;
                     lvi.Tag = i;
-                    lvi.SubItems.Add(i.date.ToString());
+                    //lvi.SubItems.Add(i.date.ToString());
                     var grp = today;
                     var d = DateTime.Now.Subtract(i.date).TotalDays;
                     if (d < 1)
@@ -959,12 +903,14 @@ namespace RealNews
                     else
                         grp = older;
                     lvi.Group = grp;
-                    listView1.Items.Add(lvi);
-                    //a.Add(lvi);
                     if (i.isRead == false)
-                        lvi.Font = new Font(lvi.Font, FontStyle.Bold);
+                        lvi.Font = new Font(listView1.Font, FontStyle.Bold);
+                    else
+                        lvi.Font = listView1.Font;
+                    a.Add(lvi);
+                    //listView1.Items.Add(lvi);
                 }
-                //listView1.Items.AddRange(a.ToArray());
+                listView1.Items.AddRange(a.ToArray());
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 listView1.EndUpdate();
                 listView1.ResumeLayout();
@@ -1331,7 +1277,7 @@ namespace RealNews
             if (e.KeyCode == Keys.Enter)
             {
                 List<FeedItem> list = new List<FeedItem>();
-                string s = placeHolderTextBox1.Text;
+                string s = placeHolderTextBox1.Text.ToLower();
                 if (s == "")
                     return;
                 foreach (var f in _feeditems)

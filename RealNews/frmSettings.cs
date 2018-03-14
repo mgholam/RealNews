@@ -24,6 +24,7 @@ namespace RealNews
             txtStart.Text = Settings.StartDownloadImgTime;
             txtEnd.Text = Settings.EndDownloadImgTime;
             lblLastUpdated.Text = Settings.LastUpdateTime.ToLongTimeString();
+            numCleaupDays.Value = Settings.CleanupItemAfterDays;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -40,6 +41,7 @@ namespace RealNews
                 Settings.GlobalUpdateEveryMin = (int)numUpdate.Value;
                 Settings.webport = (int)numWebPort.Value;
                 Settings.DownloadImagesUnderKB = (int)numDownloadSize.Value;
+                Settings.CleanupItemAfterDays = (int)numCleaupDays.Value;
 
                 var st = TimeSpan.Parse(txtStart.Text);
                 var ed = TimeSpan.Parse(txtEnd.Text);
