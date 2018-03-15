@@ -201,7 +201,7 @@ namespace RealNews
                 else
                     err = $"Image over size limit {Settings.DownloadImagesUnderKB}KB : {(len / 1024).ToString("#,#")}KB.";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 err = "Error downloading images : " + ex.Message;
             }
@@ -237,7 +237,8 @@ namespace RealNews
                     if (f.UpdateEveryMin > 0)
                     {
                         if (now.Subtract(f.LastUpdate).TotalMinutes > f.UpdateEveryMin)
-                            Task.Factory.StartNew(() => {
+                            Task.Factory.StartNew(() =>
+                            {
                                 UpdateFeed(f, Log);
                                 UpdateFeedCount(f);
                             });
@@ -783,15 +784,19 @@ namespace RealNews
             var item = _currentList.Find(x => x.isRead == false);
             if (item == null)
                 return;
-            ShowItem(item);
             var l = listView1.FindItemWithText(item.Title);
-            if (l.Index + 5 < listView1.Items.Count)
-                listView1.EnsureVisible(l.Index + 5);
             if (l != null)
             {
+                if (l.Index + 5 < listView1.Items.Count)
+                    listView1.EnsureVisible(l.Index + 5);
+
                 l.Font = new Font(listView1.Font, FontStyle.Regular);
+                listView1.SelectedItems.Clear();
+                l.Selected = true;
+                l.Focused = true;
                 listView1.FocusedItem = l;
             }
+            ShowItem(item);
         }
 
         private void SaveFeeds()
@@ -1335,6 +1340,7 @@ namespace RealNews
             if (keyData == Keys.Space && placeHolderTextBox1.Focused == false)
             {
                 MoveNextUnread();
+                return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -1369,6 +1375,11 @@ namespace RealNews
         {
             if (e.KeyCode == Keys.Return)
                 e.SuppressKeyPress = true;
+        }
+
+        private void listView1_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+
         }
     }
 }
