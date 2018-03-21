@@ -7,6 +7,7 @@ namespace RealNews
         public ImageCache()
         {
         }
+        // fix : zip images  
 
         public class urlhash
         {
@@ -62,7 +63,25 @@ namespace RealNews
 
             var key = FixName(url);
 
-            return File.Exists(_path + key.fn);
+            if (File.Exists(_path + key.fn)) return true;
+            else
+            {
+                // check zip 
+                if (File.Exists(_path + key.folder + "\\cache.zip"))
+                {
+                    try
+                    {
+                        using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + "\\cache.zip", FileAccess.Read))
+                        {
+                            var ze = zf.ReadCentralDir().Find(x => key.fn.EndsWith(x.FilenameInZip));
+                            if (ze.FilenameInZip != null)
+                                return true;
+                        }
+                    }
+                    catch { }
+                }
+                return false;
+            }
         }
 
         public byte[] Get(string url)
@@ -75,7 +94,26 @@ namespace RealNews
             if (File.Exists(_path + key.fn))
                 return File.ReadAllBytes(_path + key.fn);
             else
+            {
+                if (File.Exists(_path + key.folder + "\\cache.zip"))
+                {
+                    try
+                    {
+                        using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + "\\cache.zip", FileAccess.Read))
+                        {
+                            var ze = zf.ReadCentralDir().Find(x => key.fn.EndsWith(x.FilenameInZip));
+                            if (ze.FilenameInZip != null)
+                            {
+                                MemoryStream ms = new MemoryStream();
+                                zf.ExtractFile(ze, ms);
+                                return ms.ToArray();
+                            }
+                        }
+                    }
+                    catch { }
+                }
                 return null;
+            }
         }
     }
 }

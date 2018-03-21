@@ -2,26 +2,26 @@
 
 - tree folders and move items
 - ~~rename dll files~~
-- about & version control
+- ~~about & version control~~
 - write OPML
 - dark UI
 - zoom level settings
 - window form font settings
-- read OPML
-- refine styling
-- download images @starttime @endtime
+- ~~read OPML~~
+- ~~refine styling~~
+- ~~download images @starttime @endtime~~
 - ~~minimize to tray~~
-- bypass localhost in proxy
+- ~~bypass localhost in proxy~~
 - menu icons
-- ​
+- zip image cache
 
 
 
 # ?
 
-- vpn code
+- ~~vpn code~~
 - ~~html sanitizer~~
-- image cache
+- ~~image cache~~
 - ~~get image size without downloading~~
 - get image dim without downloading
 - ~~use system proxy settings~~

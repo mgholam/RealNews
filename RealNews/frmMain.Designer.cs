@@ -61,7 +61,6 @@
             this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.downloadImagesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -116,6 +115,7 @@
             this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.ForeColor = System.Drawing.Color.Black;
             this.treeView1.FullRowSelect = true;
             this.treeView1.HideSelection = false;
             this.treeView1.ImageIndex = 0;
@@ -157,6 +157,7 @@
             // 
             // updateNowToolStripMenuItem
             // 
+            this.updateNowToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
             this.updateNowToolStripMenuItem.Name = "updateNowToolStripMenuItem";
             this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.updateNowToolStripMenuItem.Text = "Update now";
@@ -169,6 +170,7 @@
             // 
             // editFeedToolStripMenuItem
             // 
+            this.editFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.rss_edit;
             this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
             this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.editFeedToolStripMenuItem.Text = "Edit Feed";
@@ -246,7 +248,6 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.listView1_RetrieveVirtualItem);
             this.listView1.Click += new System.EventHandler(this.listView1_Click);
             this.listView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyUp);
             // 
@@ -265,6 +266,7 @@
             // 
             // toggleStarToolStripMenuItem
             // 
+            this.toggleStarToolStripMenuItem.Image = global::RealNews.Properties.Resources.star;
             this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
             this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.toggleStarToolStripMenuItem.Text = "Toggle Star";
@@ -279,6 +281,7 @@
             // 
             // downloadImagesToolStripMenuItem
             // 
+            this.downloadImagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.downloadimgs;
             this.downloadImagesToolStripMenuItem.Name = "downloadImagesToolStripMenuItem";
             this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.downloadImagesToolStripMenuItem.Text = "Download Images";
@@ -304,7 +307,6 @@
             this.updateAllToolStripMenuItem,
             this.starToolStripMenuItem,
             this.aboutToolStripMenuItem,
-            this.downloadImagesToolStripMenuItem1,
             this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -324,6 +326,7 @@
             // 
             // addNewFeedToolStripMenuItem
             // 
+            this.addNewFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.rss_add;
             this.addNewFeedToolStripMenuItem.Name = "addNewFeedToolStripMenuItem";
             this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.addNewFeedToolStripMenuItem.Text = "Add New Feed";
@@ -338,6 +341,7 @@
             // 
             // exitToolStripMenuItem
             // 
+            this.exitToolStripMenuItem.Image = global::RealNews.Properties.Resources.Shutdown_4_;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitToolStripMenuItem.Text = "Exit";
@@ -346,8 +350,9 @@
             // nextToolStripMenuItem
             // 
             this.nextToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.nextToolStripMenuItem.Image = global::RealNews.Properties.Resources.next;
             this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
-            this.nextToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
+            this.nextToolStripMenuItem.Size = new System.Drawing.Size(104, 20);
             this.nextToolStripMenuItem.Text = "Next Unread";
             this.nextToolStripMenuItem.Click += new System.EventHandler(this.nextToolStripMenuItem_Click);
             // 
@@ -364,36 +369,40 @@
             // cleanupToolStripMenuItem1
             // 
             this.cleanupToolStripMenuItem1.Name = "cleanupToolStripMenuItem1";
-            this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(150, 22);
+            this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.cleanupToolStripMenuItem1.Text = "Cleanup";
             this.cleanupToolStripMenuItem1.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
+            this.settingsToolStripMenuItem.Image = global::RealNews.Properties.Resources.settings;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // logMessagesToolStripMenuItem
             // 
+            this.logMessagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.logs;
             this.logMessagesToolStripMenuItem.Name = "logMessagesToolStripMenuItem";
-            this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.logMessagesToolStripMenuItem.Text = "Log messages";
             this.logMessagesToolStripMenuItem.Click += new System.EventHandler(this.logMessagesToolStripMenuItem_Click);
             // 
             // updateAllToolStripMenuItem
             // 
+            this.updateAllToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
             this.updateAllToolStripMenuItem.Name = "updateAllToolStripMenuItem";
-            this.updateAllToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.updateAllToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
             this.updateAllToolStripMenuItem.Text = "Update All";
             this.updateAllToolStripMenuItem.Click += new System.EventHandler(this.updateAllToolStripMenuItem_Click);
             // 
             // starToolStripMenuItem
             // 
             this.starToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.starToolStripMenuItem.Image = global::RealNews.Properties.Resources.star;
             this.starToolStripMenuItem.Name = "starToolStripMenuItem";
-            this.starToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.starToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.starToolStripMenuItem.Text = "Toggle Star";
             this.starToolStripMenuItem.Click += new System.EventHandler(this.starToolStripMenuItem_Click);
             // 
@@ -403,13 +412,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // downloadImagesToolStripMenuItem1
-            // 
-            this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
-            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(113, 20);
-            this.downloadImagesToolStripMenuItem1.Text = "download images";
-            this.downloadImagesToolStripMenuItem1.Visible = false;
             // 
             // editToolStripMenuItem
             // 
@@ -585,10 +587,9 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logMessagesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.Button button1;
-        private PlaceHolderTextBox placeHolderTextBox1; 
+        private PlaceHolderTextBox placeHolderTextBox1;
     }
 }
 

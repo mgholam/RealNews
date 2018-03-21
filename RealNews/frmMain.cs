@@ -19,7 +19,7 @@ namespace RealNews
 {
     public partial class frmMain : Form
     {
-
+        // fix : cureent feed refresh on update 
         public frmMain()
         {
             InitializeComponent();
@@ -51,7 +51,6 @@ namespace RealNews
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
         private ImageCache _imageCache;
         private static ILog _log = LogManager.GetLogger(typeof(frmMain));
-        //private DateTime _lastUpdate = DateTime.Now;
         private System.Timers.Timer _minuteTimer;
         private bool _newItemsExist = false;
         private bool _DoDownloadImages = false;
@@ -244,6 +243,8 @@ namespace RealNews
                             });
                     }
                 }
+                if (_currentFeed != null)
+                    ShowFeedList(_currentFeed);
 
                 // download images
                 var start = TimeSpan.Parse(Settings.StartDownloadImgTime);
@@ -975,10 +976,8 @@ namespace RealNews
                 ShowItem(f);
             }
         }
-        // ---------------------------------------------------------------------------------------------------------
-        // UI handlers
-        // ---------------------------------------------------------------------------------------------------------
 
+        #region ----------------- UI handlers ---------------------
         private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
             if (e.Url.ToString().StartsWith("http://localhost:" + Settings.webport) == false)
@@ -1213,7 +1212,7 @@ namespace RealNews
                     foreach (var i in imgs)
                     {
                         string key = i.Replace(_localhostimageurl, "");
-                        string url = "http://" + key;
+                        string url = "https://" + key;
                         err = DownloadImage(key, url);
                     }
                     Thread.Sleep(4000);
@@ -1377,9 +1376,27 @@ namespace RealNews
                 e.SuppressKeyPress = true;
         }
 
-        private void listView1_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //var s = File.ReadAllText("d:/pp.xml");
 
+
+
+            ////var r = System.ServiceModel.Syndication.SyndicationFeed.Load(System.Xml.XmlReader.Create(new StringReader(s)));
+
+            ////foreach (var i in r.Items)
+            ////{
+
+            ////}
+
+
+
+            //var reader = FeedReader.ReadFromString(s);
+            //List<FeedItem> list = new List<FeedItem>();
+            //foreach (var item in reader.Items)
+            //{
+            //}
         }
+        #endregion
     }
 }

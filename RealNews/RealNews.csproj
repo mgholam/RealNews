@@ -16,13 +16,13 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\output\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_3</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,11 +44,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -62,6 +61,56 @@
     </Compile>
     <Compile Include="CoreWebServer.cs" />
     <Compile Include="Entities.cs" />
+    <Compile Include="feedreader\Extensions.cs" />
+    <Compile Include="feedreader\Feed.cs" />
+    <Compile Include="feedreader\FeedItem.cs" />
+    <Compile Include="feedreader\FeedReader.cs" />
+    <Compile Include="feedreader\Feeds\0.91\Rss091Feed.cs" />
+    <Compile Include="feedreader\Feeds\0.91\Rss091FeedImage.cs" />
+    <Compile Include="feedreader\Feeds\0.91\Rss091FeedItem.cs" />
+    <Compile Include="feedreader\Feeds\0.92\Rss092Feed.cs" />
+    <Compile Include="feedreader\Feeds\0.92\Rss092FeedImage.cs" />
+    <Compile Include="feedreader\Feeds\0.92\Rss092FeedItem.cs" />
+    <Compile Include="feedreader\Feeds\1.0\Rss10Feed.cs" />
+    <Compile Include="feedreader\Feeds\1.0\Rss10FeedImage.cs" />
+    <Compile Include="feedreader\Feeds\1.0\Rss10FeedItem.cs" />
+    <Compile Include="feedreader\Feeds\1.0\Rss10FeedTextInput.cs" />
+    <Compile Include="feedreader\Feeds\2.0\Rss20Feed.cs" />
+    <Compile Include="feedreader\Feeds\2.0\Rss20FeedImage.cs" />
+    <Compile Include="feedreader\Feeds\2.0\Rss20FeedItem.cs" />
+    <Compile Include="feedreader\Feeds\Atom\AtomFeed.cs" />
+    <Compile Include="feedreader\Feeds\Atom\AtomFeedItem.cs" />
+    <Compile Include="feedreader\Feeds\Atom\AtomLink.cs" />
+    <Compile Include="feedreader\Feeds\Atom\AtomPerson.cs" />
+    <Compile Include="feedreader\Feeds\Base\BaseFeed.cs" />
+    <Compile Include="feedreader\Feeds\Base\BaseFeedItem.cs" />
+    <Compile Include="feedreader\Feeds\Base\FeedCloud.cs" />
+    <Compile Include="feedreader\Feeds\Base\FeedImage.cs" />
+    <Compile Include="feedreader\Feeds\Base\FeedItemEnclosure.cs" />
+    <Compile Include="feedreader\Feeds\Base\FeedItemSource.cs" />
+    <Compile Include="feedreader\Feeds\Base\FeedTextInput.cs" />
+    <Compile Include="feedreader\Feeds\DublinCore.cs" />
+    <Compile Include="feedreader\Feeds\Itunes\ItunesCategory.cs" />
+    <Compile Include="feedreader\Feeds\Itunes\ItunesChannel.cs" />
+    <Compile Include="feedreader\Feeds\Itunes\ItunesExtensions.cs" />
+    <Compile Include="feedreader\Feeds\Itunes\ItunesImage.cs" />
+    <Compile Include="feedreader\Feeds\Itunes\ItunesItem.cs" />
+    <Compile Include="feedreader\Feeds\Itunes\ItunesOwner.cs" />
+    <Compile Include="feedreader\Feeds\Syndication.cs" />
+    <Compile Include="feedreader\FeedType.cs" />
+    <Compile Include="feedreader\Helpers.cs" />
+    <Compile Include="feedreader\HtmlFeedLink.cs" />
+    <Compile Include="feedreader\Parser\AbstractXmlFeedParser.cs" />
+    <Compile Include="feedreader\Parser\AtomParser.cs" />
+    <Compile Include="feedreader\Parser\Exceptions\FeedTypeNotSupportedException.cs" />
+    <Compile Include="feedreader\Parser\Exceptions\InvalidFeedLinkException.cs" />
+    <Compile Include="feedreader\Parser\Factory.cs" />
+    <Compile Include="feedreader\Parser\FeedParser.cs" />
+    <Compile Include="feedreader\Parser\IFeedParser.cs" />
+    <Compile Include="feedreader\Parser\Rss091Parser.cs" />
+    <Compile Include="feedreader\Parser\Rss092Parser.cs" />
+    <Compile Include="feedreader\Parser\Rss10Parser.cs" />
+    <Compile Include="feedreader\Parser\Rss20Parser.cs" />
     <Compile Include="frmLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +135,26 @@
     <Compile Include="frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="HtmlAgilityPack\crc32.cs" />
+    <Compile Include="HtmlAgilityPack\EncodingFoundException.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlAttribute.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlAttributeCollection.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlCommentNode.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlDocument.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlElementFlag.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlEntity.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlNameTable.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlNode.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlNode.Xpath.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlNodeCollection.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlNodeNavigator.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlNodeType.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlParseError.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlParseErrorCode.cs" />
+    <Compile Include="HtmlAgilityPack\HtmlTextNode.cs" />
+    <Compile Include="HtmlAgilityPack\NameValuePair.cs" />
+    <Compile Include="HtmlAgilityPack\NameValuePairList.cs" />
+    <Compile Include="HtmlAgilityPack\Utilities.cs" />
     <Compile Include="HtmlSanitizer.cs" />
     <Compile Include="ImageCache.cs" />
     <Compile Include="Logger.cs" />
@@ -103,6 +172,7 @@
     <Compile Include="Renderer\OfficeColorTable.cs" />
     <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ZipStorer.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
@@ -154,20 +224,16 @@
   <ItemGroup>
     <Content Include="app.ico" />
     <None Include="Resources\star.png" />
+    <None Include="Resources\downloadimgs.ico" />
+    <None Include="Resources\settings.ico" />
+    <None Include="Resources\rss_add.ico" />
+    <None Include="Resources\rss_edit.ico" />
+    <None Include="Resources\refresh.ico" />
+    <None Include="Resources\next.ico" />
+    <None Include="Resources\logs.ico" />
+    <None Include="Resources\Shutdown%284%29.ico" />
     <Content Include="Resources\tray.ico" />
     <Content Include="Resources\trayhighlight.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FeedReader\FeedReader.csproj">
-      <Project>{d5ebea1b-85af-4027-9f85-87aabd5a8610}</Project>
-      <Name>FeedReader</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\HtmlAgilityPackMin\HtmlAgilityPackMin.csproj">
-      <Project>{c1249498-c665-47da-8e18-143ff74f75a4}</Project>
-      <Name>HtmlAgilityPackMin</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
