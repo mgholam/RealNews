@@ -166,6 +166,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RealNewsWeb.cs" />
     <Compile Include="Renderer\Office2007BlackColorTable.cs" />
     <Compile Include="Renderer\Office2007Rendererbse.cs" />
@@ -190,14 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -232,6 +232,16 @@
     <None Include="Resources\next.ico" />
     <None Include="Resources\logs.ico" />
     <None Include="Resources\Shutdown%284%29.ico" />
+    <None Include="Resources\EyeSlash.png" />
+    <None Include="Resources\Star1.png" />
+    <None Include="Resources\PowerOff.png" />
+    <None Include="Resources\Eye.png" />
+    <None Include="Resources\Edit.png" />
+    <None Include="Resources\Image.png" />
+    <None Include="Resources\Image1.png" />
+    <None Include="Resources\Cog.png" />
+    <None Include="Resources\FileTextO.png" />
+    <None Include="Resources\Rss.png" />
     <Content Include="Resources\tray.ico" />
     <Content Include="Resources\trayhighlight.ico" />
   </ItemGroup>

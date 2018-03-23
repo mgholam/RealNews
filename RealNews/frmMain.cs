@@ -967,6 +967,8 @@ namespace RealNews
 
         private void ToggleStarred()
         {
+            if (listView1.FocusedItem == null)
+                return;
             // toggle star
             var f = listView1.FocusedItem.Tag as FeedItem;
             if (f != null)

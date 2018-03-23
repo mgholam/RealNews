@@ -31,9 +31,13 @@ namespace RealNews
             handler.Add("image", ctx =>
             {
                 string gstr = ctx.Request.Url.GetComponents(UriComponents.Query, UriFormat.Unescaped);
-                var o = _imgcache.Get(gstr);
-                if (o == null)
-                    o = Properties.Resources.notfound;
+                byte[] o = Properties.Resources.notfound;
+                if (_imgcache.Contains(gstr))
+                {
+                    o = _imgcache.Get(gstr);
+                    if (o == null)
+                        o = Properties.Resources.notfound;
+                }
                 WriteResponse(ctx, 200, o, false);
             });
         }
@@ -49,7 +53,7 @@ namespace RealNews
             {
                 OutPutContentType(ctx, ".png");
                 var ms = new MemoryStream();
-                Properties.Resources.star.Save(ms, ImageFormat.Png);
+                Properties.Resources.Star.Save(ms, ImageFormat.Png);
                 WriteResponse(ctx, 200, ms.ToArray(),false);
             }
             else

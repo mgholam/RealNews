@@ -39,6 +39,7 @@
             this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -71,7 +72,6 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -145,6 +145,7 @@
             // 
             // markAsReadToolStripMenuItem
             // 
+            this.markAsReadToolStripMenuItem.Image = global::RealNews.Properties.Resources.Eye;
             this.markAsReadToolStripMenuItem.Name = "markAsReadToolStripMenuItem";
             this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.markAsReadToolStripMenuItem.Text = "Mark as read";
@@ -170,7 +171,7 @@
             // 
             // editFeedToolStripMenuItem
             // 
-            this.editFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.rss_edit;
+            this.editFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
             this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.editFeedToolStripMenuItem.Text = "Edit Feed";
@@ -192,6 +193,24 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(340, 26);
             this.panel1.TabIndex = 1;
+            // 
+            // placeHolderTextBox1
+            // 
+            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
+            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolderTextBox1.Multiline = true;
+            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
+            this.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.placeHolderTextBox1.Size = new System.Drawing.Size(314, 24);
+            this.placeHolderTextBox1.TabIndex = 1;
+            this.placeHolderTextBox1.Text = "Search...";
+            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
+            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // button1
             // 
@@ -262,11 +281,11 @@
             this.markUnreadToolStripMenuItem,
             this.downloadImagesToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(170, 70);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(170, 92);
             // 
             // toggleStarToolStripMenuItem
             // 
-            this.toggleStarToolStripMenuItem.Image = global::RealNews.Properties.Resources.star;
+            this.toggleStarToolStripMenuItem.Image = global::RealNews.Properties.Resources.Star;
             this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
             this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.toggleStarToolStripMenuItem.Text = "Toggle Star";
@@ -274,6 +293,7 @@
             // 
             // markUnreadToolStripMenuItem
             // 
+            this.markUnreadToolStripMenuItem.Image = global::RealNews.Properties.Resources.EyeSlash;
             this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
             this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.markUnreadToolStripMenuItem.Text = "Mark Unread";
@@ -281,7 +301,7 @@
             // 
             // downloadImagesToolStripMenuItem
             // 
-            this.downloadImagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.downloadimgs;
+            this.downloadImagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.Image1;
             this.downloadImagesToolStripMenuItem.Name = "downloadImagesToolStripMenuItem";
             this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.downloadImagesToolStripMenuItem.Text = "Download Images";
@@ -326,7 +346,7 @@
             // 
             // addNewFeedToolStripMenuItem
             // 
-            this.addNewFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.rss_add;
+            this.addNewFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.addNewFeedToolStripMenuItem.Name = "addNewFeedToolStripMenuItem";
             this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.addNewFeedToolStripMenuItem.Text = "Add New Feed";
@@ -341,7 +361,7 @@
             // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Image = global::RealNews.Properties.Resources.Shutdown_4_;
+            this.exitToolStripMenuItem.Image = global::RealNews.Properties.Resources.PowerOff;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitToolStripMenuItem.Text = "Exit";
@@ -375,7 +395,7 @@
             // 
             // settingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.Image = global::RealNews.Properties.Resources.settings;
+            this.settingsToolStripMenuItem.Image = global::RealNews.Properties.Resources.Cog;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -383,7 +403,7 @@
             // 
             // logMessagesToolStripMenuItem
             // 
-            this.logMessagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.logs;
+            this.logMessagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.FileTextO;
             this.logMessagesToolStripMenuItem.Name = "logMessagesToolStripMenuItem";
             this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.logMessagesToolStripMenuItem.Text = "Log messages";
@@ -400,7 +420,7 @@
             // starToolStripMenuItem
             // 
             this.starToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.starToolStripMenuItem.Image = global::RealNews.Properties.Resources.star;
+            this.starToolStripMenuItem.Image = global::RealNews.Properties.Resources.Star;
             this.starToolStripMenuItem.Name = "starToolStripMenuItem";
             this.starToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.starToolStripMenuItem.Text = "Toggle Star";
@@ -416,8 +436,9 @@
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.editToolStripMenuItem.Image = global::RealNews.Properties.Resources.Edit;
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
@@ -484,28 +505,11 @@
             // 
             // exitToolStripMenuItem1
             // 
+            this.exitToolStripMenuItem1.Image = global::RealNews.Properties.Resources.PowerOff;
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
-            // 
-            // placeHolderTextBox1
-            // 
-            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
-            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolderTextBox1.Multiline = true;
-            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
-            this.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.placeHolderTextBox1.Size = new System.Drawing.Size(314, 24);
-            this.placeHolderTextBox1.TabIndex = 1;
-            this.placeHolderTextBox1.Text = "Search...";
-            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
-            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // frmMain
             // 

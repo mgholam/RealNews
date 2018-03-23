@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealNews", "RealNews\RealNews.csproj", "{20C9CF96-5C3B-4AD9-8A48-7DC174B184C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedReader", "FeedReader\FeedReader.csproj", "{D5EBEA1B-85AF-4027-9F85-87AABD5A8610}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlAgilityPackMin", "HtmlAgilityPackMin\HtmlAgilityPackMin.csproj", "{C1249498-C665-47DA-8E18-143FF74F75A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +15,6 @@ Global
 		{20C9CF96-5C3B-4AD9-8A48-7DC174B184C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C9CF96-5C3B-4AD9-8A48-7DC174B184C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C9CF96-5C3B-4AD9-8A48-7DC174B184C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5EBEA1B-85AF-4027-9F85-87AABD5A8610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5EBEA1B-85AF-4027-9F85-87AABD5A8610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5EBEA1B-85AF-4027-9F85-87AABD5A8610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5EBEA1B-85AF-4027-9F85-87AABD5A8610}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1249498-C665-47DA-8E18-143FF74F75A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1249498-C665-47DA-8E18-143FF74F75A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1249498-C665-47DA-8E18-143FF74F75A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1249498-C665-47DA-8E18-143FF74F75A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using static RaptorDB.Common.ZipStorer;
 
 namespace RealNews
 {
@@ -7,7 +10,9 @@ namespace RealNews
         public ImageCache()
         {
         }
-        // fix : zip images  
+        // fix : zip images 
+
+        ConcurrentDictionary<string, List<ZipFileEntry>> _ziplookup = new ConcurrentDictionary<string, List<ZipFileEntry>>();
 
         public class urlhash
         {
@@ -63,23 +68,29 @@ namespace RealNews
 
             var key = FixName(url);
 
-            if (File.Exists(_path + key.fn)) return true;
+            if (File.Exists(_path + key.fn))
+                return true;
             else
             {
                 // check zip 
                 if (File.Exists(_path + key.folder + "\\cache.zip"))
                 {
-                    try
+                    if (_ziplookup.ContainsKey(key.folder) == false)
                     {
                         using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + "\\cache.zip", FileAccess.Read))
                         {
-                            var ze = zf.ReadCentralDir().Find(x => key.fn.EndsWith(x.FilenameInZip));
-                            if (ze.FilenameInZip != null)
-                                return true;
+                            _ziplookup.TryAdd(key.folder, zf.ReadCentralDir());
                         }
                     }
-                    catch { }
+                    _ziplookup.TryGetValue(key.folder, out List<ZipFileEntry> l);
+                    if (l != null)
+                    {
+                        var ze = l.Find(x => key.fn.EndsWith(x.FilenameInZip));
+                        if (ze.FilenameInZip != null)
+                            return true;
+                    }
                 }
+
                 return false;
             }
         }
