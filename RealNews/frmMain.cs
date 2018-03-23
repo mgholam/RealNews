@@ -614,7 +614,7 @@ namespace RealNews
 
             StringBuilder sb = new StringBuilder();
             sb.Append("<html");
-            if (_currentFeed.RTL)
+            if (item.RTL)// _currentFeed.RTL)
                 sb.Append(" dir='rtl'>"); // get if rtl
             else
                 sb.AppendLine(">");
@@ -852,6 +852,7 @@ namespace RealNews
                             _feeditems.TryAdd(feed.Title, list);
                         }
                     }
+                    list.ForEach(x => x.RTL = feed.RTL);
                     listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
                     listView1.RightToLeftLayout = feed.RTL;
                     ShowFeedList(list);
@@ -863,63 +864,66 @@ namespace RealNews
 
             }
         }
-
+        private object _fllock = new object();
         private void ShowFeedList(List<FeedItem> list)
         {
-            listView1.Items.Clear();
-            listView1.View = View.Details;
-
-            if (list != null)
+            lock (_fllock)
             {
-                _currentList = list;
-                listView1.SuspendLayout();
-                listView1.BeginUpdate();
-                listView1.Groups.Clear();
-                listView1.ListViewItemSorter = null;
-                var today = new ListViewGroup("Today");
-                today.HeaderAlignment = HorizontalAlignment.Left;
-                var yesterday = new ListViewGroup("Yesterday");
-                yesterday.HeaderAlignment = HorizontalAlignment.Left;
-                var thisweek = new ListViewGroup("This Week");
-                thisweek.HeaderAlignment = HorizontalAlignment.Left;
-                var older = new ListViewGroup("Older");
-                older.HeaderAlignment = HorizontalAlignment.Left;
+                listView1.Items.Clear();
+                listView1.View = View.Details;
 
-                listView1.Groups.Add(today);
-                listView1.Groups.Add(yesterday);
-                listView1.Groups.Add(thisweek);
-                listView1.Groups.Add(older);
-                listView1.ShowGroups = true;
-                List<ListViewItem> a = new List<ListViewItem>();
-                foreach (var i in list)
+                if (list != null)
                 {
-                    var lvi = new ListViewItem();
-                    lvi.Name = "Title";
-                    lvi.Text = i.Title;
-                    lvi.Tag = i;
-                    //lvi.SubItems.Add(i.date.ToString());
-                    var grp = today;
-                    var d = DateTime.Now.Subtract(i.date).TotalDays;
-                    if (d < 1)
-                        grp = today;
-                    else if (d >= 1 & d < 2)
-                        grp = yesterday;
-                    else if (d >= 2 && d < 7)
-                        grp = thisweek;
-                    else
-                        grp = older;
-                    lvi.Group = grp;
-                    if (i.isRead == false)
-                        lvi.Font = new Font(listView1.Font, FontStyle.Bold);
-                    else
-                        lvi.Font = listView1.Font;
-                    a.Add(lvi);
-                    //listView1.Items.Add(lvi);
+                    _currentList = list;
+                    listView1.SuspendLayout();
+                    listView1.BeginUpdate();
+                    listView1.Groups.Clear();
+                    listView1.ListViewItemSorter = null;
+                    var today = new ListViewGroup("Today");
+                    today.HeaderAlignment = HorizontalAlignment.Left;
+                    var yesterday = new ListViewGroup("Yesterday");
+                    yesterday.HeaderAlignment = HorizontalAlignment.Left;
+                    var thisweek = new ListViewGroup("This Week");
+                    thisweek.HeaderAlignment = HorizontalAlignment.Left;
+                    var older = new ListViewGroup("Older");
+                    older.HeaderAlignment = HorizontalAlignment.Left;
+
+                    listView1.Groups.Add(today);
+                    listView1.Groups.Add(yesterday);
+                    listView1.Groups.Add(thisweek);
+                    listView1.Groups.Add(older);
+                    listView1.ShowGroups = true;
+                    List<ListViewItem> a = new List<ListViewItem>();
+                    foreach (var i in list)
+                    {
+                        var lvi = new ListViewItem();
+                        lvi.Name = "Title";
+                        lvi.Text = i.Title;
+                        lvi.Tag = i;
+                        //lvi.SubItems.Add(i.date.ToString());
+                        var grp = today;
+                        var d = DateTime.Now.Subtract(i.date).TotalDays;
+                        if (d < 1)
+                            grp = today;
+                        else if (d >= 1 & d < 2)
+                            grp = yesterday;
+                        else if (d >= 2 && d < 7)
+                            grp = thisweek;
+                        else
+                            grp = older;
+                        lvi.Group = grp;
+                        if (i.isRead == false)
+                            lvi.Font = new Font(listView1.Font, FontStyle.Bold);
+                        else
+                            lvi.Font = listView1.Font;
+                        a.Add(lvi);
+                        //listView1.Items.Add(lvi);
+                    }
+                    listView1.Items.AddRange(a.ToArray());
+                    listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                    listView1.EndUpdate();
+                    listView1.ResumeLayout();
                 }
-                listView1.Items.AddRange(a.ToArray());
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listView1.EndUpdate();
-                listView1.ResumeLayout();
             }
         }
 

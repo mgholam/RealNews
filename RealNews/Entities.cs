@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace RealNews
 {
@@ -34,7 +35,9 @@ namespace RealNews
         public string Attachment;
 
         public bool isRead = false;
-        public bool isStarred = false; 
+        public bool isStarred = false;
+        [XmlIgnore]
+        public bool RTL = false;
     }
 
     class FeedItemComparer : IEqualityComparer<FeedItem>
