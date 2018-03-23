@@ -281,7 +281,7 @@
             this.markUnreadToolStripMenuItem,
             this.downloadImagesToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(170, 92);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(170, 70);
             // 
             // toggleStarToolStripMenuItem
             // 
@@ -388,6 +388,7 @@
             // 
             // cleanupToolStripMenuItem1
             // 
+            this.cleanupToolStripMenuItem1.Image = global::RealNews.Properties.Resources.TrashO;
             this.cleanupToolStripMenuItem1.Name = "cleanupToolStripMenuItem1";
             this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.cleanupToolStripMenuItem1.Text = "Cleanup";
