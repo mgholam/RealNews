@@ -10,7 +10,6 @@ namespace RealNews
         public ImageCache()
         {
         }
-        // fix : zip images 
 
         ConcurrentDictionary<string, List<ZipFileEntry>> _ziplookup = new ConcurrentDictionary<string, List<ZipFileEntry>>();
 
@@ -73,11 +72,11 @@ namespace RealNews
             else
             {
                 // check zip 
-                if (File.Exists(_path + key.folder + "\\cache.zip"))
+                if (File.Exists(_path + key.folder + ".zip"))
                 {
                     if (_ziplookup.ContainsKey(key.folder) == false)
                     {
-                        using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + "\\cache.zip", FileAccess.Read))
+                        using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + ".zip", FileAccess.Read))
                         {
                             _ziplookup.TryAdd(key.folder, zf.ReadCentralDir());
                         }
@@ -106,11 +105,11 @@ namespace RealNews
                 return File.ReadAllBytes(_path + key.fn);
             else
             {
-                if (File.Exists(_path + key.folder + "\\cache.zip"))
+                if (File.Exists(_path + key.folder + ".zip"))
                 {
                     try
                     {
-                        using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + "\\cache.zip", FileAccess.Read))
+                        using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + ".zip", FileAccess.Read))
                         {
                             var ze = zf.ReadCentralDir().Find(x => key.fn.EndsWith(x.FilenameInZip));
                             if (ze.FilenameInZip != null)

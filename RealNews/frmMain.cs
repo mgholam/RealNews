@@ -121,8 +121,8 @@ namespace RealNews
                     int tot = _downloadimglist.Count;
                     Invoke(() =>
                     {
-                        toolProgressBar.Maximum = tot;
                         toolProgressBar.Value = 0;
+                        toolProgressBar.Maximum = tot;
                         toolProgressBar.Visible = true;
                     });
 
@@ -1469,5 +1469,27 @@ namespace RealNews
         }
         #endregion
 
+        private object _zlock = new object();
+        private void compressImageCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lock (_zlock)
+            {
+                // compress image cache
+                var dirs = Directory.GetDirectories("cache");
+                toolProgressBar.Value = 0;
+                toolProgressBar.Maximum = dirs.Length;
+                foreach (var dir in dirs)
+                {
+                    toolProgressBar.Visible = true;
+                    toolProgressBar.Value++;
+                    RaptorDB.Common.ZIP.Compress(dir + ".zip", dir, false, Log);
+                    foreach (var f in Directory.GetFiles(dir, "*.jpg"))
+                        File.Delete(f);
+                    Application.DoEvents();
+                }
+                Log("Compress images done.");
+                toolProgressBar.Visible = false;
+            }
+        }
     }
 }

@@ -243,6 +243,7 @@
     <None Include="Resources\FileTextO.png" />
     <None Include="Resources\Rss.png" />
     <None Include="Resources\TrashO.png" />
+    <None Include="Resources\Compress.png" />
     <Content Include="Resources\tray.ico" />
     <Content Include="Resources\trayhighlight.ico" />
   </ItemGroup>
