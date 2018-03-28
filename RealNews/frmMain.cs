@@ -324,7 +324,7 @@ namespace RealNews
             }
             if (_feeds.Count > 0)
             {
-                _currentFeed = _feeds[0];
+                //_currentFeed = _feeds[0];
                 UpdateStarCount();
                 UpdateFeedCount();
             }
@@ -375,8 +375,8 @@ namespace RealNews
             var r = new BSE.Windows.Forms.Office2007Renderer(new BSE.Windows.Forms.Office2007BlackColorTable());
             menuStrip1.Renderer = r;
             statusStrip1.Renderer = r;
-            contextMenuStrip1.Renderer = r;
-            contextMenuStrip2.Renderer = r;
+            feedContextMenu.Renderer = r;
+            itemContextMenu.Renderer = r;
             this.Invalidate();
         }
 
@@ -655,6 +655,7 @@ namespace RealNews
 
         private void UpdateStarCount()
         {
+            treeView1.SuspendLayout();
             treeView1.BeginUpdate();
 
             var ur = treeView1.Nodes.Find("Starred", true);
@@ -673,6 +674,7 @@ namespace RealNews
                 }
             }
             treeView1.EndUpdate();
+            treeView1.ResumeLayout();
         }
 
         private void UpdateFeedCount(Feed feed)
@@ -692,9 +694,11 @@ namespace RealNews
         {
             try
             {
-                if (feed == null || list == null)
-                    return;
+                //if (feed == null || list == null)
+                //    return;
+                treeView1.SuspendLayout();
                 treeView1.BeginUpdate();
+
                 if (list != null)
                 {
                     feed.UnreadCount = list.Count(x => x.isRead == false);
@@ -739,6 +743,7 @@ namespace RealNews
                     }
                 }
                 treeView1.EndUpdate();
+                treeView1.ResumeLayout();
             }
             catch //(Exception ex)
             {
@@ -869,15 +874,15 @@ namespace RealNews
         {
             lock (_fllock)
             {
-                listView1.Items.Clear();
-                listView1.View = View.Details;
-
                 if (list != null)
                 {
                     _currentList = list;
                     listView1.SuspendLayout();
                     listView1.BeginUpdate();
+
+                    listView1.Items.Clear();
                     listView1.Groups.Clear();
+                    listView1.View = View.Details;
                     listView1.ListViewItemSorter = null;
                     var today = new ListViewGroup("Today");
                     today.HeaderAlignment = HorizontalAlignment.Left;
@@ -1253,7 +1258,7 @@ namespace RealNews
 
         private void cleanupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // cleanup old items
+            // global cleanup old items
             int c = 0;
             foreach (var f in _feeditems)
                 c += f.Value.Count(x =>
@@ -1403,6 +1408,66 @@ namespace RealNews
             //{
             //}
         }
+
+        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontDialog fd = new FontDialog();
+            fd.Font = this.Font;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                this.Font = fd.Font;
+            }
+        }
+
+        private void cleanupToolStripMenuItem_Click_2(object sender, EventArgs e)
+        {
+            // feed cleanup old items
+            if (treeView1.SelectedNode == null || treeView1.SelectedNode.Tag == null)
+                return;
+
+            var feed = treeView1.SelectedNode.Tag as Feed;
+            var f = _feeditems[feed.Title];
+            int c = f.Count(x =>
+                    DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
+                    && x.isStarred == false
+                    && x.isRead == true);
+            if (c == 0)
+            {
+                MessageBox.Show("No items to remove.");
+                return;
+            }
+            var r = MessageBox.Show($"Do you want to remove {c} items from {feed.Title}?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+            if (r == DialogResult.Yes)
+            {
+                // FEATURE : cleanup -> remove images from cache also
+                f.RemoveAll(x =>
+                   DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
+                   && x.isStarred == false
+                   && x.isRead == true);
+                File.WriteAllText(GetFeedFilename(feed.Title), JSON.ToNiceJSON(f, jp));
+
+                UpdateFeedCount();
+                ShowFeedList(feed);
+            }
+        }
+
+        private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // fix : download images for feed now
+
+            if (treeView1.SelectedNode == null || treeView1.SelectedNode.Tag == null)
+                return;
+
+            var feed = treeView1.SelectedNode.Tag as Feed;
+            var f = _feeditems[feed.Title];
+
+            var r = MessageBox.Show($"Do you want to download images for {feed.Title} now?", "Download Images", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+            if (r == DialogResult.Yes)
+            {
+
+            }
+        }
         #endregion
+
     }
 }

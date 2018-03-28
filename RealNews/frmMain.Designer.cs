@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.feedContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.markAsReadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.updateNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,12 +39,11 @@
             this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itemContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleStarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.markUnreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +58,7 @@
             this.cleanupToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,17 +72,21 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.placeHolderTextBox1 = new PlaceHolderTextBox();
+            this.downloadImagesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.feedContextMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
+            this.itemContextMenu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.trayMenu.SuspendLayout();
@@ -103,7 +107,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1021, 508);
+            this.splitContainer1.Size = new System.Drawing.Size(1021, 587);
             this.splitContainer1.SplitterDistance = 340;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
@@ -113,7 +117,7 @@
             // 
             this.treeView1.BackColor = System.Drawing.Color.White;
             this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
+            this.treeView1.ContextMenuStrip = this.feedContextMenu;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.ForeColor = System.Drawing.Color.Black;
             this.treeView1.FullRowSelect = true;
@@ -122,58 +126,61 @@
             this.treeView1.ImageList = this.rssImages;
             this.treeView1.Indent = 23;
             this.treeView1.ItemHeight = 20;
-            this.treeView1.Location = new System.Drawing.Point(0, 26);
+            this.treeView1.Location = new System.Drawing.Point(0, 29);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowLines = false;
-            this.treeView1.Size = new System.Drawing.Size(340, 482);
+            this.treeView1.Size = new System.Drawing.Size(340, 558);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
-            // contextMenuStrip1
+            // feedContextMenu
             // 
-            this.contextMenuStrip1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.feedContextMenu.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.feedContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.markAsReadToolStripMenuItem,
+            this.downloadImagesToolStripMenuItem1,
             this.toolStripMenuItem1,
             this.updateNowToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.editFeedToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(143, 82);
+            this.editFeedToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.cleanupToolStripMenuItem});
+            this.feedContextMenu.Name = "contextMenuStrip1";
+            this.feedContextMenu.Size = new System.Drawing.Size(172, 154);
             // 
             // markAsReadToolStripMenuItem
             // 
             this.markAsReadToolStripMenuItem.Image = global::RealNews.Properties.Resources.Eye;
             this.markAsReadToolStripMenuItem.Name = "markAsReadToolStripMenuItem";
-            this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.markAsReadToolStripMenuItem.Text = "Mark as read";
             this.markAsReadToolStripMenuItem.Click += new System.EventHandler(this.markAsReadToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(139, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(168, 6);
             // 
             // updateNowToolStripMenuItem
             // 
             this.updateNowToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
             this.updateNowToolStripMenuItem.Name = "updateNowToolStripMenuItem";
-            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.updateNowToolStripMenuItem.Text = "Update now";
             this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(139, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(168, 6);
             // 
             // editFeedToolStripMenuItem
             // 
             this.editFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
-            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.editFeedToolStripMenuItem.Text = "Edit Feed";
             this.editFeedToolStripMenuItem.Click += new System.EventHandler(this.editFeedToolStripMenuItem_Click);
             // 
@@ -191,26 +198,8 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(340, 26);
+            this.panel1.Size = new System.Drawing.Size(340, 29);
             this.panel1.TabIndex = 1;
-            // 
-            // placeHolderTextBox1
-            // 
-            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
-            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolderTextBox1.Multiline = true;
-            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
-            this.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.placeHolderTextBox1.Size = new System.Drawing.Size(314, 24);
-            this.placeHolderTextBox1.TabIndex = 1;
-            this.placeHolderTextBox1.Text = "Search...";
-            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
-            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // button1
             // 
@@ -220,9 +209,9 @@
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(314, 0);
+            this.button1.Location = new System.Drawing.Point(312, 0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 24);
+            this.button1.Size = new System.Drawing.Size(26, 27);
             this.button1.TabIndex = 0;
             this.button1.Text = "X";
             this.button1.UseVisualStyleBackColor = false;
@@ -242,7 +231,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.webBrowser1);
-            this.splitContainer2.Size = new System.Drawing.Size(678, 508);
+            this.splitContainer2.Size = new System.Drawing.Size(678, 587);
             this.splitContainer2.SplitterDistance = 225;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
@@ -254,7 +243,7 @@
             this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.listView1.ContextMenuStrip = this.contextMenuStrip2;
+            this.listView1.ContextMenuStrip = this.itemContextMenu;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.ForeColor = System.Drawing.Color.Black;
             this.listView1.FullRowSelect = true;
@@ -263,7 +252,7 @@
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(223, 506);
+            this.listView1.Size = new System.Drawing.Size(223, 585);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -274,14 +263,14 @@
             // 
             this.columnHeader1.Text = "Title";
             // 
-            // contextMenuStrip2
+            // itemContextMenu
             // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toggleStarToolStripMenuItem,
             this.markUnreadToolStripMenuItem,
             this.downloadImagesToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(170, 70);
+            this.itemContextMenu.Name = "contextMenuStrip2";
+            this.itemContextMenu.Size = new System.Drawing.Size(170, 70);
             // 
             // toggleStarToolStripMenuItem
             // 
@@ -311,9 +300,9 @@
             // 
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 22);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 25);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(446, 506);
+            this.webBrowser1.Size = new System.Drawing.Size(446, 585);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
             // 
@@ -381,7 +370,8 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cleanupToolStripMenuItem1,
             this.settingsToolStripMenuItem,
-            this.logMessagesToolStripMenuItem});
+            this.logMessagesToolStripMenuItem,
+            this.fontToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -390,7 +380,7 @@
             // 
             this.cleanupToolStripMenuItem1.Image = global::RealNews.Properties.Resources.TrashO;
             this.cleanupToolStripMenuItem1.Name = "cleanupToolStripMenuItem1";
-            this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.cleanupToolStripMenuItem1.Size = new System.Drawing.Size(150, 22);
             this.cleanupToolStripMenuItem1.Text = "Cleanup";
             this.cleanupToolStripMenuItem1.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click);
             // 
@@ -398,7 +388,7 @@
             // 
             this.settingsToolStripMenuItem.Image = global::RealNews.Properties.Resources.Cog;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -406,9 +396,17 @@
             // 
             this.logMessagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.FileTextO;
             this.logMessagesToolStripMenuItem.Name = "logMessagesToolStripMenuItem";
-            this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.logMessagesToolStripMenuItem.Text = "Log messages";
             this.logMessagesToolStripMenuItem.Click += new System.EventHandler(this.logMessagesToolStripMenuItem_Click);
+            // 
+            // fontToolStripMenuItem
+            // 
+            this.fontToolStripMenuItem.Name = "fontToolStripMenuItem";
+            this.fontToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.fontToolStripMenuItem.Text = "font";
+            this.fontToolStripMenuItem.Visible = false;
+            this.fontToolStripMenuItem.Click += new System.EventHandler(this.fontToolStripMenuItem_Click);
             // 
             // updateAllToolStripMenuItem
             // 
@@ -450,7 +448,7 @@
             this.toolProgressBar,
             this.toolCount,
             this.toolMessage});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 532);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 611);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1021, 23);
             this.statusStrip1.TabIndex = 2;
@@ -512,15 +510,54 @@
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
+            // cleanupToolStripMenuItem
+            // 
+            this.cleanupToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
+            this.cleanupToolStripMenuItem.Name = "cleanupToolStripMenuItem";
+            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.cleanupToolStripMenuItem.Text = "Cleanup";
+            this.cleanupToolStripMenuItem.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click_2);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(168, 6);
+            // 
+            // placeHolderTextBox1
+            // 
+            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
+            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolderTextBox1.Multiline = true;
+            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
+            this.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
+            this.placeHolderTextBox1.TabIndex = 1;
+            this.placeHolderTextBox1.Text = "Search...";
+            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
+            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            // 
+            // downloadImagesToolStripMenuItem1
+            // 
+            this.downloadImagesToolStripMenuItem1.Image = global::RealNews.Properties.Resources.Image1;
+            this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
+            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.downloadImagesToolStripMenuItem1.Text = "Download Images";
+            this.downloadImagesToolStripMenuItem1.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem1_Click);
+            // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1021, 555);
+            this.ClientSize = new System.Drawing.Size(1021, 634);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = "Real News";
@@ -531,14 +568,14 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.feedContextMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.contextMenuStrip2.ResumeLayout(false);
+            this.itemContextMenu.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -562,7 +599,7 @@
         private System.Windows.Forms.ToolStripProgressBar toolProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel toolMessage;
         private System.Windows.Forms.ToolStripMenuItem updateAllToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip feedContextMenu;
         private System.Windows.Forms.ToolStripMenuItem markAsReadToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem updateNowToolStripMenuItem;
@@ -573,7 +610,7 @@
         private System.Windows.Forms.ToolStripMenuItem importOPMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editFeedToolStripMenuItem;
         private System.Windows.Forms.ImageList rssImages;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ContextMenuStrip itemContextMenu;
         private System.Windows.Forms.ToolStripMenuItem toggleStarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem markUnreadToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolCount;
@@ -595,6 +632,10 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         private PlaceHolderTextBox placeHolderTextBox1;
+        private System.Windows.Forms.ToolStripMenuItem fontToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem1;
     }
 }
 
