@@ -19,7 +19,6 @@ namespace RealNews
 {
     public partial class frmMain : Form
     {
-        // fix : cureent feed refresh on update 
         public frmMain()
         {
             InitializeComponent();
@@ -551,8 +550,12 @@ namespace RealNews
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
+                            
                         Invoke(() =>
                         {
+                            // cureent feed refresh on update 
+                            if (_currentFeed == f)
+                                ShowFeedList(f);
                             UpdateFeedCount(f);
                             toolCount.Text = $"{i++} of {c}";
                             toolProgressBar.Value = i;
