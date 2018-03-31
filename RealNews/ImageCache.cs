@@ -125,5 +125,10 @@ namespace RealNews
                 return null;
             }
         }
+
+        public void ClearLookup()
+        {
+            _ziplookup = new ConcurrentDictionary<string, List<ZipFileEntry>>();
+        }
     }
 }

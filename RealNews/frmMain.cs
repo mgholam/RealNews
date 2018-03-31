@@ -223,7 +223,6 @@ namespace RealNews
             lock (_minlock)
             {
                 var now = DateTime.Now;
-
                 if (now.Subtract(Settings.LastUpdateTime).TotalMinutes > Settings.GlobalUpdateEveryMin)
                 {
                     UpdateAll();
@@ -242,8 +241,6 @@ namespace RealNews
                             });
                     }
                 }
-                if (_currentFeed != null)
-                    ShowFeedList(_currentFeed);
 
                 // download images
                 var start = TimeSpan.Parse(Settings.StartDownloadImgTime);
@@ -1490,6 +1487,7 @@ namespace RealNews
                         File.Delete(f);
                     Application.DoEvents();
                 }
+                _imageCache.ClearLookup();
                 Log("Compress images done.");
                 toolProgressBar.Visible = false;
             }
