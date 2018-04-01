@@ -24,6 +24,7 @@ namespace RealNews
         private urlhash FixName(string url)
         {
             string fol = url.Substring(0, url.IndexOf('/'));
+            url = url.Replace("&amp;", "&");
 
             var r = new urlhash
             {

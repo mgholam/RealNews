@@ -176,6 +176,7 @@ namespace RealNews
         private string DownloadImage(string key, string url)
         {
             string err = "";
+            url = url.Replace("&amp;", "&");
 
             try
             {
@@ -424,6 +425,7 @@ namespace RealNews
                     Application.DoEvents();
                     mWebClient wc = new mWebClient();
                     feedxml = wc.DownloadString(feed.URL);
+                    //File.WriteAllText(GetFeedXmlFilename(feed), feedxml);
                     feed.LastUpdate = DateTime.Now;
                 }
                 catch (Exception ex)
@@ -938,20 +940,20 @@ namespace RealNews
         }
         private string GetFeedFilename(Feed f)
         {
-            return "feeds\\lists\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".list";
+            return "feeds\\lists\\" + GetFeedFilenameOnly(f) + ".list";
         }
         private string GetFeedFilename(string title)
         {
             return "feeds\\lists\\" + title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".list";
         }
-        //private string GetFeedXmlFilename(Feed f)
-        //{
-        //    return "feeds\\temp\\" + f.Title.Replace(':', ' ').Replace('/', ' ').Replace('\\', ' ') + ".xml";
-        //}
-        private string GetTempHTMLFilename(string title)
+        private string GetFeedXmlFilename(Feed f)
         {
-            return "feeds\\temp\\" + title + ".html";
+            return "feeds\\temp\\" + GetFeedFilenameOnly(f) + ".xml";
         }
+        //private string GetTempHTMLFilename(string title)
+        //{
+        //    return "feeds\\temp\\" + title + ".html";
+        //}
 
         private static void SetDoubleBuffering(System.Windows.Forms.Control control, bool value)
         {
