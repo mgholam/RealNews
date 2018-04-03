@@ -133,7 +133,13 @@ namespace RealNews
                             {
                                 _downloadimglist.TryDequeue(out string url);
                                 c++;
-                                downloadImageFile(url);
+                                var ret = downloadImageFile(url);
+
+                                if (ret != "")
+                                {
+                                    // fix : redo download
+                                    //    _downloadimglist.Enqueue(url);
+                                }
                                 Invoke(() =>
                                 {
                                     toolCount.Text = $"{_downloadimglist.Count} images left";
@@ -163,20 +169,23 @@ namespace RealNews
             }
         }
 
-        private void downloadImageFile(string url)
+        private string downloadImageFile(string url)
         {
             if (url == "" || url == null)
-                return;
+                return "";
 
             string key = url.Replace("http://", "").Replace("https://", "");
-
-            Log(DownloadImage(key, url));
+            var ret = DownloadImage(key, url);
+            Log(ret);
+            return ret;
         }
 
         private string DownloadImage(string key, string url)
         {
             string err = "";
-            url = url.Replace("&amp;", "&");
+            url = Uri.UnescapeDataString(url);
+            //url = url.Replace("&amp;", "&");
+            url = url.Replace("amp;", "");
 
             try
             {
@@ -549,7 +558,7 @@ namespace RealNews
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         UpdateFeed(f, Log);
-                            
+
                         Invoke(() =>
                         {
                             // cureent feed refresh on update 
@@ -1212,31 +1221,39 @@ namespace RealNews
             var f = listView1.FocusedItem.Tag as FeedItem;
             if (f != null)
             {
-                List<string> imgs = new List<string>();
-                foreach (var img in GetImagesInHTMLString(f.Description))
+                internalDownloadImage(f, true);
+            }
+        }
+
+        private void internalDownloadImage(FeedItem f, bool show)
+        {
+            List<string> imgs = new List<string>();
+            foreach (var img in GetImagesInHTMLString(f.Description))
+            {
+                var s = _imghrefregex.Match(img).Groups["href"].Value;
+                if (_imageCache.Contains(s) == false)
+                    imgs.Add(s);
+            }
+            Task.Factory.StartNew(() =>
+            {
+                string err = "";
+                foreach (var i in imgs)
                 {
-                    var s = _imghrefregex.Match(img).Groups["href"].Value;
-                    if (_imageCache.Contains(s) == false)
-                        imgs.Add(s);
+                    string key = i.Replace(_localhostimageurl, "");
+                    string url = "https://" + key;
+                    err = DownloadImage(key, url);
                 }
-                Task.Factory.StartNew(() =>
+                Thread.Sleep(4000);
+                if (show)
                 {
-                    string err = "";
-                    foreach (var i in imgs)
-                    {
-                        string key = i.Replace(_localhostimageurl, "");
-                        string url = "https://" + key;
-                        err = DownloadImage(key, url);
-                    }
-                    Thread.Sleep(4000);
                     Invoke(() =>
                     {
                         ShowItem(f);
                         if (err != "")
                             Log(err);
                     });
-                });
-            }
+                }
+            });
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -1453,20 +1470,30 @@ namespace RealNews
             }
         }
 
+        private object _dflock = new object();
         private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            // fix : download images for feed now
+            // download images for feed now
 
             if (treeView1.SelectedNode == null || treeView1.SelectedNode.Tag == null)
                 return;
-
-            var feed = treeView1.SelectedNode.Tag as Feed;
-            var f = _feeditems[feed.Title];
-
-            var r = MessageBox.Show($"Do you want to download images for {feed.Title} now?", "Download Images", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
-            if (r == DialogResult.Yes)
+            lock (_dflock)
             {
+                var feed = treeView1.SelectedNode.Tag as Feed;
+                var f = _feeditems[feed.Title];
 
+                var r = MessageBox.Show($"Do you want to download images for {feed.Title} now?", "Download Images", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (r == DialogResult.Yes)
+                {
+                    foreach (var i in f)
+                    {
+                        if (i.isRead == false)
+                        {
+                            internalDownloadImage(i, false);
+                        }
+                        Application.DoEvents();
+                    }
+                }
             }
         }
         #endregion
