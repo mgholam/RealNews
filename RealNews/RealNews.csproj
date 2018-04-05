@@ -53,13 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox1.cs">
+    <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox1.Designer.cs">
+    <Compile Include="Forms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="CoreWebServer.cs" />
+    <Compile Include="Helper\CoreWebServer.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="feedreader\Extensions.cs" />
     <Compile Include="feedreader\Feed.cs" />
@@ -111,10 +111,10 @@
     <Compile Include="feedreader\Parser\Rss092Parser.cs" />
     <Compile Include="feedreader\Parser\Rss10Parser.cs" />
     <Compile Include="feedreader\Parser\Rss20Parser.cs" />
-    <Compile Include="frmLog.cs">
+    <Compile Include="Forms\frmLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmLog.Designer.cs">
+    <Compile Include="Forms\frmLog.Designer.cs">
       <DependentUpon>frmLog.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.cs">
@@ -123,16 +123,16 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmFeed.cs">
+    <Compile Include="Forms\frmFeed.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmFeed.Designer.cs">
+    <Compile Include="Forms\frmFeed.Designer.cs">
       <DependentUpon>frmFeed.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmSettings.cs">
+    <Compile Include="Forms\frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettings.Designer.cs">
+    <Compile Include="Forms\frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlAgilityPack\crc32.cs" />
@@ -155,13 +155,13 @@
     <Compile Include="HtmlAgilityPack\NameValuePair.cs" />
     <Compile Include="HtmlAgilityPack\NameValuePairList.cs" />
     <Compile Include="HtmlAgilityPack\Utilities.cs" />
-    <Compile Include="HtmlSanitizer.cs" />
-    <Compile Include="ImageCache.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="mWebClient.cs">
+    <Compile Include="Helper\HtmlSanitizer.cs" />
+    <Compile Include="Helper\ImageCache.cs" />
+    <Compile Include="Helper\Logger.cs" />
+    <Compile Include="Forms\mWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="placeholdertextbox.cs">
+    <Compile Include="Forms\placeholdertextbox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
@@ -171,26 +171,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RealNewsWeb.cs" />
+    <Compile Include="Helper\RealNewsWeb.cs" />
     <Compile Include="Renderer\Office2007BlackColorTable.cs" />
     <Compile Include="Renderer\Office2007Rendererbse.cs" />
     <Compile Include="Renderer\OfficeColorTable.cs" />
     <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="ZipStorer.cs" />
-    <EmbeddedResource Include="AboutBox1.resx">
+    <Compile Include="Helper\ZipStorer.cs" />
+    <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmLog.resx">
+    <EmbeddedResource Include="Forms\frmLog.resx">
       <DependentUpon>frmLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmFeed.resx">
+    <EmbeddedResource Include="Forms\frmFeed.resx">
       <DependentUpon>frmFeed.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettings.resx">
+    <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -247,5 +247,6 @@
     <Content Include="Resources\tray.ico" />
     <Content Include="Resources\trayhighlight.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
