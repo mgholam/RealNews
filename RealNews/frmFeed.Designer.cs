@@ -43,6 +43,7 @@
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -95,6 +96,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.lblLastError);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.numUpdate);
@@ -195,6 +197,16 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(577, 76);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(90, 33);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Delete Feed";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // frmFeed
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -237,5 +249,6 @@
         private System.Windows.Forms.NumericUpDown numUpdate;
         private System.Windows.Forms.Label lblLastError;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button4;
     }
 }

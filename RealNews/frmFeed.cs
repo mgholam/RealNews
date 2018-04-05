@@ -75,5 +75,12 @@ namespace RealNews
                 return "";
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ret = null;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
     }
 }

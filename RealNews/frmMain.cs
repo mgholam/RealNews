@@ -135,10 +135,9 @@ namespace RealNews
                                 c++;
                                 var ret = downloadImageFile(url);
 
-                                if (ret != "")
+                                if (ret.Contains("timed out")) // retry if timed out
                                 {
-                                    // fix : redo download
-                                    //    _downloadimglist.Enqueue(url);
+                                    _downloadimglist.Enqueue(url);
                                 }
                                 Invoke(() =>
                                 {
@@ -202,8 +201,6 @@ namespace RealNews
                 {
                     mWebClient wc = new mWebClient();
                     wc.Timeout = 10000;
-                    //var b = wc.DownloadData(url);
-                    //_imageCache.Add(key, b);
                     wc.DownloadFileAsync(new Uri(url), _imageCache.GetFilename(key));
                 }
                 else
@@ -330,7 +327,6 @@ namespace RealNews
             }
             if (_feeds.Count > 0)
             {
-                //_currentFeed = _feeds[0];
                 UpdateStarCount();
                 UpdateFeedCount();
             }
@@ -503,7 +499,7 @@ namespace RealNews
 
                 foreach (var img in imgs)
                 {
-                    if (img.StartsWith("http://"))  // FEATURE : upercase??
+                    if (img.StartsWith("http://")) 
                         tempdesc = tempdesc.Replace(img, img.Replace("http://", _localhostimageurl));
                     else
                         tempdesc = tempdesc.Replace(img, img.Replace("https://", _localhostimageurl));
@@ -625,7 +621,7 @@ namespace RealNews
 
             StringBuilder sb = new StringBuilder();
             sb.Append("<html");
-            if (item.RTL)// _currentFeed.RTL)
+            if (item.RTL)
                 sb.Append(" dir='rtl'>"); // get if rtl
             else
                 sb.AppendLine(">");
@@ -705,12 +701,10 @@ namespace RealNews
         {
             try
             {
-                //if (feed == null || list == null)
-                //    return;
                 treeView1.SuspendLayout();
                 treeView1.BeginUpdate();
 
-                if (list != null)
+                if (list != null && feed != null)
                 {
                     feed.UnreadCount = list.Count(x => x.isRead == false);
                     foreach (TreeNode n in treeView1.Nodes)
@@ -1171,6 +1165,18 @@ namespace RealNews
             if (form.ShowDialog() == DialogResult.OK)
             {
                 var f = form.ret;
+                if(f==null)
+                {
+                    var dr = MessageBox.Show($"Do you want to delete feed : {form.feed.Title} ?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button2);
+                    if(dr == DialogResult.Yes)
+                    {
+                        // delete feed
+                        _feeds.Remove(form.feed);
+                        treeView1.Nodes.Remove(treeView1.SelectedNode);
+                        SaveFeeds();
+                    }
+                    return;
+                }
                 if (form.feed.Title != f.Title)
                 {
                     // rename files
@@ -1321,6 +1327,8 @@ namespace RealNews
                         || x.Description.ToLower().Contains(s)));
                 }
                 treeView1.SelectedNode = null;
+                //_currentFeed = null;
+                //_currentList = null;
                 ShowFeedList(list);
                 Log($"{list.Count} items found.");
             }
