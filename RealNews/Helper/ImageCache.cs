@@ -115,6 +115,7 @@ namespace RealNews
                         using (var zf = RaptorDB.Common.ZipStorer.Open(_path + key.folder + ".zip", FileAccess.Read))
                         {
                             var ze = zf.ReadCentralDir().Find(x => key.fn.EndsWith(x.FilenameInZip));
+                            
                             if (ze.FilenameInZip != null)
                             {
                                 MemoryStream ms = new MemoryStream();
@@ -132,6 +133,21 @@ namespace RealNews
         public void ClearLookup()
         {
             _ziplookup = new ConcurrentDictionary<string, List<ZipFileEntry>>();
+        }
+
+        public void Remove(List<string> imgs)
+        {
+            // remove images
+            imgs.ForEach(url =>
+            {
+                if (url == null)
+                    return;
+
+                var key = FixName(url);
+
+                if (File.Exists(_path + key.fn))
+                    File.Delete(_path + key.fn);
+            });
         }
     }
 }
