@@ -40,9 +40,9 @@
             this.editFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanupImageCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -77,6 +77,7 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -147,15 +148,16 @@
             this.toolStripMenuItem2,
             this.editFeedToolStripMenuItem,
             this.toolStripMenuItem4,
-            this.cleanupToolStripMenuItem});
+            this.cleanupToolStripMenuItem,
+            this.cleanupImageCacheToolStripMenuItem});
             this.feedContextMenu.Name = "contextMenuStrip1";
-            this.feedContextMenu.Size = new System.Drawing.Size(172, 132);
+            this.feedContextMenu.Size = new System.Drawing.Size(193, 154);
             // 
             // markAsReadToolStripMenuItem
             // 
             this.markAsReadToolStripMenuItem.Image = global::RealNews.Properties.Resources.Eye;
             this.markAsReadToolStripMenuItem.Name = "markAsReadToolStripMenuItem";
-            this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.markAsReadToolStripMenuItem.Text = "Mark as read";
             this.markAsReadToolStripMenuItem.Click += new System.EventHandler(this.markAsReadToolStripMenuItem_Click);
             // 
@@ -163,48 +165,56 @@
             // 
             this.downloadImagesToolStripMenuItem1.Image = global::RealNews.Properties.Resources.Image1;
             this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
-            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(192, 22);
             this.downloadImagesToolStripMenuItem1.Text = "Download Images";
             this.downloadImagesToolStripMenuItem1.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem1_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(168, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(189, 6);
             // 
             // updateNowToolStripMenuItem
             // 
             this.updateNowToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
             this.updateNowToolStripMenuItem.Name = "updateNowToolStripMenuItem";
-            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.updateNowToolStripMenuItem.Text = "Update now";
             this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(168, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(189, 6);
             // 
             // editFeedToolStripMenuItem
             // 
             this.editFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
-            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.editFeedToolStripMenuItem.Text = "Edit Feed";
             this.editFeedToolStripMenuItem.Click += new System.EventHandler(this.editFeedToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(168, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(189, 6);
             // 
             // cleanupToolStripMenuItem
             // 
             this.cleanupToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
             this.cleanupToolStripMenuItem.Name = "cleanupToolStripMenuItem";
-            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.cleanupToolStripMenuItem.Text = "Cleanup";
             this.cleanupToolStripMenuItem.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click_2);
+            // 
+            // cleanupImageCacheToolStripMenuItem
+            // 
+            this.cleanupImageCacheToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
+            this.cleanupImageCacheToolStripMenuItem.Name = "cleanupImageCacheToolStripMenuItem";
+            this.cleanupImageCacheToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.cleanupImageCacheToolStripMenuItem.Text = "Cleanup Image Cache";
+            this.cleanupImageCacheToolStripMenuItem.Click += new System.EventHandler(this.cleanupImageCacheToolStripMenuItem_Click);
             // 
             // rssImages
             // 
@@ -222,24 +232,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(340, 29);
             this.panel1.TabIndex = 1;
-            // 
-            // placeHolderTextBox1
-            // 
-            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
-            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolderTextBox1.Multiline = true;
-            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
-            this.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
-            this.placeHolderTextBox1.TabIndex = 1;
-            this.placeHolderTextBox1.Text = "Search...";
-            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
-            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // button1
             // 
@@ -359,6 +351,7 @@
             this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.ShowItemToolTips = true;
             this.menuStrip1.Size = new System.Drawing.Size(1021, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
@@ -377,14 +370,14 @@
             // 
             this.addNewFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.addNewFeedToolStripMenuItem.Name = "addNewFeedToolStripMenuItem";
-            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewFeedToolStripMenuItem.Text = "Add New Feed";
             this.addNewFeedToolStripMenuItem.Click += new System.EventHandler(this.addNewFeedToolStripMenuItem_Click);
             // 
             // importOPMLToolStripMenuItem
             // 
             this.importOPMLToolStripMenuItem.Name = "importOPMLToolStripMenuItem";
-            this.importOPMLToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.importOPMLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.importOPMLToolStripMenuItem.Text = "Import OPML";
             this.importOPMLToolStripMenuItem.Click += new System.EventHandler(this.importOPMLToolStripMenuItem_Click);
             // 
@@ -392,7 +385,7 @@
             // 
             this.exitToolStripMenuItem.Image = global::RealNews.Properties.Resources.PowerOff;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -403,6 +396,7 @@
             this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
             this.nextToolStripMenuItem.Size = new System.Drawing.Size(104, 20);
             this.nextToolStripMenuItem.Text = "Next Unread";
+            this.nextToolStripMenuItem.ToolTipText = "Press (space)";
             this.nextToolStripMenuItem.Click += new System.EventHandler(this.nextToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
@@ -437,6 +431,7 @@
             // 
             this.logMessagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.FileTextO;
             this.logMessagesToolStripMenuItem.Name = "logMessagesToolStripMenuItem";
+            this.logMessagesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.logMessagesToolStripMenuItem.Text = "Log messages";
             this.logMessagesToolStripMenuItem.Click += new System.EventHandler(this.logMessagesToolStripMenuItem_Click);
@@ -470,8 +465,10 @@
             this.starToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.starToolStripMenuItem.Image = global::RealNews.Properties.Resources.Star;
             this.starToolStripMenuItem.Name = "starToolStripMenuItem";
+            this.starToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.starToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.starToolStripMenuItem.Text = "Toggle Star";
+            this.starToolStripMenuItem.ToolTipText = "Press (ctrl+S)";
             this.starToolStripMenuItem.Click += new System.EventHandler(this.starToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
@@ -558,6 +555,24 @@
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
+            // placeHolderTextBox1
+            // 
+            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
+            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolderTextBox1.Multiline = true;
+            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
+            this.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
+            this.placeHolderTextBox1.TabIndex = 1;
+            this.placeHolderTextBox1.Text = "Search...";
+            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
+            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // frmMain
             // 
@@ -647,6 +662,7 @@
         private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem compressImageCacheToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanupImageCacheToolStripMenuItem;
     }
 }
 

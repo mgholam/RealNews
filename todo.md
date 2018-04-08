@@ -12,8 +12,8 @@
 - ~~download images @starttime @endtime~~
 - ~~minimize to tray~~
 - ~~bypass localhost in proxy~~
-- menu icons
-- zip image cache
+- ~~menu icons~~
+- ~~zip image cache~~
 
 
 

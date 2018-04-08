@@ -499,7 +499,7 @@ namespace RealNews
 
                 foreach (var img in imgs)
                 {
-                    if (img.StartsWith("http://")) 
+                    if (img.StartsWith("http://"))
                         tempdesc = tempdesc.Replace(img, img.Replace("http://", _localhostimageurl));
                     else
                         tempdesc = tempdesc.Replace(img, img.Replace("https://", _localhostimageurl));
@@ -508,7 +508,7 @@ namespace RealNews
                 if (feed.DownloadImages)
                     imgs.ForEach(x =>
                     {
-                        if (_imageCache.Contains(x) == false)
+                        if (_imageCache.Contains(x.Replace("http://", "").Replace("https://", "")) == false)
                             _downloadimglist.Enqueue(x);
                     });
 
@@ -1025,6 +1025,7 @@ namespace RealNews
             {
                 _currentFeed = feed;
                 ShowFeedList(feed);
+                Log(feed.Title + " item count = " + _feeditems[feed.Title].Count);
             }
             else
             {
@@ -1165,10 +1166,10 @@ namespace RealNews
             if (form.ShowDialog() == DialogResult.OK)
             {
                 var f = form.ret;
-                if(f==null)
+                if (f == null)
                 {
                     var dr = MessageBox.Show($"Do you want to delete feed : {form.feed.Title} ?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button2);
-                    if(dr == DialogResult.Yes)
+                    if (dr == DialogResult.Yes)
                     {
                         // delete feed
                         _feeds.Remove(form.feed);
@@ -1300,7 +1301,6 @@ namespace RealNews
             {
                 foreach (var f in _feeditems)
                 {
-                    // FEATURE : cleanup -> remove images from cache also
                     f.Value.RemoveAll(x =>
                        DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
                        && x.isStarred == false
@@ -1379,6 +1379,12 @@ namespace RealNews
                 MoveNextUnread();
                 return true;
             }
+
+            //if(keyData == (Keys.S | Keys.Control))
+            //{
+            //    ToggleStarred();
+            //    return true;
+            //}
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -1466,7 +1472,6 @@ namespace RealNews
             var r = MessageBox.Show($"Do you want to remove {c} items from {feed.Title}?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
             if (r == DialogResult.Yes)
             {
-                // FEATURE : cleanup -> remove images from cache also
                 f.RemoveAll(x =>
                    DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
                    && x.isStarred == false
@@ -1482,7 +1487,6 @@ namespace RealNews
         private void downloadImagesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // download images for feed now
-
             if (treeView1.SelectedNode == null || treeView1.SelectedNode.Tag == null)
                 return;
             lock (_dflock)
@@ -1527,6 +1531,39 @@ namespace RealNews
                 _imageCache.ClearLookup();
                 Log("Compress images done.");
                 toolProgressBar.Visible = false;
+            }
+        }
+
+        private void cleanupImageCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // fix : cleanup image cache for feed
+            // - foreach file in files
+            //   - if not in list -> mark for delete
+
+            if (treeView1.SelectedNode == null || treeView1.SelectedNode.Tag == null)
+                return;
+            lock (_dflock)
+            {
+                var feed = treeView1.SelectedNode.Tag as Feed;
+                var list = _feeditems[feed.Title];
+
+                var r = MessageBox.Show($"Do you want to cleanup images cache for {feed.Title} now?", "Cleanup Images", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (r == DialogResult.Yes)
+                {
+                    // create temp folder
+
+                    // generate a list of image url hash from feed
+                    List<string> imgs = new List<string>();
+                    foreach (var f in list)
+                    {
+                        foreach (var img in GetImagesInHTMLString(f.Description))
+                        {
+                            var s = _imghrefregex.Match(img).Groups["href"].Value;
+                            var url = s.Replace(_localhostimageurl, "");
+                            imgs.Add(_imageCache.GetFilename(url));
+                        }
+                    }
+                }
             }
         }
     }
