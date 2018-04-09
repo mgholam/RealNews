@@ -1434,28 +1434,6 @@ namespace RealNews
                 e.SuppressKeyPress = true;
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //var s = File.ReadAllText("d:/pp.xml");
-
-
-
-            ////var r = System.ServiceModel.Syndication.SyndicationFeed.Load(System.Xml.XmlReader.Create(new StringReader(s)));
-
-            ////foreach (var i in r.Items)
-            ////{
-
-            ////}
-
-
-
-            //var reader = FeedReader.ReadFromString(s);
-            //List<FeedItem> list = new List<FeedItem>();
-            //foreach (var item in reader.Items)
-            //{
-            //}
-        }
-
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FontDialog fd = new FontDialog();
