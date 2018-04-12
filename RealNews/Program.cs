@@ -13,16 +13,18 @@ namespace RealNews
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static Mutex mutex = null;
+        //static Mutex mutex = null;
         private static ILog _log = LogManager.GetLogger(typeof(Program));
 
         [STAThread]
         static void Main()
         {
-            var p = "RealNews";// Assembly.GetExecutingAssembly().Location;
-            mutex = new Mutex(true,p);
-            if (mutex.WaitOne(TimeSpan.Zero, true))
+            //var p = "RealNews";// Assembly.GetExecutingAssembly().Location;
+            //mutex = new Mutex(true,p);
+            //if (mutex.WaitOne(TimeSpan.Zero, true))
+            if(File.Exists("feeds\\$temp")== false)
             {
+                File.WriteAllText("feeds\\$temp", "running");
                 _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 if (_path.EndsWith("\\") == false) _path += "\\";
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -31,6 +33,7 @@ namespace RealNews
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new frmMain());
+                File.Delete("feeds\\$temp");
             }
             else
             {
