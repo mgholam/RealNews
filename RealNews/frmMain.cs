@@ -430,6 +430,7 @@ namespace RealNews
                     Application.DoEvents();
                     mWebClient wc = new mWebClient();
                     feedxml = wc.DownloadString(feed.URL);
+                    Log($"feed {feed.Title} xml size {feedxml.Length.ToString("#,#")}");
                     //File.WriteAllText(GetFeedXmlFilename(feed), feedxml);
                     feed.LastUpdate = DateTime.Now;
                 }
