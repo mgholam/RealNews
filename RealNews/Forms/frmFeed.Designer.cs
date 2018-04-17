@@ -34,6 +34,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.lblLastError = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.numUpdate = new System.Windows.Forms.NumericUpDown();
@@ -43,7 +44,7 @@
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.chkExcludeCleanup = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -96,6 +97,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkExcludeCleanup);
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.lblLastError);
             this.groupBox1.Controls.Add(this.label5);
@@ -112,6 +114,16 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Details";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(577, 76);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(90, 33);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Delete Feed";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // lblLastError
             // 
@@ -197,15 +209,15 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
             // 
-            // button4
+            // chkExcludeCleanup
             // 
-            this.button4.Location = new System.Drawing.Point(577, 76);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(90, 33);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "Delete Feed";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.chkExcludeCleanup.AutoSize = true;
+            this.chkExcludeCleanup.Location = new System.Drawing.Point(370, 84);
+            this.chkExcludeCleanup.Name = "chkExcludeCleanup";
+            this.chkExcludeCleanup.Size = new System.Drawing.Size(164, 18);
+            this.chkExcludeCleanup.TabIndex = 18;
+            this.chkExcludeCleanup.Text = "Exclude in Global Cleanup";
+            this.chkExcludeCleanup.UseVisualStyleBackColor = true;
             // 
             // frmFeed
             // 
@@ -250,5 +262,6 @@
         private System.Windows.Forms.Label lblLastError;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox chkExcludeCleanup;
     }
 }

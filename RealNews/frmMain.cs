@@ -1201,6 +1201,7 @@ namespace RealNews
                 form.feed.RTL = f.RTL;
                 form.feed.UpdateEveryMin = f.UpdateEveryMin;
                 form.feed.DownloadImages = f.DownloadImages;
+                form.feed.ExcludeInCleanup = f.ExcludeInCleanup;
                 SaveFeeds();
             }
         }
@@ -1293,10 +1294,16 @@ namespace RealNews
                 && x.isRead == true);
 
             foreach (var f in _feeditems)
+            {
+                var ff = _feeds.Find(x => x.Title == f.Key);
+                if (ff != null && ff.ExcludeInCleanup)
+                    continue;
+
                 c += f.Value.Count(x =>
                     DateTime.Now.Subtract(x.date).TotalDays >= Settings.CleanupItemAfterDays
                     && x.isStarred == false
                     && x.isRead == true);
+            }
             if (c == 0)
             {
                 MessageBox.Show("No items to remove.");
@@ -1308,8 +1315,13 @@ namespace RealNews
                 List<string> imgs = new List<string>();
                 foreach (var f in _feeditems)
                 {
+                    var ff = _feeds.Find(x => x.Title == f.Key);
+                    if (ff != null && ff.ExcludeInCleanup)
+                        continue;
+
                     var list = f.Value.FindAll(expr);
-                    list.ForEach(x => {
+                    list.ForEach(x =>
+                    {
                         foreach (var img in GetImagesInHTMLString(x.Description))
                         {
                             var s = _imghrefregex.Match(img).Groups["href"].Value;
@@ -1471,7 +1483,8 @@ namespace RealNews
             if (r == DialogResult.Yes)
             {
                 List<string> imgs = new List<string>();
-                list.ForEach(x => {
+                list.ForEach(x =>
+                {
                     foreach (var img in GetImagesInHTMLString(x.Description))
                     {
                         var s = _imghrefregex.Match(img).Groups["href"].Value;

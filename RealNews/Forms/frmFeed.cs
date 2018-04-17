@@ -35,6 +35,7 @@ namespace RealNews
             numUpdate.Value = feed.UpdateEveryMin <0?0:feed.UpdateEveryMin;
             chkRTL.Checked = feed.RTL;
             chkImages.Checked = feed.DownloadImages;
+            chkExcludeCleanup.Checked = feed.ExcludeInCleanup;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -46,7 +47,8 @@ namespace RealNews
                 URL = txtURL.Text,
                 DownloadImages = chkImages.Checked,
                 RTL = chkRTL.Checked,
-                UpdateEveryMin = (int)numUpdate.Value 
+                UpdateEveryMin = (int)numUpdate.Value ,
+                ExcludeInCleanup = chkExcludeCleanup.Checked                
             };
 
             this.DialogResult = DialogResult.OK;
