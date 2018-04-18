@@ -41,6 +41,8 @@ namespace RealNews
         {
             if (e.KeyCode == Keys.F5)
                 refreshitems();
+            if (e.KeyCode == Keys.Escape)
+                this.Close();
         }
     }
 }

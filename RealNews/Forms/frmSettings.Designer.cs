@@ -63,6 +63,7 @@
             this.txtStart.Name = "txtStart";
             this.txtStart.Size = new System.Drawing.Size(131, 22);
             this.txtStart.TabIndex = 5;
+            this.txtStart.TextChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label1
             // 
@@ -84,6 +85,7 @@
             this.numUpdate.Name = "numUpdate";
             this.numUpdate.Size = new System.Drawing.Size(131, 22);
             this.numUpdate.TabIndex = 2;
+            this.numUpdate.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label4
             // 
@@ -113,6 +115,7 @@
             this.chkUseSystemProxy.TabIndex = 0;
             this.chkUseSystemProxy.Text = "Use System Proxy";
             this.chkUseSystemProxy.UseVisualStyleBackColor = true;
+            this.chkUseSystemProxy.CheckedChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // numWebPort
             // 
@@ -125,6 +128,7 @@
             this.numWebPort.Name = "numWebPort";
             this.numWebPort.Size = new System.Drawing.Size(131, 22);
             this.numWebPort.TabIndex = 3;
+            this.numWebPort.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label2
             // 
@@ -146,6 +150,7 @@
             this.numDownloadSize.Name = "numDownloadSize";
             this.numDownloadSize.Size = new System.Drawing.Size(131, 22);
             this.numDownloadSize.TabIndex = 4;
+            this.numDownloadSize.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label5
             // 
@@ -171,6 +176,7 @@
             this.txtEnd.Name = "txtEnd";
             this.txtEnd.Size = new System.Drawing.Size(131, 22);
             this.txtEnd.TabIndex = 6;
+            this.txtEnd.TextChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label7
             // 
@@ -278,6 +284,7 @@
             0,
             0,
             0});
+            this.numCleaupDays.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label12
             // 
@@ -318,10 +325,12 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "frmSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.frmSettings_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmSettings_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWebPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDownloadSize)).EndInit();

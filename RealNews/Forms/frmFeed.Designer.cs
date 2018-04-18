@@ -34,6 +34,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkExcludeCleanup = new System.Windows.Forms.CheckBox();
             this.button4 = new System.Windows.Forms.Button();
             this.lblLastError = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -44,7 +45,6 @@
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.chkExcludeCleanup = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -64,6 +64,7 @@
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(501, 22);
             this.txtURL.TabIndex = 1;
+            this.txtURL.TextChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // button1
             // 
@@ -115,6 +116,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Details";
             // 
+            // chkExcludeCleanup
+            // 
+            this.chkExcludeCleanup.AutoSize = true;
+            this.chkExcludeCleanup.Location = new System.Drawing.Point(370, 84);
+            this.chkExcludeCleanup.Name = "chkExcludeCleanup";
+            this.chkExcludeCleanup.Size = new System.Drawing.Size(164, 18);
+            this.chkExcludeCleanup.TabIndex = 18;
+            this.chkExcludeCleanup.Text = "Exclude in Global Cleanup";
+            this.chkExcludeCleanup.UseVisualStyleBackColor = true;
+            this.chkExcludeCleanup.CheckedChanged += new System.EventHandler(this.txtURL_TextChanged);
+            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(577, 76);
@@ -154,6 +166,7 @@
             this.numUpdate.Name = "numUpdate";
             this.numUpdate.Size = new System.Drawing.Size(123, 22);
             this.numUpdate.TabIndex = 15;
+            this.numUpdate.ValueChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // label4
             // 
@@ -182,6 +195,7 @@
             this.chkImages.TabIndex = 11;
             this.chkImages.Text = "Download Images";
             this.chkImages.UseVisualStyleBackColor = true;
+            this.chkImages.CheckedChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // chkRTL
             // 
@@ -192,6 +206,7 @@
             this.chkRTL.TabIndex = 10;
             this.chkRTL.Text = "Right to Left";
             this.chkRTL.UseVisualStyleBackColor = true;
+            this.chkRTL.CheckedChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // txtName
             // 
@@ -199,6 +214,7 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(501, 22);
             this.txtName.TabIndex = 9;
+            this.txtName.TextChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // label2
             // 
@@ -208,16 +224,6 @@
             this.label2.Size = new System.Drawing.Size(38, 14);
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
-            // 
-            // chkExcludeCleanup
-            // 
-            this.chkExcludeCleanup.AutoSize = true;
-            this.chkExcludeCleanup.Location = new System.Drawing.Point(370, 84);
-            this.chkExcludeCleanup.Name = "chkExcludeCleanup";
-            this.chkExcludeCleanup.Size = new System.Drawing.Size(164, 18);
-            this.chkExcludeCleanup.TabIndex = 18;
-            this.chkExcludeCleanup.Text = "Exclude in Global Cleanup";
-            this.chkExcludeCleanup.UseVisualStyleBackColor = true;
             // 
             // frmFeed
             // 
@@ -232,10 +238,12 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "frmFeed";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmFeed";
             this.Load += new System.EventHandler(this.frmFeed_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmFeed_KeyUp);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).EndInit();

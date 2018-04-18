@@ -15,8 +15,14 @@ namespace RealNews
 
         public Feed feed;
         public Feed ret;
+        bool _isdirty = false;
 
         private void button3_Click(object sender, EventArgs e)
+        {
+            cancelclose();
+        }
+
+        private void cancelclose()
         {
             ret = feed;
             this.DialogResult = DialogResult.Cancel;
@@ -36,6 +42,7 @@ namespace RealNews
             chkRTL.Checked = feed.RTL;
             chkImages.Checked = feed.DownloadImages;
             chkExcludeCleanup.Checked = feed.ExcludeInCleanup;
+            _isdirty = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -83,6 +90,17 @@ namespace RealNews
             ret = null;
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void frmFeed_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (_isdirty == false && e.KeyCode == Keys.Escape)
+                cancelclose();
+        }
+
+        private void txtURL_TextChanged(object sender, EventArgs e)
+        {
+            _isdirty = true;
         }
     }
 }

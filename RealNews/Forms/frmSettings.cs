@@ -11,6 +11,8 @@ namespace RealNews
         {
             InitializeComponent();
         }
+        bool _isdirty = false;
+
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
@@ -25,9 +27,15 @@ namespace RealNews
             txtEnd.Text = Settings.EndDownloadImgTime;
             lblLastUpdated.Text = Settings.LastUpdateTime.ToLongTimeString();
             numCleaupDays.Value = Settings.CleanupItemAfterDays;
+            _isdirty = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
+        {
+            cancelclose();
+        }
+
+        private void cancelclose()
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
@@ -66,6 +74,17 @@ namespace RealNews
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("notepad.exe","configs/style.css");
+        }
+
+        private void frmSettings_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (_isdirty == false && e.KeyCode == Keys.Escape)
+                cancelclose();
+        }
+
+        private void chkUseSystemProxy_CheckedChanged(object sender, EventArgs e)
+        {
+            _isdirty = true;
         }
     }
 }
