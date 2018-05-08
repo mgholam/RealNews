@@ -24,6 +24,7 @@ namespace RealNews
             //if (mutex.WaitOne(TimeSpan.Zero, true))
             if(File.Exists("feeds\\$temp")== false)
             {
+                Directory.CreateDirectory("feeds");
                 File.WriteAllText("feeds\\$temp", "running");
                 _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 if (_path.EndsWith("\\") == false) _path += "\\";

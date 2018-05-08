@@ -325,6 +325,18 @@ namespace RealNews
                 }
                 treeView1.EndUpdate();
             }
+            else
+            {
+                var tn = treeView1.Nodes.Add("Unread");
+                tn.ImageIndex = 1;
+                tn.Name = "Unread";
+                tn.SelectedImageIndex = 1;
+                tn = treeView1.Nodes.Add("Starred");
+                tn.Name = "Starred";
+                tn.ImageIndex = 2;
+                tn.SelectedImageIndex = 2;
+            }
+
             if (_feeds.Count > 0)
             {
                 UpdateStarCount();
@@ -863,11 +875,14 @@ namespace RealNews
                             _feeditems.TryAdd(feed.Title, list);
                         }
                     }
-                    list.ForEach(x => x.RTL = feed.RTL);
-                    listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
-                    listView1.RightToLeftLayout = feed.RTL;
-                    ShowFeedList(list);
-                    UpdateFeedCount(feed, list);
+                    if (list != null)
+                    {
+                        list.ForEach(x => x.RTL = feed.RTL);
+                        listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
+                        listView1.RightToLeftLayout = feed.RTL;
+                        ShowFeedList(list);
+                        UpdateFeedCount(feed, list);
+                    }
                 }
             }
             catch //(Exception ex)
@@ -1026,7 +1041,8 @@ namespace RealNews
             {
                 _currentFeed = feed;
                 ShowFeedList(feed);
-                Log(feed.Title + " item count = " + _feeditems[feed.Title].Count);
+                if (_feeditems.TryGetValue(feed.Title, out List<FeedItem> fl))
+                    Log(feed.Title + " item count = " + fl.Count);
             }
             else
             {
