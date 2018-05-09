@@ -147,16 +147,15 @@
             this.toolStripMenuItem2,
             this.editFeedToolStripMenuItem,
             this.toolStripMenuItem4,
-            this.cleanupToolStripMenuItem
-            });
+            this.cleanupToolStripMenuItem});
             this.feedContextMenu.Name = "contextMenuStrip1";
-            this.feedContextMenu.Size = new System.Drawing.Size(193, 176);
+            this.feedContextMenu.Size = new System.Drawing.Size(172, 132);
             // 
             // markAsReadToolStripMenuItem
             // 
             this.markAsReadToolStripMenuItem.Image = global::RealNews.Properties.Resources.Eye;
             this.markAsReadToolStripMenuItem.Name = "markAsReadToolStripMenuItem";
-            this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.markAsReadToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.markAsReadToolStripMenuItem.Text = "Mark as read";
             this.markAsReadToolStripMenuItem.Click += new System.EventHandler(this.markAsReadToolStripMenuItem_Click);
             // 
@@ -164,46 +163,46 @@
             // 
             this.downloadImagesToolStripMenuItem1.Image = global::RealNews.Properties.Resources.Image1;
             this.downloadImagesToolStripMenuItem1.Name = "downloadImagesToolStripMenuItem1";
-            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(192, 22);
+            this.downloadImagesToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.downloadImagesToolStripMenuItem1.Text = "Download Images";
             this.downloadImagesToolStripMenuItem1.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem1_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(189, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(168, 6);
             // 
             // updateNowToolStripMenuItem
             // 
             this.updateNowToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
             this.updateNowToolStripMenuItem.Name = "updateNowToolStripMenuItem";
-            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.updateNowToolStripMenuItem.Text = "Update now";
             this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(189, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(168, 6);
             // 
             // editFeedToolStripMenuItem
             // 
             this.editFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.editFeedToolStripMenuItem.Name = "editFeedToolStripMenuItem";
-            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.editFeedToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.editFeedToolStripMenuItem.Text = "Edit Feed";
             this.editFeedToolStripMenuItem.Click += new System.EventHandler(this.editFeedToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(189, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(168, 6);
             // 
             // cleanupToolStripMenuItem
             // 
             this.cleanupToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
             this.cleanupToolStripMenuItem.Name = "cleanupToolStripMenuItem";
-            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.cleanupToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.cleanupToolStripMenuItem.Text = "Cleanup";
             this.cleanupToolStripMenuItem.Click += new System.EventHandler(this.cleanupToolStripMenuItem_Click_2);
             // 
@@ -379,14 +378,14 @@
             // 
             this.addNewFeedToolStripMenuItem.Image = global::RealNews.Properties.Resources.Rss2;
             this.addNewFeedToolStripMenuItem.Name = "addNewFeedToolStripMenuItem";
-            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.addNewFeedToolStripMenuItem.Text = "Add New Feed";
             this.addNewFeedToolStripMenuItem.Click += new System.EventHandler(this.addNewFeedToolStripMenuItem_Click);
             // 
             // importOPMLToolStripMenuItem
             // 
             this.importOPMLToolStripMenuItem.Name = "importOPMLToolStripMenuItem";
-            this.importOPMLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importOPMLToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.importOPMLToolStripMenuItem.Text = "Import OPML";
             this.importOPMLToolStripMenuItem.Click += new System.EventHandler(this.importOPMLToolStripMenuItem_Click);
             // 
@@ -394,7 +393,7 @@
             // 
             this.exitToolStripMenuItem.Image = global::RealNews.Properties.Resources.PowerOff;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -524,7 +523,8 @@
             // toolMessage
             // 
             this.toolMessage.Name = "toolMessage";
-            this.toolMessage.Size = new System.Drawing.Size(993, 18);
+            this.toolMessage.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.toolMessage.Size = new System.Drawing.Size(860, 18);
             this.toolMessage.Spring = true;
             this.toolMessage.Text = "loading...";
             this.toolMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

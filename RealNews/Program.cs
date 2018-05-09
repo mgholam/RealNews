@@ -38,7 +38,7 @@ namespace RealNews
             }
             else
             {
-                MessageBox.Show("only one instance at a time");
+                MessageBox.Show("Only one instance at a time");
             }
         }
 

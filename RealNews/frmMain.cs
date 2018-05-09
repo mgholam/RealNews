@@ -58,6 +58,7 @@ namespace RealNews
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Application.ThreadException += Application_ThreadException;
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
             notifyIcon1.Visible = true;
@@ -107,6 +108,12 @@ namespace RealNews
             _minuteTimer.Elapsed += _minuteTimer_Elapsed;
             _minuteTimer.AutoReset = true;
             _minuteTimer.Enabled = true;
+        }
+
+        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            _log.Error(e.Exception);
+            Log("" + e.Exception.Message);
         }
 
         private void DownloadThread()
