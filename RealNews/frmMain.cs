@@ -815,7 +815,7 @@ namespace RealNews
             var item = _currentList.Find(x => x.isRead == false);
             if (item == null)
                 return;
-            var l = listView1.FindItemWithText(item.Title);
+            var l = listView1.FindItemWithText(item.Title, true, 0, false);
             if (l != null)
             {
                 if (l.Index + 5 < listView1.Items.Count)
