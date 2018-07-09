@@ -64,6 +64,8 @@ namespace RealNews
             notifyIcon1.Visible = true;
 
             Directory.CreateDirectory("feeds\\temp");
+
+
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("feeds\\icons");
             Directory.CreateDirectory("configs");
@@ -1574,6 +1576,43 @@ namespace RealNews
                 _imageCache.ClearLookup();
                 Log("Compress images done.");
                 toolProgressBar.Visible = false;
+            }
+        }
+
+        private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // delete item
+            if (listView1.FocusedItem == null)
+                return;
+            var f = listView1.FocusedItem.Tag as FeedItem;
+            if (f.isStarred)
+            {
+                MessageBox.Show("Item is starred, unstar first.");
+                return;
+            }
+            var r = MessageBox.Show($"Do you want to delete \r\n{f.Title} \r\n\r\nnow?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+            if (r == DialogResult.No)
+                return;
+
+            if (f != null)
+            {
+                var feed = treeView1.SelectedNode.Tag as Feed;
+                var list = _feeditems[feed.Title];
+                List<string> imgs = new List<string>();
+                foreach (var img in GetImagesInHTMLString(f.Description))
+                {
+                    var s = _imghrefregex.Match(img).Groups["href"].Value;
+                    var url = s.Replace(_localhostimageurl, "");
+                    imgs.Add(url);
+                }
+                _imageCache.Remove(imgs);
+
+                list.Remove(f);
+                File.WriteAllText(GetFeedFilename(feed.Title), JSON.ToNiceJSON(f, jp));
+
+                UpdateFeedCount();
+                ShowFeedList(feed);
+                ShowItem(list[0]);
             }
         }
     }

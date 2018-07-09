@@ -42,7 +42,6 @@
             this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -77,6 +76,9 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -223,24 +225,6 @@
             this.panel1.Size = new System.Drawing.Size(340, 29);
             this.panel1.TabIndex = 1;
             // 
-            // placeHolderTextBox1
-            // 
-            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
-            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolderTextBox1.Multiline = true;
-            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
-            this.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
-            this.placeHolderTextBox1.TabIndex = 1;
-            this.placeHolderTextBox1.Text = "Search...";
-            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
-            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
-            // 
             // button1
             // 
             this.button1.AutoSize = true;
@@ -308,15 +292,17 @@
             this.itemContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toggleStarToolStripMenuItem,
             this.markUnreadToolStripMenuItem,
-            this.downloadImagesToolStripMenuItem});
+            this.downloadImagesToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.deleteItemToolStripMenuItem});
             this.itemContextMenu.Name = "contextMenuStrip2";
-            this.itemContextMenu.Size = new System.Drawing.Size(170, 70);
+            this.itemContextMenu.Size = new System.Drawing.Size(181, 120);
             // 
             // toggleStarToolStripMenuItem
             // 
             this.toggleStarToolStripMenuItem.Image = global::RealNews.Properties.Resources.Star;
             this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
-            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.toggleStarToolStripMenuItem.Text = "Toggle Star";
             this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
             // 
@@ -324,7 +310,7 @@
             // 
             this.markUnreadToolStripMenuItem.Image = global::RealNews.Properties.Resources.EyeSlash;
             this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
-            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.markUnreadToolStripMenuItem.Text = "Mark Unread";
             this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
             // 
@@ -332,7 +318,7 @@
             // 
             this.downloadImagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.Image1;
             this.downloadImagesToolStripMenuItem.Name = "downloadImagesToolStripMenuItem";
-            this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.downloadImagesToolStripMenuItem.Text = "Download Images";
             this.downloadImagesToolStripMenuItem.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem_Click);
             // 
@@ -353,10 +339,10 @@
             this.fileToolStripMenuItem,
             this.nextToolStripMenuItem,
             this.optionsToolStripMenuItem,
-            this.updateAllToolStripMenuItem,
             this.starToolStripMenuItem,
             this.aboutToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.updateAllToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.ShowItemToolTips = true;
@@ -524,7 +510,7 @@
             // 
             this.toolMessage.Name = "toolMessage";
             this.toolMessage.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolMessage.Size = new System.Drawing.Size(860, 18);
+            this.toolMessage.Size = new System.Drawing.Size(993, 18);
             this.toolMessage.Spring = true;
             this.toolMessage.Text = "loading...";
             this.toolMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -564,6 +550,38 @@
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 6);
+            // 
+            // deleteItemToolStripMenuItem
+            // 
+            this.deleteItemToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
+            this.deleteItemToolStripMenuItem.Name = "deleteItemToolStripMenuItem";
+            this.deleteItemToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteItemToolStripMenuItem.Text = "Delete Item";
+            this.deleteItemToolStripMenuItem.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
+            // 
+            // placeHolderTextBox1
+            // 
+            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
+            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolderTextBox1.Multiline = true;
+            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
+            this.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
+            this.placeHolderTextBox1.TabIndex = 1;
+            this.placeHolderTextBox1.Text = "Search...";
+            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
+            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // frmMain
             // 
@@ -653,6 +671,8 @@
         private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem compressImageCacheToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem deleteItemToolStripMenuItem;
     }
 }
 
