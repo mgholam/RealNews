@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace RealNews
@@ -13,28 +11,30 @@ namespace RealNews
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        //static Mutex mutex = null;
         private static ILog _log = LogManager.GetLogger(typeof(Program));
 
         [STAThread]
         static void Main()
         {
-            //var p = "RealNews";// Assembly.GetExecutingAssembly().Location;
-            //mutex = new Mutex(true,p);
-            //if (mutex.WaitOne(TimeSpan.Zero, true))
-            if(File.Exists("feeds\\$temp")== false)
+            _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var name = Process.GetCurrentProcess().MainModule.ModuleName.Split('.')[0];
+            if (_path.EndsWith("\\") == false) _path += "\\";
+            var pp = Process.GetProcessesByName(name);
+            var found = 0;
+            foreach (var pi in pp)
             {
-                Directory.CreateDirectory("feeds");
-                File.WriteAllText("feeds\\$temp", "running");
-                _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                if (_path.EndsWith("\\") == false) _path += "\\";
+                if (pi.MainModule.FileName.StartsWith(_path))
+                    found++;
+            }
+
+            if (found == 1)
+            {
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new frmMain());
-                File.Delete("feeds\\$temp");
             }
             else
             {
