@@ -1582,22 +1582,20 @@ namespace RealNews
         private void deleteItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // delete item
-            if (listView1.FocusedItem == null)
-                return;
-            var f = listView1.FocusedItem.Tag as FeedItem;
-            if (f.isStarred)
-            {
-                MessageBox.Show("Item is starred, unstar first.");
-                return;
-            }
-            var r = MessageBox.Show($"Do you want to delete \r\n{f.Title} \r\n\r\nnow?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
-            if (r == DialogResult.No)
+            int count = listView1.SelectedItems.Count;
+            if (count == 0)// == null)
                 return;
 
-            if (f != null)
+            var r = MessageBox.Show($"Do you want to delete {count} items now?\r\n\r\nStarred Items will be ignored, and you must unstar first. ", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+            if (r == DialogResult.No)
+                return;
+            var feed = treeView1.SelectedNode.Tag as Feed;
+            var list = _feeditems[feed.Title];
+            foreach (ListViewItem ff in listView1.SelectedItems)
             {
-                var feed = treeView1.SelectedNode.Tag as Feed;
-                var list = _feeditems[feed.Title];
+                var f = ff.Tag as FeedItem;
+                if (f.isStarred)
+                    continue;
                 List<string> imgs = new List<string>();
                 foreach (var img in GetImagesInHTMLString(f.Description))
                 {
@@ -1608,12 +1606,11 @@ namespace RealNews
                 _imageCache.Remove(imgs);
 
                 list.Remove(f);
-                File.WriteAllText(GetFeedFilename(feed.Title), JSON.ToNiceJSON(f, jp));
-
-                UpdateFeedCount();
-                ShowFeedList(feed);
-                ShowItem(list[0]);
             }
+            File.WriteAllText(GetFeedFilename(feed.Title), JSON.ToNiceJSON(list, jp));
+            UpdateFeedCount();
+            ShowFeedList(feed);
+            ShowItem(list[0]);
         }
     }
 }

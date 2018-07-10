@@ -42,6 +42,7 @@
             this.cleanupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -50,6 +51,8 @@
             this.toggleStarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.markUnreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,10 +66,10 @@
             this.logMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compressImageCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolCount = new System.Windows.Forms.ToolStripStatusLabel();
@@ -76,9 +79,6 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -225,6 +225,24 @@
             this.panel1.Size = new System.Drawing.Size(340, 29);
             this.panel1.TabIndex = 1;
             // 
+            // placeHolderTextBox1
+            // 
+            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
+            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolderTextBox1.Multiline = true;
+            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
+            this.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
+            this.placeHolderTextBox1.TabIndex = 1;
+            this.placeHolderTextBox1.Text = "Search...";
+            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
+            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            // 
             // button1
             // 
             this.button1.AutoSize = true;
@@ -274,7 +292,6 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(223, 585);
             this.listView1.TabIndex = 0;
@@ -296,13 +313,13 @@
             this.toolStripMenuItem5,
             this.deleteItemToolStripMenuItem});
             this.itemContextMenu.Name = "contextMenuStrip2";
-            this.itemContextMenu.Size = new System.Drawing.Size(181, 120);
+            this.itemContextMenu.Size = new System.Drawing.Size(177, 98);
             // 
             // toggleStarToolStripMenuItem
             // 
             this.toggleStarToolStripMenuItem.Image = global::RealNews.Properties.Resources.Star;
             this.toggleStarToolStripMenuItem.Name = "toggleStarToolStripMenuItem";
-            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toggleStarToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.toggleStarToolStripMenuItem.Text = "Toggle Star";
             this.toggleStarToolStripMenuItem.Click += new System.EventHandler(this.toggleStarToolStripMenuItem_Click);
             // 
@@ -310,7 +327,7 @@
             // 
             this.markUnreadToolStripMenuItem.Image = global::RealNews.Properties.Resources.EyeSlash;
             this.markUnreadToolStripMenuItem.Name = "markUnreadToolStripMenuItem";
-            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.markUnreadToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.markUnreadToolStripMenuItem.Text = "Mark Unread";
             this.markUnreadToolStripMenuItem.Click += new System.EventHandler(this.markUnreadToolStripMenuItem_Click);
             // 
@@ -318,9 +335,23 @@
             // 
             this.downloadImagesToolStripMenuItem.Image = global::RealNews.Properties.Resources.Image1;
             this.downloadImagesToolStripMenuItem.Name = "downloadImagesToolStripMenuItem";
-            this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.downloadImagesToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.downloadImagesToolStripMenuItem.Text = "Download Images";
             this.downloadImagesToolStripMenuItem.Click += new System.EventHandler(this.downloadImagesToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(173, 6);
+            // 
+            // deleteItemToolStripMenuItem
+            // 
+            this.deleteItemToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
+            this.deleteItemToolStripMenuItem.Name = "deleteItemToolStripMenuItem";
+            this.deleteItemToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.deleteItemToolStripMenuItem.Text = "Delete Item";
+            this.deleteItemToolStripMenuItem.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
             // 
             // webBrowser1
             // 
@@ -446,14 +477,6 @@
             this.compressImageCacheToolStripMenuItem.Text = "Compress Image Cache";
             this.compressImageCacheToolStripMenuItem.Click += new System.EventHandler(this.compressImageCacheToolStripMenuItem_Click);
             // 
-            // updateAllToolStripMenuItem
-            // 
-            this.updateAllToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
-            this.updateAllToolStripMenuItem.Name = "updateAllToolStripMenuItem";
-            this.updateAllToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
-            this.updateAllToolStripMenuItem.Text = "Update All";
-            this.updateAllToolStripMenuItem.Click += new System.EventHandler(this.updateAllToolStripMenuItem_Click);
-            // 
             // starToolStripMenuItem
             // 
             this.starToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -480,6 +503,14 @@
             this.editToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // updateAllToolStripMenuItem
+            // 
+            this.updateAllToolStripMenuItem.Image = global::RealNews.Properties.Resources.refresh;
+            this.updateAllToolStripMenuItem.Name = "updateAllToolStripMenuItem";
+            this.updateAllToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.updateAllToolStripMenuItem.Text = "Update All";
+            this.updateAllToolStripMenuItem.Click += new System.EventHandler(this.updateAllToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -550,38 +581,6 @@
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
-            // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 6);
-            // 
-            // deleteItemToolStripMenuItem
-            // 
-            this.deleteItemToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
-            this.deleteItemToolStripMenuItem.Name = "deleteItemToolStripMenuItem";
-            this.deleteItemToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.deleteItemToolStripMenuItem.Text = "Delete Item";
-            this.deleteItemToolStripMenuItem.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
-            // 
-            // placeHolderTextBox1
-            // 
-            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
-            this.placeHolderTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolderTextBox1.Multiline = true;
-            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
-            this.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.placeHolderTextBox1.Size = new System.Drawing.Size(312, 27);
-            this.placeHolderTextBox1.TabIndex = 1;
-            this.placeHolderTextBox1.Text = "Search...";
-            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
-            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // frmMain
             // 
