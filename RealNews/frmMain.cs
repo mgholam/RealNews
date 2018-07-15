@@ -597,6 +597,7 @@ namespace RealNews
                         toolProgressBar.Value = 0;
                         toolCount.Text = "";
                         Settings.LastUpdateTime = DateTime.Now;
+                        SaveFeeds();
                         Log("Update Done.");
                     });
                 });
