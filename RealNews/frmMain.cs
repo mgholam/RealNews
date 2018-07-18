@@ -86,6 +86,7 @@ namespace RealNews
             rssImages.Images.Add(Properties.Resources.rss);
             rssImages.Images.Add(Properties.Resources.news_new);
             rssImages.Images.Add(Properties.Resources.star_yellow);
+            rssImages.Images.Add(Properties.Resources.Search);
 
             LoadFeeds();
             Task.Factory.StartNew(downloadfeedicons);
@@ -296,6 +297,10 @@ namespace RealNews
                 tn.Name = "Starred";
                 tn.ImageIndex = 2;
                 tn.SelectedImageIndex = 2;
+                tn = treeView1.Nodes.Add("Search Results");
+                tn.Name = "Search";
+                tn.ImageIndex = 3;
+                tn.SelectedImageIndex = 3;
 
                 foreach (var f in _feeds)
                 {
@@ -344,6 +349,10 @@ namespace RealNews
                 tn.Name = "Starred";
                 tn.ImageIndex = 2;
                 tn.SelectedImageIndex = 2;
+                tn = treeView1.Nodes.Add("Search Results");
+                tn.Name = "Search";
+                tn.ImageIndex = 3;
+                tn.SelectedImageIndex = 3;
             }
 
             if (_feeds.Count > 0)
@@ -1073,6 +1082,10 @@ namespace RealNews
 
                     ShowFeedList(list);
                 }
+                else if (e.Node.Name == "Search")
+                {
+                    ShowSearchResults();
+                }
             }
         }
 
@@ -1369,22 +1382,24 @@ namespace RealNews
         {
             if (e.KeyCode == Keys.Enter)
             {
-                List<FeedItem> list = new List<FeedItem>();
-                string s = placeHolderTextBox1.Text.ToLower();
-                if (s == "")
-                    return;
+                treeView1.SelectedNode = treeView1.Nodes[2];
+                ShowSearchResults();
+            }
+        }
+
+        private void ShowSearchResults()
+        {
+            List<FeedItem> list = new List<FeedItem>();
+            string s = placeHolderTextBox1.Text.ToLower();
+            if (s != "")
                 foreach (var f in _feeditems)
                 {
                     list.AddRange(f.Value.FindAll(x =>
                         x.Title.ToLower().Contains(s)
                         || x.Description.ToLower().Contains(s)));
                 }
-                treeView1.SelectedNode = null;
-                //_currentFeed = null;
-                //_currentList = null;
-                ShowFeedList(list);
-                Log($"{list.Count} items found.");
-            }
+            ShowFeedList(list);
+            Log($"{list.Count} items found.");
         }
 
         private void txtSearch_Enter(object sender, EventArgs e)
