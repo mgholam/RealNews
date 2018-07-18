@@ -1398,6 +1398,10 @@ namespace RealNews
                         x.Title.ToLower().Contains(s)
                         || x.Description.ToLower().Contains(s)));
                 }
+            treeView1.Nodes[2].Text = "Search Results";
+            if(list.Count>0)
+                treeView1.Nodes[2].Text = $"Search Results ({list.Count})" ;
+
             ShowFeedList(list);
             Log($"{list.Count} items found.");
         }
@@ -1480,6 +1484,7 @@ namespace RealNews
         {
             placeHolderTextBox1.Text = "";
             placeHolderTextBox1.setPlaceholder();
+            ShowSearchResults();
         }
 
         private void placeHolderTextBox1_KeyDown(object sender, KeyEventArgs e)
