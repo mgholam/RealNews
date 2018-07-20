@@ -17,6 +17,9 @@ using Westwind.Web.Utilities;
 
 namespace RealNews
 {
+    // TODO : feeds in folders in treeview
+    // TODO : move feeds in folders
+
     public partial class frmMain : Form
     {
         public frmMain()
@@ -35,6 +38,14 @@ namespace RealNews
             //    else
             //        e.DrawDefault = true;
             //};
+            (this.webBrowser1.ActiveXInstance as SHDocVw.WebBrowser).NewWindow3 += FrmMain_NewWindow3;  
+        }
+
+        private void FrmMain_NewWindow3(ref object ppDisp, ref bool Cancel, uint dwFlags, string bstrUrlContext, string bstrUrl)
+        {
+            // for a tags with target = new window
+            Cancel = true;
+            Process.Start(bstrUrl);
         }
 
         RealNewsWeb web;
@@ -55,7 +66,6 @@ namespace RealNews
         private bool _DoDownloadImages = false;
         private bool _run = true;
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
             Application.ThreadException += Application_ThreadException;
@@ -64,8 +74,6 @@ namespace RealNews
             notifyIcon1.Visible = true;
 
             Directory.CreateDirectory("feeds\\temp");
-
-
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("feeds\\icons");
             Directory.CreateDirectory("configs");
@@ -1632,6 +1640,12 @@ namespace RealNews
             UpdateFeedCount();
             ShowFeedList(feed);
             ShowItem(list[0]);
+        }
+
+        private void webBrowser1_NewWindow(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //e.Cancel = true;
+            //MessageBox.Show("");
         }
     }
 }
