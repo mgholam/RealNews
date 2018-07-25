@@ -14,11 +14,11 @@ using CodeHollow.FeedReader;
 using fastJSON;
 using System.Threading.Tasks;
 using Westwind.Web.Utilities;
+using System.Drawing.Imaging;
 
 namespace RealNews
 {
-    // TODO : feeds in folders in treeview
-    // TODO : move feeds in folders
+    // TODO : drag move feeds in folders
 
     public partial class frmMain : Form
     {
@@ -38,7 +38,7 @@ namespace RealNews
             //    else
             //        e.DrawDefault = true;
             //};
-            (this.webBrowser1.ActiveXInstance as SHDocVw.WebBrowser).NewWindow3 += FrmMain_NewWindow3;  
+            (this.webBrowser1.ActiveXInstance as SHDocVw.WebBrowser).NewWindow3 += FrmMain_NewWindow3;
         }
 
         private void FrmMain_NewWindow3(ref object ppDisp, ref bool Cancel, uint dwFlags, string bstrUrlContext, string bstrUrl)
@@ -91,10 +91,16 @@ namespace RealNews
             else
                 this.WindowState = FormWindowState.Normal;
 
+            //var i = TreeViewHelper.GetFolderIcon(TreeViewHelper.IconSize.Small, TreeViewHelper.FolderType.Open);
+            //    i.ToBitmap().Save("d:\\folder.png", ImageFormat.Png);
+
+            rssImages.Images.Add(Properties.Resources.folder);
+
             rssImages.Images.Add(Properties.Resources.rss);
             rssImages.Images.Add(Properties.Resources.news_new);
             rssImages.Images.Add(Properties.Resources.star_yellow);
             rssImages.Images.Add(Properties.Resources.Search);
+
 
             LoadFeeds();
             Task.Factory.StartNew(downloadfeedicons);
@@ -254,18 +260,17 @@ namespace RealNews
                     Settings.LastUpdateTime = now;
                 }
 
-                foreach (var f in _feeds)
+                _feeds.FindAll(
+                    x => x.UpdateEveryMin > 0 &&
+                    now.Subtract(x.LastUpdate).TotalMinutes > x.UpdateEveryMin
+                    ).ForEach(f =>
                 {
-                    if (f.UpdateEveryMin > 0)
+                    Task.Factory.StartNew(() =>
                     {
-                        if (now.Subtract(f.LastUpdate).TotalMinutes > f.UpdateEveryMin)
-                            Task.Factory.StartNew(() =>
-                            {
-                                UpdateFeed(f, Log);
-                                UpdateFeedCount(f);
-                            });
-                    }
-                }
+                        UpdateFeed(f, Log);
+                        UpdateFeedCount(f);
+                    });
+                });
 
                 // download images
                 var start = TimeSpan.Parse(Settings.StartDownloadImgTime);
@@ -294,73 +299,28 @@ namespace RealNews
             }
             if (File.Exists("feeds\\feeds.list"))
             {
-                _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list"));
+                _feeds = JSON.ToObject<List<Feed>>(File.ReadAllText("feeds\\feeds.list")).OrderBy(x => x.Title).ToList();
                 treeView1.BeginUpdate();
-                treeView1.Nodes.Clear();
-                var tn = treeView1.Nodes.Add("Unread");
-                tn.ImageIndex = 1;
-                tn.Name = "Unread";
-                tn.SelectedImageIndex = 1;
-                tn = treeView1.Nodes.Add("Starred");
-                tn.Name = "Starred";
-                tn.ImageIndex = 2;
-                tn.SelectedImageIndex = 2;
-                tn = treeView1.Nodes.Add("Search Results");
-                tn.Name = "Search";
-                tn.ImageIndex = 3;
-                tn.SelectedImageIndex = 3;
 
-                foreach (var f in _feeds)
+                treeView1.Nodes.Clear();
+
+                AddTreeViewMain();
+
+                var ff = _feeds.FindAll(x => x.Folder != "").OrderBy(x => x.Folder);
+                foreach (var f in ff)
                 {
-                    var fn = "feeds\\icons\\" + GetFeedFilenameOnly(f) + ".ico";
-                    if (File.Exists(GetFeedFilename(f)))
-                    {
-                        var list = JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(f)));
-                        _feeditems.TryAdd(f.Title, list);
-                    }
-                    int imgidx = 0;
-                    if (File.Exists(fn))
-                    {
-                        try
-                        {
-                            rssImages.Images.Add(Image.FromFile(fn));
-                            imgidx = rssImages.Images.Count - 1;
-                        }
-                        catch { }
-                    }
-                    tn = new TreeNode();
-                    tn.Tag = f;
-                    tn.Name = f.Title;
-                    if (imgidx > 0)
-                    {
-                        tn.ImageIndex = imgidx;
-                        tn.SelectedImageIndex = imgidx;
-                    }
-                    if (f.UnreadCount > 0)
-                    {
-                        tn.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
-                        tn.Text = f.Title + $" ({f.UnreadCount})";
-                    }
-                    else
-                        tn.Text = f.Title;
-                    treeView1.Nodes.Add(tn);
+                    var t = AddFeedToTree(f);
                 }
+
+                ff = _feeds.FindAll(x => x.Folder == "").OrderBy(x => x.Title);
+                foreach (var f in ff)
+                    AddFeedToTree(f);
+
                 treeView1.EndUpdate();
             }
             else
             {
-                var tn = treeView1.Nodes.Add("Unread");
-                tn.ImageIndex = 1;
-                tn.Name = "Unread";
-                tn.SelectedImageIndex = 1;
-                tn = treeView1.Nodes.Add("Starred");
-                tn.Name = "Starred";
-                tn.ImageIndex = 2;
-                tn.SelectedImageIndex = 2;
-                tn = treeView1.Nodes.Add("Search Results");
-                tn.Name = "Search";
-                tn.ImageIndex = 3;
-                tn.SelectedImageIndex = 3;
+                AddTreeViewMain();
             }
 
             if (_feeds.Count > 0)
@@ -369,6 +329,57 @@ namespace RealNews
                 UpdateFeedCount();
             }
             splitContainer1.Visible = true;
+        }
+
+        private void AddTreeViewMain()
+        {
+            var tn = treeView1.Nodes.Add("Unread");
+            tn.Name = "Unread";
+            tn.ImageIndex = 2;
+            tn.SelectedImageIndex = 2;
+            tn = treeView1.Nodes.Add("Starred");
+            tn.Name = "Starred";
+            tn.ImageIndex = 3;
+            tn.SelectedImageIndex = 3;
+            tn = treeView1.Nodes.Add("Search Results");
+            tn.Name = "Search";
+            tn.ImageIndex = 4;
+            tn.SelectedImageIndex = 4;
+        }
+
+        private TreeNode AddFeedToTree(Feed f)
+        {
+            TreeNode tn;
+            var fn = "feeds\\icons\\" + GetFeedFilenameOnly(f) + ".ico";
+            if (File.Exists(GetFeedFilename(f)))
+            {
+                var list = JSON.ToObject<List<FeedItem>>(File.ReadAllText(GetFeedFilename(f)));
+                _feeditems.TryAdd(f.Title, list);
+            }
+            int imgidx = 1;
+            if (File.Exists(fn))
+            {
+                try
+                {
+                    rssImages.Images.Add(Image.FromFile(fn));
+                    imgidx = rssImages.Images.Count - 1;
+                }
+                catch { }
+            }
+            tn = TreeViewHelper.AddTreeNode(treeView1, f.Folder, f, f.Title);
+            //if (imgidx > 0)
+            //{
+            tn.ImageIndex = imgidx;
+            tn.SelectedImageIndex = imgidx;
+            //}
+            if (f.UnreadCount > 0)
+            {
+                tn.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                tn.Text = f.Title + $" ({f.UnreadCount})";
+            }
+            else
+                tn.Text = f.Title;
+            return tn;
         }
 
         private void downloadfeedicons()
@@ -708,9 +719,7 @@ namespace RealNews
             var ur = treeView1.Nodes.Find("Starred", true);
             if (ur.Length > 0)
             {
-                long c = 0;
-                foreach (var f in _feeditems)
-                    c += f.Value.Count(x => x.isStarred);
+                long c = _feeditems.Sum(f => f.Value.Count(x => x.isStarred));
                 if (c > 0)
                 {
                     ur[0].Text = $"Starred ({c})";
@@ -739,6 +748,7 @@ namespace RealNews
 
         private void UpdateFeedCount(Feed feed, List<FeedItem> list)
         {
+            // FIX : set folder count too
             try
             {
                 treeView1.SuspendLayout();
@@ -747,34 +757,24 @@ namespace RealNews
                 if (list != null && feed != null)
                 {
                     feed.UnreadCount = list.Count(x => x.isRead == false);
-                    foreach (TreeNode n in treeView1.Nodes)
+                    var n = treeView1.Nodes.Find(feed.Title, true)[0];
+                    if (feed.UnreadCount > 0)
                     {
-                        if (n.Text.StartsWith(feed.Title))
-                        {
-                            if (feed.UnreadCount > 0)
-                            {
-                                n.Text = feed.Title + $" ({feed.UnreadCount})";
-                                n.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
-                            }
-                            else
-                            {
-                                n.Text = feed.Title;
-                                n.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
-                            }
-                        }
+                        n.Text = feed.Title + $" ({feed.UnreadCount})";
+                        n.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        n.Text = feed.Title;
+                        n.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
                     }
                 }
 
                 var ur = treeView1.Nodes.Find("Unread", true);
                 if (ur.Length > 0)
                 {
-                    int c = 0;
-                    int tot = 0;
-                    foreach (var f in _feeditems)
-                        tot += f.Value.Count;
-
-                    foreach (var f in _feeds)
-                        c += f.UnreadCount;
+                    int tot = _feeditems.Sum(x => x.Value.Count);
+                    int c = _feeds.Sum(x => x.UnreadCount);
 
                     if (c > 0)
                     {
@@ -798,6 +798,8 @@ namespace RealNews
 
         private void MoveNextUnread()
         {
+            // FIX : handle folders when moving next
+
             if (_currentFeed == null)
                 _currentFeed = _feeds[0];
 
@@ -953,7 +955,7 @@ namespace RealNews
                         lvi.Name = "Title";
                         lvi.Text = i.Title;
                         lvi.Tag = i;
-                        //lvi.SubItems.Add(i.date.ToString());
+
                         var grp = today;
                         var d = DateTime.Now.Subtract(i.date).TotalDays;
                         if (d < 1)
@@ -970,7 +972,6 @@ namespace RealNews
                         else
                             lvi.Font = listView1.Font;
                         a.Add(lvi);
-                        //listView1.Items.Add(lvi);
                     }
                     listView1.Items.AddRange(a.ToArray());
                     listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -1244,12 +1245,18 @@ namespace RealNews
                     form.feed.Title = f.Title;
                     UpdateFeedCount(form.feed);
                 }
+                bool reload = false;
+                if (form.feed.Folder != f.Folder)
+                    reload = true;
                 form.feed.URL = f.URL;
                 form.feed.RTL = f.RTL;
+                form.feed.Folder = f.Folder;
                 form.feed.UpdateEveryMin = f.UpdateEveryMin;
                 form.feed.DownloadImages = f.DownloadImages;
                 form.feed.ExcludeInCleanup = f.ExcludeInCleanup;
                 SaveFeeds();
+                if (reload)
+                    LoadFeeds();
             }
         }
 
@@ -1407,8 +1414,8 @@ namespace RealNews
                         || x.Description.ToLower().Contains(s)));
                 }
             treeView1.Nodes[2].Text = "Search Results";
-            if(list.Count>0)
-                treeView1.Nodes[2].Text = $"Search Results ({list.Count})" ;
+            if (list.Count > 0)
+                treeView1.Nodes[2].Text = $"Search Results ({list.Count})";
 
             ShowFeedList(list);
             Log($"{list.Count} items found.");
@@ -1459,12 +1466,6 @@ namespace RealNews
                 MoveNextUnread();
                 return true;
             }
-
-            //if(keyData == (Keys.S | Keys.Control))
-            //{
-            //    ToggleStarred();
-            //    return true;
-            //}
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -1640,12 +1641,6 @@ namespace RealNews
             UpdateFeedCount();
             ShowFeedList(feed);
             ShowItem(list[0]);
-        }
-
-        private void webBrowser1_NewWindow(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //e.Cancel = true;
-            //MessageBox.Show("");
         }
     }
 }

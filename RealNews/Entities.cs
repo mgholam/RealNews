@@ -19,6 +19,7 @@ namespace RealNews
         public int StarredCount = 0;
         public bool feediconfailed = false;
         public bool ExcludeInCleanup = false;
+        public string Folder = "";
     }
 
 

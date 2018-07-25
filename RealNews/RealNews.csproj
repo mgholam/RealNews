@@ -141,6 +141,7 @@
     <Compile Include="Forms\frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\TreeViewHelper.cs" />
     <Compile Include="HtmlAgilityPack\crc32.cs" />
     <Compile Include="HtmlAgilityPack\EncodingFoundException.cs" />
     <Compile Include="HtmlAgilityPack\HtmlAttribute.cs" />
@@ -250,6 +251,7 @@
     <None Include="Resources\Rss.png" />
     <None Include="Resources\TrashO.png" />
     <None Include="Resources\Compress.png" />
+    <None Include="Resources\folder.png" />
     <Content Include="Resources\Search.png" />
     <Content Include="Resources\tray.ico" />
     <Content Include="Resources\trayhighlight.ico" />

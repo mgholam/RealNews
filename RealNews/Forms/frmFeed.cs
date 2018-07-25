@@ -37,6 +37,7 @@ namespace RealNews
 
             txtURL.Text = feed.URL;
             txtName.Text = feed.Title;
+            txtFolder.Text = feed.Folder;
             lblLastError.Text = feed.LastError;
             numUpdate.Value = feed.UpdateEveryMin <0?0:feed.UpdateEveryMin;
             chkRTL.Checked = feed.RTL;
@@ -55,7 +56,8 @@ namespace RealNews
                 DownloadImages = chkImages.Checked,
                 RTL = chkRTL.Checked,
                 UpdateEveryMin = (int)numUpdate.Value ,
-                ExcludeInCleanup = chkExcludeCleanup.Checked                
+                ExcludeInCleanup = chkExcludeCleanup.Checked      ,
+                Folder = txtFolder.Text
             };
 
             this.DialogResult = DialogResult.OK;
