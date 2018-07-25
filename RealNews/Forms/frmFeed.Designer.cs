@@ -34,6 +34,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtFolder = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.chkExcludeCleanup = new System.Windows.Forms.CheckBox();
             this.button4 = new System.Windows.Forms.Button();
             this.lblLastError = new System.Windows.Forms.Label();
@@ -45,8 +47,6 @@
             this.chkRTL = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtFolder = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             this.SuspendLayout();
@@ -119,6 +119,22 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Details";
+            // 
+            // txtFolder
+            // 
+            this.txtFolder.Location = new System.Drawing.Point(95, 54);
+            this.txtFolder.Name = "txtFolder";
+            this.txtFolder.Size = new System.Drawing.Size(501, 22);
+            this.txtFolder.TabIndex = 20;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(33, 57);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 14);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Category";
             // 
             // chkExcludeCleanup
             // 
@@ -229,27 +245,11 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Name";
             // 
-            // txtFolder
-            // 
-            this.txtFolder.Location = new System.Drawing.Point(95, 54);
-            this.txtFolder.Name = "txtFolder";
-            this.txtFolder.Size = new System.Drawing.Size(501, 22);
-            this.txtFolder.TabIndex = 20;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(51, 57);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(40, 14);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "Folder";
-            // 
             // frmFeed
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(685, 265);
+            this.ClientSize = new System.Drawing.Size(685, 256);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);

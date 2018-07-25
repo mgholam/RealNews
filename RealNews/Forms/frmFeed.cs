@@ -48,6 +48,12 @@ namespace RealNews
 
         private void button2_Click(object sender, EventArgs e)
         {
+            var s = txtFolder.Text.ToLower();
+            if(s == "unread" || s== "starred" || s== "search results")
+            {
+                MessageBox.Show("Category can not be one of : \r\n\r\n Unread, Starred, Search Results");
+                return;
+            }
             // save button
             ret = new Feed
             {
@@ -55,9 +61,9 @@ namespace RealNews
                 URL = txtURL.Text,
                 DownloadImages = chkImages.Checked,
                 RTL = chkRTL.Checked,
-                UpdateEveryMin = (int)numUpdate.Value ,
-                ExcludeInCleanup = chkExcludeCleanup.Checked      ,
-                Folder = txtFolder.Text
+                UpdateEveryMin = (int)numUpdate.Value,
+                ExcludeInCleanup = chkExcludeCleanup.Checked,
+                Folder = txtFolder.Text.Replace("\\", "/")
             };
 
             this.DialogResult = DialogResult.OK;

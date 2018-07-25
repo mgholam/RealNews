@@ -14,11 +14,11 @@ using CodeHollow.FeedReader;
 using fastJSON;
 using System.Threading.Tasks;
 using Westwind.Web.Utilities;
-using System.Drawing.Imaging;
 
 namespace RealNews
 {
     // TODO : drag move feeds in folders
+    // TODO : markread, download, update, cleanup on folder -> all feeds down
 
     public partial class frmMain : Form
     {
@@ -748,7 +748,6 @@ namespace RealNews
 
         private void UpdateFeedCount(Feed feed, List<FeedItem> list)
         {
-            // FIX : set folder count too
             try
             {
                 treeView1.SuspendLayout();
@@ -768,24 +767,38 @@ namespace RealNews
                         n.Text = feed.Title;
                         n.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
                     }
+                    // set folder count too
+                    if (feed.Folder != "")
+                    {
+                        var u = treeView1.Nodes.Find(feed.Folder, true)[0];
+                        var cc = _feeds.FindAll(x => x.Folder == feed.Folder).Sum(x => x.UnreadCount);
+
+                        if (cc > 0)
+                        {
+                            u.Text = u.Name + $" ({cc})";
+                            u.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                        }
+                        else
+                        {
+                            u.Text = u.Name;
+                            u.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                        }
+                    }
                 }
 
-                var ur = treeView1.Nodes.Find("Unread", true);
-                if (ur.Length > 0)
-                {
-                    int tot = _feeditems.Sum(x => x.Value.Count);
-                    int c = _feeds.Sum(x => x.UnreadCount);
+                var ur = treeView1.Nodes.Find("Unread", true)[0];
+                int tot = _feeditems.Sum(x => x.Value.Count);
+                int c = _feeds.Sum(x => x.UnreadCount);
 
-                    if (c > 0)
-                    {
-                        ur[0].Text = $"Unread ({c} of {tot})";
-                        ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Bold);
-                    }
-                    else
-                    {
-                        ur[0].Text = $"Unread (0 of {tot})";
-                        ur[0].NodeFont = new Font(treeView1.Font, FontStyle.Regular);
-                    }
+                if (c > 0)
+                {
+                    ur.Text = $"Unread ({c} of {tot})";
+                    ur.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                }
+                else
+                {
+                    ur.Text = $"Unread (0 of {tot})";
+                    ur.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
                 }
                 treeView1.EndUpdate();
                 treeView1.ResumeLayout();
@@ -1212,6 +1225,11 @@ namespace RealNews
             // edit feed
             frmFeed form = new frmFeed();
             form.feed = treeView1.SelectedNode.Tag as Feed;
+            if (form.feed == null)
+            {
+                Log("Please select a feed first");
+                return;
+            }
             if (form.ShowDialog() == DialogResult.OK)
             {
                 var f = form.ret;
