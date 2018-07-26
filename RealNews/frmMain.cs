@@ -18,7 +18,7 @@ using Westwind.Web.Utilities;
 namespace RealNews
 {
     // TODO : drag move feeds in folders
-    // TODO : markread, download, update, cleanup on folder -> all feeds down
+    // TODO : download, cleanup on folder -> all feeds down
 
     public partial class frmMain : Form
     {
@@ -832,6 +832,12 @@ namespace RealNews
                     var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == "").OrderBy(x => x.Title).ToList();
                     if (f.Count() > 0)
                         _currentFeed = f[0];
+                    else
+                    {
+                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Title).ToList();
+                        if (f.Count() > 0)
+                            _currentFeed = f[0];
+                    }
                 }
 
                 ShowFeedList(_currentFeed);
@@ -1142,19 +1148,40 @@ namespace RealNews
 
         private void markAsReadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _currentList.ForEach(x => x.isRead = true);
-            UpdateFeedCount();
+            var n = treeView1.SelectedNode;
+            var f = n.Tag as Feed;
+            if (f != null)
+                _currentList.ForEach(x => x.isRead = true);
+            else
+                _feeds.FindAll(x => x.Folder == n.Name).ForEach(x => _feeditems[x.Title].ForEach(o => o.isRead = true));
+
+            UpdateAllFeedCounts();
             ShowFeedList(_currentFeed);
         }
 
         private void updateNowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var f = treeView1.SelectedNode.Tag as Feed;
-            Task.Factory.StartNew(() =>
+            var n = treeView1.SelectedNode;
+            var f = n.Tag as Feed;
+            if (f != null)
             {
-                UpdateFeed(f, Log);
-                Invoke(() => { ShowFeedList(f); });
-            });
+                Task.Factory.StartNew(() =>
+                {
+                    UpdateFeed(f, Log);
+                    Invoke(() => { ShowFeedList(f); });
+                });
+            }
+            else
+            {
+                _feeds.FindAll(x => x.Folder == n.Name).ForEach(x =>
+                {
+                    Task.Factory.StartNew(() =>
+                    {
+                        UpdateFeed(x, Log);
+                        Invoke(() => { ShowFeedList(x); });
+                    });
+                });
+            }
         }
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
