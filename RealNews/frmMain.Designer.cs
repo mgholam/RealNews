@@ -64,7 +64,6 @@
             this.cleanupToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compressImageCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -126,11 +125,12 @@
             this.treeView1.FullRowSelect = true;
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.rssImages;
-            this.treeView1.Indent = 20;
+            this.treeView1.Indent = 10;
             this.treeView1.ItemHeight = 20;
             this.treeView1.Location = new System.Drawing.Point(0, 29);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
+            this.treeView1.ShowLines = false;
             this.treeView1.Size = new System.Drawing.Size(340, 558);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -429,7 +429,6 @@
             this.cleanupToolStripMenuItem1,
             this.settingsToolStripMenuItem,
             this.logMessagesToolStripMenuItem,
-            this.fontToolStripMenuItem,
             this.compressImageCacheToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -459,14 +458,6 @@
             this.logMessagesToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.logMessagesToolStripMenuItem.Text = "Log messages";
             this.logMessagesToolStripMenuItem.Click += new System.EventHandler(this.logMessagesToolStripMenuItem_Click);
-            // 
-            // fontToolStripMenuItem
-            // 
-            this.fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            this.fontToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.fontToolStripMenuItem.Text = "font";
-            this.fontToolStripMenuItem.Visible = false;
-            this.fontToolStripMenuItem.Click += new System.EventHandler(this.fontToolStripMenuItem_Click);
             // 
             // compressImageCacheToolStripMenuItem
             // 
@@ -664,7 +655,6 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         private PlaceHolderTextBox placeHolderTextBox1;
-        private System.Windows.Forms.ToolStripMenuItem fontToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem cleanupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem downloadImagesToolStripMenuItem1;

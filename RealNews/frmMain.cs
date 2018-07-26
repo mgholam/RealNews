@@ -1535,6 +1535,7 @@ namespace RealNews
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // clear search text
             placeHolderTextBox1.Text = "";
             placeHolderTextBox1.setPlaceholder();
             ShowSearchResults();
@@ -1546,15 +1547,15 @@ namespace RealNews
                 e.SuppressKeyPress = true;
         }
 
-        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FontDialog fd = new FontDialog();
-            fd.Font = this.Font;
-            if (fd.ShowDialog() == DialogResult.OK)
-            {
-                this.Font = fd.Font;
-            }
-        }
+        //private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    FontDialog fd = new FontDialog();
+        //    fd.Font = this.Font;
+        //    if (fd.ShowDialog() == DialogResult.OK)
+        //    {
+        //        this.Font = fd.Font;
+        //    }
+        //}
 
         private void cleanupToolStripMenuItem_Click_2(object sender, EventArgs e)
         {
