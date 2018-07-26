@@ -1,18 +1,18 @@
-﻿using System;
+﻿using CodeHollow.FeedReader;
+using fastJSON;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
-using CodeHollow.FeedReader;
-using fastJSON;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Westwind.Web.Utilities;
 
 namespace RealNews
@@ -306,15 +306,9 @@ namespace RealNews
 
                 AddTreeViewMain();
 
-                var ff = _feeds.FindAll(x => x.Folder != "").OrderBy(x => x.Folder);
-                foreach (var f in ff)
-                {
-                    var t = AddFeedToTree(f);
-                }
+                _feeds.FindAll(x => x.Folder != "").OrderBy(x => x.Folder).ToList().ForEach(x => AddFeedToTree(x));
 
-                ff = _feeds.FindAll(x => x.Folder == "").OrderBy(x => x.Title);
-                foreach (var f in ff)
-                    AddFeedToTree(f);
+                _feeds.FindAll(x => x.Folder == "").OrderBy(x => x.Title).ToList().ForEach(x => AddFeedToTree(x));
 
                 treeView1.EndUpdate();
             }
@@ -326,9 +320,14 @@ namespace RealNews
             if (_feeds.Count > 0)
             {
                 UpdateStarCount();
-                UpdateFeedCount();
+                UpdateAllFeedCounts();
             }
             splitContainer1.Visible = true;
+        }
+
+        private void UpdateAllFeedCounts()
+        {
+            _feeds.ForEach(x => UpdateFeedCount(x));
         }
 
         private void AddTreeViewMain()
@@ -575,6 +574,7 @@ namespace RealNews
                 var o = old.Union(list, new FeedItemComparer()).ToList();
                 o.Sort(new FeedItemSort());
                 list = o;
+                //list = o.OrderBy(x=>x.date).ToList();
             }
 
             if (list.Count(x => x.isRead == false) > 0)
@@ -716,19 +716,13 @@ namespace RealNews
             treeView1.SuspendLayout();
             treeView1.BeginUpdate();
 
-            var ur = treeView1.Nodes.Find("Starred", true);
-            if (ur.Length > 0)
-            {
-                long c = _feeditems.Sum(f => f.Value.Count(x => x.isStarred));
-                if (c > 0)
-                {
-                    ur[0].Text = $"Starred ({c})";
-                }
-                else
-                {
-                    ur[0].Text = "Starred";
-                }
-            }
+            var ur = treeView1.Nodes.Find("Starred", true)[0];
+            long c = _feeditems.Sum(f => f.Value.Count(x => x.isStarred));
+            if (c > 0)
+                ur.Text = $"Starred ({c})";
+            else
+                ur.Text = "Starred";
+
             treeView1.EndUpdate();
             treeView1.ResumeLayout();
         }
@@ -770,8 +764,8 @@ namespace RealNews
                     // set folder count too
                     if (feed.Folder != "")
                     {
-                        var u = treeView1.Nodes.Find(feed.Folder, true)[0];
                         var cc = _feeds.FindAll(x => x.Folder == feed.Folder).Sum(x => x.UnreadCount);
+                        var u = treeView1.Nodes.Find(feed.Folder, true)[0];
 
                         if (cc > 0)
                         {
@@ -800,46 +794,51 @@ namespace RealNews
                     ur.Text = $"Unread (0 of {tot})";
                     ur.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
                 }
-                treeView1.EndUpdate();
-                treeView1.ResumeLayout();
             }
             catch //(Exception ex)
             {
 
             }
+            finally
+            {
+                treeView1.EndUpdate();
+                treeView1.ResumeLayout();
+            }
         }
 
         private void MoveNextUnread()
         {
-            // FIX : handle folders when moving next
-
+            // handle folders when moving next
             if (_currentFeed == null)
                 _currentFeed = _feeds[0];
 
             // move next
             if (_currentFeed.UnreadCount == 0)
             {
-                // find next feed
-                int i = _feeds.FindIndex(x => x.Title == _currentFeed.Title);
-                int c = _feeds.Count;
-                i++;
-                while (c > 0)
+                if (_currentFeed.Folder != "")
                 {
-                    if (i == _feeds.Count)
-                        i = 0;
-                    c--;
-
-                    _currentFeed = _feeds[i++];
-                    if (_currentFeed.UnreadCount > 0)
+                    var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == _currentFeed.Folder).OrderBy(x => x.Title).ToList();
+                    if (f.Count() > 0)
+                        _currentFeed = f[0];
+                    else
                     {
-                        ShowFeedList(_currentFeed);
-                        // focus feed in treeview
-                        var n = treeView1.Nodes.Find(_currentFeed.Title, true);
-                        if (n.Length > 0)
-                            treeView1.SelectedNode = n[0];
-                        break;
+                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Title).ToList();
+                        if (f.Count() > 0)
+                            _currentFeed = f[0];
                     }
                 }
+                else
+                {
+                    var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == "").OrderBy(x => x.Title).ToList();
+                    if (f.Count() > 0)
+                        _currentFeed = f[0];
+                }
+
+                ShowFeedList(_currentFeed);
+                // focus feed in treeview
+                var n = treeView1.Nodes.Find(_currentFeed.Title, true);
+                if (n.Length > 0)
+                    treeView1.SelectedNode = n[0];
             }
             ShowNextItem();
         }

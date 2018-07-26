@@ -252,9 +252,9 @@
     <None Include="Resources\TrashO.png" />
     <None Include="Resources\Compress.png" />
     <None Include="Resources\folder.png" />
-    <Content Include="Resources\Search.png" />
-    <Content Include="Resources\tray.ico" />
-    <Content Include="Resources\trayhighlight.ico" />
+    <None Include="Resources\Search.png" />
+    <None Include="Resources\tray.ico" />
+    <None Include="Resources\trayhighlight.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="SHDocVw">

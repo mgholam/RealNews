@@ -46,12 +46,12 @@ namespace RealNews
     {
         public bool Equals(FeedItem p1, FeedItem p2)
         {
-            return p1.Title == p2.Title;
+            return p1.Title.ToLower() == p2.Title.ToLower();
         }
 
         public int GetHashCode(FeedItem p)
         {
-            return p.Title.GetHashCode();
+            return p.Title.ToLower().GetHashCode();
         }
     }
     class FeedItemSort : IComparer<FeedItem>
