@@ -822,19 +822,19 @@ namespace RealNews
                         _currentFeed = f[0];
                     else
                     {
-                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Title).ToList();
+                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Folder + "/" + x.Title).ToList();
                         if (f.Count() > 0)
                             _currentFeed = f[0];
                     }
                 }
                 else
                 {
-                    var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == "").OrderBy(x => x.Title).ToList();
+                    var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == "" && x.Title.CompareTo(_currentFeed.Title) > 0).OrderBy(x => x.Title).ToList();
                     if (f.Count() > 0)
                         _currentFeed = f[0];
                     else
                     {
-                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Title).ToList();
+                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Folder + "/" + x.Title).ToList();
                         if (f.Count() > 0)
                             _currentFeed = f[0];
                     }
