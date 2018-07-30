@@ -57,7 +57,7 @@ namespace RealNews
         ConcurrentQueue<string> _downloadimglist = new ConcurrentQueue<string>();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
-        private JSONParameters jp = new JSONParameters { UseExtensions = false };
+        private JSONParameters jp = new JSONParameters { UseExtensions = false , UseEscapedUnicode = false };
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
         private ImageCache _imageCache;
         private static ILog _log = LogManager.GetLogger(typeof(frmMain));
