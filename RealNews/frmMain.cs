@@ -811,30 +811,48 @@ namespace RealNews
             // handle folders when moving next
             if (_currentFeed == null)
                 _currentFeed = _feeds[0];
-
+            bool found = false;
             // move next
             if (_currentFeed.UnreadCount == 0)
             {
-                if (_currentFeed.Folder != "")
+                if (_currentFeed.Folder != "") // in a folder 
                 {
-                    var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == _currentFeed.Folder).OrderBy(x => x.Title).ToList();
+                    var f = _feeds.FindAll(x => x.UnreadCount > 0 &&
+                                                x.Folder != "" &&
+                                                x.FullTitle.CompareTo(_currentFeed.FullTitle) > 0)
+                                          .OrderBy(x => x.FullTitle)
+                                          .ToList();
                     if (f.Count() > 0)
-                        _currentFeed = f[0];
-                    else
                     {
-                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Folder + "/" + x.Title).ToList();
-                        if (f.Count() > 0)
-                            _currentFeed = f[0];
+                        _currentFeed = f[0];
+                        found = true;
                     }
+                    //else
+                    //{
+                    //    f = _feeds.FindAll(x => x.UnreadCount > 0 &&
+                    //                            x.Folder != "" &&
+                    //                            x.FullTitle.CompareTo(_currentFeed.FullTitle) > 0)
+                    //                      .OrderBy(x => x.FullTitle)
+                    //                      .ToList();
+                    //    if (f.Count() > 0)
+                    //        _currentFeed = f[0];
+                    //}
                 }
-                else
+                if (found == false)
                 {
-                    var f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder == "" && x.Title.CompareTo(_currentFeed.Title) > 0).OrderBy(x => x.Title).ToList();
+                    var f = _feeds.FindAll(x => x.UnreadCount > 0 &&
+                                                x.Folder == "" )//&&
+                                                //x.Title.CompareTo(_currentFeed.Title) > 0)
+                                          .OrderBy(x => x.Title)
+                                          .ToList();
                     if (f.Count() > 0)
                         _currentFeed = f[0];
                     else
                     {
-                        f = _feeds.FindAll(x => x.UnreadCount > 0 && x.Folder != "").OrderBy(x => x.Folder + "/" + x.Title).ToList();
+                        f = _feeds.FindAll(x => x.UnreadCount > 0 &&
+                                                x.Folder != "")
+                                          .OrderBy(x => x.FullTitle)
+                                          .ToList();
                         if (f.Count() > 0)
                             _currentFeed = f[0];
                     }

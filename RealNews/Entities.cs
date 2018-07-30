@@ -20,6 +20,8 @@ namespace RealNews
         public bool feediconfailed = false;
         public bool ExcludeInCleanup = false;
         public string Folder = "";
+
+        public string FullTitle { get { return Folder + "/" + Title; } }
     }
 
 
