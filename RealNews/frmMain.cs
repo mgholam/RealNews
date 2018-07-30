@@ -827,22 +827,11 @@ namespace RealNews
                         _currentFeed = f[0];
                         found = true;
                     }
-                    //else
-                    //{
-                    //    f = _feeds.FindAll(x => x.UnreadCount > 0 &&
-                    //                            x.Folder != "" &&
-                    //                            x.FullTitle.CompareTo(_currentFeed.FullTitle) > 0)
-                    //                      .OrderBy(x => x.FullTitle)
-                    //                      .ToList();
-                    //    if (f.Count() > 0)
-                    //        _currentFeed = f[0];
-                    //}
                 }
                 if (found == false)
                 {
                     var f = _feeds.FindAll(x => x.UnreadCount > 0 &&
-                                                x.Folder == "" )//&&
-                                                //x.Title.CompareTo(_currentFeed.Title) > 0)
+                                                x.Folder == "" )
                                           .OrderBy(x => x.Title)
                                           .ToList();
                     if (f.Count() > 0)
