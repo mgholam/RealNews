@@ -1467,7 +1467,7 @@ namespace RealNews
             treeView1.Nodes[2].Text = "Search Results";
             if (list.Count > 0)
                 treeView1.Nodes[2].Text = $"Search Results ({list.Count})";
-
+            _currentFeed = null;
             ShowFeedList(list);
             Log($"{list.Count} items found.");
         }
