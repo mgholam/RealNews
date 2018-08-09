@@ -1546,12 +1546,15 @@ namespace RealNews
             placeHolderTextBox1.Text = "";
             placeHolderTextBox1.setPlaceholder();
             ShowSearchResults();
+            button1.Visible = false;
         }
 
         private void placeHolderTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Return)
                 e.SuppressKeyPress = true;
+            if (button1.Visible == false)
+                button1.Visible = true;
         }
 
         //private void fontToolStripMenuItem_Click(object sender, EventArgs e)
