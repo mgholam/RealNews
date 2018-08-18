@@ -78,6 +78,7 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanupImageCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -430,7 +431,8 @@
             this.cleanupToolStripMenuItem1,
             this.settingsToolStripMenuItem,
             this.logMessagesToolStripMenuItem,
-            this.compressImageCacheToolStripMenuItem});
+            this.compressImageCacheToolStripMenuItem,
+            this.cleanupImageCacheToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -573,6 +575,14 @@
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
+            // cleanupImageCacheToolStripMenuItem
+            // 
+            this.cleanupImageCacheToolStripMenuItem.Image = global::RealNews.Properties.Resources.TrashO;
+            this.cleanupImageCacheToolStripMenuItem.Name = "cleanupImageCacheToolStripMenuItem";
+            this.cleanupImageCacheToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.cleanupImageCacheToolStripMenuItem.Text = "Cleanup Image Cache";
+            this.cleanupImageCacheToolStripMenuItem.Click += new System.EventHandler(this.cleanupImageCacheToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -662,6 +672,7 @@
         private System.Windows.Forms.ToolStripMenuItem compressImageCacheToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem deleteItemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanupImageCacheToolStripMenuItem;
     }
 }
 

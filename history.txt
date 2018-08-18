@@ -1,0 +1,8 @@
+v1.1
+- upgrade to fastJSON v2.1.36
+- search clear button only if text entered
+- fix search and current unread count update
+- added cleanup image cache for orphan images
+
+v1.0
+- initial release

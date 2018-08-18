@@ -37,6 +37,11 @@ namespace RealNews
             return r;
         }
 
+        public urlhash GetUrlhash(string url)
+        {
+            return FixName(url);
+        }
+
         public string GetFilename(string url)
         {
             if (url == null)

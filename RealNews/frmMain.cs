@@ -57,7 +57,7 @@ namespace RealNews
         ConcurrentQueue<string> _downloadimglist = new ConcurrentQueue<string>();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private FormWindowState _lastFormState = FormWindowState.Normal;
-        private JSONParameters jp = new JSONParameters { UseExtensions = false , UseEscapedUnicode = false };
+        private JSONParameters jp = new JSONParameters { UseExtensions = false, UseEscapedUnicode = false };
         private string _localhostimageurl = "http://localhost:{port}/api/image?";
         private ImageCache _imageCache;
         private static ILog _log = LogManager.GetLogger(typeof(frmMain));
@@ -831,7 +831,7 @@ namespace RealNews
                 if (found == false)
                 {
                     var f = _feeds.FindAll(x => x.UnreadCount > 0 &&
-                                                x.Folder == "" )
+                                                x.Folder == "")
                                           .OrderBy(x => x.Title)
                                           .ToList();
                     if (f.Count() > 0)
@@ -1696,6 +1696,58 @@ namespace RealNews
             UpdateFeedCount();
             ShowFeedList(feed);
             ShowItem(list[0]);
+        }
+
+        private void cleanupImageCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // cleanup image cache
+
+            // get list of images -> folder, img name
+            Dictionary<string, bool> imgs = new Dictionary<string, bool>();
+            if (Directory.Exists("Cache") == false)
+                return;
+
+            foreach (var f in Directory.EnumerateFiles("Cache", "*.*", SearchOption.AllDirectories))
+            {
+                imgs.Add(f.ToLowerInvariant().Replace("cache\\", "").Replace("\\", "/"), false);
+            }
+
+            List<ImageCache.urlhash> im = new List<ImageCache.urlhash>();
+            // foreach feeditem in feeds
+            foreach (var feed in _feeditems)
+            {
+                foreach (var fi in feed.Value)
+                {
+                    //    extract images 
+                    foreach (var img in GetImagesInHTMLString(fi.Description))
+                    {
+                        var s = _imghrefregex.Match(img).Groups["href"].Value;
+                        var url = s.Replace(_localhostimageurl, "");
+                        im.Add(_imageCache.GetUrlhash(url));
+                    }
+                }
+            }
+            foreach (var i in im)
+            {
+                var s = i.fn.ToLowerInvariant();
+                if (imgs.ContainsKey(s))
+                    imgs.Remove(s);
+            }
+            if (imgs.Count == 0)
+            {
+                Log("Image cache is clean.");
+                return;
+            }
+            var r = MessageBox.Show($"Do you want to cleanup {imgs.Count} orphaned images from cache?", "Cleanup", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+            if (r == DialogResult.Yes)
+            {
+                // foreach img in above list -> delete img file
+                foreach (var i in imgs)
+                {
+                    //if (i.Value == false)
+                    File.Delete("Cache\\" + i.Key.Replace("/", "\\"));
+                }
+            }
         }
     }
 }
