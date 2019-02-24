@@ -51,6 +51,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.numCleaupDays = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWebPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDownloadSize)).BeginInit();
@@ -295,11 +296,21 @@
             this.label12.TabIndex = 32;
             this.label12.Text = "Cleanup Items over";
             // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(290, 37);
+            this.maskedTextBox1.Mask = "00:00";
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(108, 22);
+            this.maskedTextBox1.TabIndex = 35;
+            this.maskedTextBox1.ValidatingType = typeof(System.DateTime);
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 341);
+            this.Controls.Add(this.maskedTextBox1);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.numCleaupDays);
             this.Controls.Add(this.label12);
@@ -365,5 +376,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown numCleaupDays;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
     }
 }

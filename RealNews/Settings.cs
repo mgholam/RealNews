@@ -25,6 +25,8 @@ namespace RealNews
         public static string StartDownloadImgTime = "03:00";
         public static string EndDownloadImgTime = "06:00";
 
+        public static int FeedUpdateTimeout = 5 * 60 * 1000; 
+
         //public static int DownloadImgThreads = 20;
 
     }

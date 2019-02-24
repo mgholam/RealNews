@@ -21,7 +21,17 @@ namespace RealNews
         public bool ExcludeInCleanup = false;
         public string Folder = "";
 
-        public string FullTitle { get { return Folder + "/" + Title; } }
+        public string FullTitle
+        {
+            get
+            {
+                if (Folder != "")
+                    return Folder + "/" + Title;
+                else
+                    return "\uFFFC"+ "/" + Title; // no category to the end of sort
+
+            }
+        }
     }
 
 

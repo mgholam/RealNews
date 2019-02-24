@@ -27,6 +27,7 @@ namespace RealNews
             txtEnd.Text = Settings.EndDownloadImgTime;
             lblLastUpdated.Text = Settings.LastUpdateTime.ToLongTimeString();
             numCleaupDays.Value = Settings.CleanupItemAfterDays;
+            maskedTextBox1.Text = Settings.LastUpdateTime.ToLongTimeString();
             _isdirty = false;
         }
 

@@ -1,3 +1,14 @@
+v1.3 
+- usability tweaks
+- check image already downloaded before downloading
+
+v1.2
+- code cleanup
+- added feed update timeout 
+- local datetime in settings.config
+- download images method checks if already downloaded
+- selecting folder/category shows all feeds below it
+
 v1.1
 - upgrade to fastJSON v2.2.0
 - search clear button only if text entered

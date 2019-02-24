@@ -24,9 +24,12 @@ namespace RealNews
 
         private urlhash FixName(string url)
         {
+            // remove http:// https://
+            url = url.Replace("http://", "").Replace("https://", "");
+            // KLUDGE : for engaget images
+            url = url.Replace("amp;", ""); 
+
             string fol = url.Substring(0, url.IndexOf('/'));
-            url = url.Replace("amp;", ""); // KLUDGE : for engaget images
-            //url = url.Replace("&amp;", "&");
 
             var r = new urlhash
             {
