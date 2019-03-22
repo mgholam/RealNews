@@ -1522,8 +1522,61 @@ namespace RealNews
                 deleteItems();
                 return true;
             }
+            else if (keyData == (Keys.Down | Keys.Alt))
+            {
+                //MessageBox.Show("down");
+                MoveNext();
+                return true;
+            }
+            else if (keyData == (Keys.Up | Keys.Alt))
+            {
+                MovePrev();
+                return true;
+            }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void MovePrev()
+        {
+            if (listView1.SelectedIndices.Count == 0)
+                return;
+            int selectedIndex = listView1.SelectedIndices[0];
+            listView1.Items[selectedIndex].Focused = false;
+            listView1.Items[selectedIndex].Selected = false;
+            listView1.SelectedIndices.Clear();
+            listView1.SelectedItems.Clear();
+            if (selectedIndex > 0)
+            {
+                selectedIndex--;
+                listView1.Items[selectedIndex].Selected = true;
+                listView1.Items[selectedIndex].Focused = true;
+                var i = _currentList[selectedIndex];
+                if (selectedIndex + _visibleItems < listView1.Items.Count)
+                    listView1.EnsureVisible(selectedIndex + _visibleItems);
+                ShowItem(i);
+            }
+        }
+
+        private void MoveNext()
+        {
+            if (listView1.SelectedIndices.Count == 0)
+                return;
+            int selectedIndex = listView1.SelectedIndices[0];
+            listView1.Items[selectedIndex].Focused = false;
+            listView1.Items[selectedIndex].Selected = false;
+            listView1.SelectedIndices.Clear();
+            listView1.SelectedItems.Clear();
+            if (selectedIndex < listView1.Items.Count)
+            {
+                selectedIndex++;
+                listView1.Items[selectedIndex].Selected = true;
+                listView1.Items[selectedIndex].Focused = true;
+                var i = _currentList[selectedIndex];
+                if (selectedIndex + _visibleItems < listView1.Items.Count)
+                    listView1.EnsureVisible(selectedIndex + _visibleItems);
+                ShowItem(i);
+            }
         }
 
         private void logMessagesToolStripMenuItem_Click(object sender, EventArgs e)

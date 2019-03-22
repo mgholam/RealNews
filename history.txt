@@ -1,3 +1,6 @@
+v1.4 
+- added alt+up and down to navigate the feed list  
+
 v1.3 
 - usability tweaks
 - check image already downloaded before downloading
