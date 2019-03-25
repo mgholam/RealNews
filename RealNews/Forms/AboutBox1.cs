@@ -18,7 +18,15 @@ namespace RealNews
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
+            this.textBoxDescription.Text = AssemblyDescription + 
+                @"  
+
+  Keyboard shortcuts :
+      space = next unread
+      alt+up = move to previous in list
+      alt+down = move to next in list 
+      ctrl+d = delete selected items
+";
         }
 
         #region Assembly Attribute Accessors

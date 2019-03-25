@@ -1552,8 +1552,8 @@ namespace RealNews
                 listView1.Items[selectedIndex].Selected = true;
                 listView1.Items[selectedIndex].Focused = true;
                 var i = _currentList[selectedIndex];
-                if (selectedIndex + _visibleItems < listView1.Items.Count)
-                    listView1.EnsureVisible(selectedIndex + _visibleItems);
+                //if (selectedIndex + _visibleItems < listView1.Items.Count)
+                listView1.EnsureVisible(selectedIndex);
                 ShowItem(i);
             }
         }
@@ -1733,11 +1733,15 @@ namespace RealNews
             int count = listView1.SelectedItems.Count;
             if (count == 0)// == null)
                 return;
-
-            var r = MessageBox.Show($"Do you want to delete {count} items now?\r\n\r\nStarred Items will be ignored, and you must unstar first. ", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
-            if (r == DialogResult.No)
-                return;
             var feed = treeView1.SelectedNode.Tag as Feed;
+            if (feed == null)
+                return;
+            if (count > 1)
+            {
+                var r = MessageBox.Show($"Do you want to delete {count} items now?\r\n\r\nStarred Items will be ignored, and you must unstar first. ", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (r == DialogResult.No)
+                    return;
+            }
             var list = _feeditems[feed.Title];
             int last = 0;
             foreach (ListViewItem ff in listView1.SelectedItems)
