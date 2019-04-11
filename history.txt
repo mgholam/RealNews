@@ -1,6 +1,7 @@
 v1.4 
 - added alt+up and down to navigate the feed list  
 - usability tweaks 
+- fix for some sites returning 403
 
 v1.3 
 - usability tweaks

@@ -80,8 +80,9 @@ namespace RealNews
         {
             try
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls  | SecurityProtocolType.Ssl3;
+                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls  | SecurityProtocolType.Ssl3;
                 mWebClient wc = new mWebClient();
+                
                 var feedxml = wc.DownloadString(url);
                 var reader = FeedReader.ReadFromString(feedxml);
                 return reader.Title;

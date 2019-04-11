@@ -12,6 +12,7 @@ namespace RealNews
             base.Encoding = System.Text.Encoding.UTF8;
             if (Settings.UseSytemProxy) // FEATURE : else define a proxy
                 Proxy = WebRequest.DefaultWebProxy;
+            Headers.Add("User-Agent: Other"); // for some sites that return 403
         }
         public int Timeout { get; set; }
 
