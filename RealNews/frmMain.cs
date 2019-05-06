@@ -1588,14 +1588,20 @@ namespace RealNews
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "On", null);
-            }
-            catch (Exception ex)
-            {
-                _log.Error(ex);
-            }
+            if (listView1.FocusedItem == null)
+                return;
+            // toggle star
+            var f = listView1.FocusedItem.Tag as FeedItem;
+            if (f != null)
+                Process.Start("www.google.com/search?q=" + f.Title);
+            //try
+            //{
+            //    webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "On", null);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _log.Error(ex);
+            //}
         }
 
         private void button1_Click(object sender, EventArgs e)

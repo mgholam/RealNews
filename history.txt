@@ -1,3 +1,6 @@
+v1.4.1
+- added google search the feed item title in the toolbar
+
 v1.4 
 - added alt+up and down to navigate the feed list  
 - usability tweaks 
