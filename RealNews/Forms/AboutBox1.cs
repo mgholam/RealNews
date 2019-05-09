@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -26,6 +22,7 @@ namespace RealNews
       alt+up = move to previous in list
       alt+down = move to next in list 
       ctrl+d = delete selected items
+      ctrl+g = search selected title in Google
 ";
         }
 

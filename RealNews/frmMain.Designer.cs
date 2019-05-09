@@ -43,6 +43,7 @@
             this.rssImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.placeHolderTextBox1 = new PlaceHolderTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -53,6 +54,7 @@
             this.downloadImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewFeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,8 +80,6 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.placeHolderTextBox1 = new PlaceHolderTextBox();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -240,6 +240,25 @@
             this.panel2.Size = new System.Drawing.Size(316, 35);
             this.panel2.TabIndex = 1;
             // 
+            // placeHolderTextBox1
+            // 
+            this.placeHolderTextBox1.BackColor = System.Drawing.Color.White;
+            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
+            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
+            this.placeHolderTextBox1.Location = new System.Drawing.Point(8, 8);
+            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
+            this.placeHolderTextBox1.PlaceHolderText = "Search...";
+            this.placeHolderTextBox1.Size = new System.Drawing.Size(300, 19);
+            this.placeHolderTextBox1.TabIndex = 1;
+            this.placeHolderTextBox1.Text = "Search...";
+            this.placeHolderTextBox1.WordWrap = false;
+            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
+            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            // 
             // button1
             // 
             this.button1.AutoSize = true;
@@ -352,6 +371,16 @@
             this.deleteItemToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.deleteItemToolStripMenuItem.Text = "Delete Item";
             this.deleteItemToolStripMenuItem.Click += new System.EventHandler(this.deleteItemToolStripMenuItem_Click);
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 25);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(450, 587);
+            this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
             // 
             // menuStrip1
             // 
@@ -493,6 +522,7 @@
             this.editToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.editToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
             this.editToolStripMenuItem.Text = "Google Title";
+            this.editToolStripMenuItem.ToolTipText = "Press (ctrl+G)";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // updateAllToolStripMenuItem
@@ -572,35 +602,6 @@
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
-            // 
-            // placeHolderTextBox1
-            // 
-            this.placeHolderTextBox1.BackColor = System.Drawing.Color.White;
-            this.placeHolderTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.placeHolderTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placeHolderTextBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
-            this.placeHolderTextBox1.ForeColor = System.Drawing.Color.Gray;
-            this.placeHolderTextBox1.Location = new System.Drawing.Point(8, 8);
-            this.placeHolderTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.placeHolderTextBox1.Name = "placeHolderTextBox1";
-            this.placeHolderTextBox1.PlaceHolderText = "Search...";
-            this.placeHolderTextBox1.Size = new System.Drawing.Size(300, 19);
-            this.placeHolderTextBox1.TabIndex = 1;
-            this.placeHolderTextBox1.Text = "Search...";
-            this.placeHolderTextBox1.WordWrap = false;
-            this.placeHolderTextBox1.Enter += new System.EventHandler(this.txtSearch_Enter);
-            this.placeHolderTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.placeHolderTextBox1_KeyDown);
-            this.placeHolderTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 25);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(450, 587);
-            this.webBrowser1.TabIndex = 0;
-            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
             // 
             // frmMain
             // 

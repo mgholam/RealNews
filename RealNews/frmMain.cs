@@ -1230,7 +1230,8 @@ namespace RealNews
                 var r = _feeds.Find(x => x.Title == f.Title);
                 if (r != null)
                 {
-                    MessageBox.Show(f.Title + " Already exists", "Error");
+                    //MessageBox.Show
+                    Log(f.Title + " Already exists");//, "Error");
                     return;
                 }
                 _feeds.Add(f);
@@ -1411,7 +1412,8 @@ namespace RealNews
             }
             if (c == 0)
             {
-                MessageBox.Show("No items to remove.");
+                //MessageBox.Show
+                Log("No items to remove.");
                 return;
             }
             var r = MessageBox.Show($"Do you want to remove {c} items?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
@@ -1650,7 +1652,8 @@ namespace RealNews
 
             if (c == 0)
             {
-                MessageBox.Show("No items to remove.");
+                //MessageBox.Show
+                Log("No items to remove.");
                 return;
             }
             var r = MessageBox.Show($"Do you want to remove {c} items from {feed.Title}?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
