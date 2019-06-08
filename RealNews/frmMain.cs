@@ -1712,6 +1712,9 @@ namespace RealNews
         {
             lock (_zlock)
             {
+                var r = MessageBox.Show($"Do you want to zip compress the image cache?", "Compress Images", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (r == DialogResult.No)
+                    return;
                 // compress image cache
                 var dirs = Directory.GetDirectories("cache");
                 toolProgressBar.Value = 0;
