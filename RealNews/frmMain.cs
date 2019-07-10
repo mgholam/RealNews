@@ -82,6 +82,9 @@ namespace RealNews
             if (File.Exists("configs\\style.css") == false)
                 File.WriteAllText("configs\\style.css", Properties.Resources.style);
 
+            if (!File.Exists("configs\\search.plugin"))
+                File.WriteAllText("configs\\search.plugin", "public static string Process(string title)\r\n{\r\n\treturn title;\r\n}");
+
             SetDoubleBuffering(listView1, true);
             SetHeight(listView1, 20);
 
@@ -1594,16 +1597,20 @@ namespace RealNews
                 return;
             // toggle star
             var f = listView1.FocusedItem.Tag as FeedItem;
+            string title = f.Title;
+
+            // preprocess title
+            if (File.Exists("configs\\search.plugin"))
+            {
+                try
+                {
+                    title = Compiler.CompileAndRun("configs\\search.plugin",  new object[] { title } );
+                }
+                catch { }
+            }
+
             if (f != null)
-                Process.Start("www.google.com/search?q=" + f.Title);
-            //try
-            //{
-            //    webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "On", null);
-            //}
-            //catch (Exception ex)
-            //{
-            //    _log.Error(ex);
-            //}
+                Process.Start("www.google.com/search?q=" + title);
         }
 
         private void button1_Click(object sender, EventArgs e)

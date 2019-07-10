@@ -66,6 +66,7 @@
     <Compile Include="Forms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Compiler.cs" />
     <Compile Include="Helper\CoreWebServer.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="feedreader\Extensions.cs" />
