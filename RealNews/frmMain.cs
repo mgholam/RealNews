@@ -220,6 +220,10 @@ namespace RealNews
             {
                 long len;
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                if (Settings.UseSytemProxy) // else define a proxy
+                    req.Proxy = WebRequest.DefaultWebProxy;
+                else if (Settings.CustomProxy != "")
+                    req.Proxy = new WebProxy(Settings.CustomProxy);
                 req.Timeout = 4000;
                 req.Method = "HEAD";
                 using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
@@ -376,6 +380,10 @@ namespace RealNews
             //{
             tn.ImageIndex = imgidx;
             tn.SelectedImageIndex = imgidx;
+
+            tn.ForeColor = Color.Black;
+            if (f.LastError != "")
+                tn.ForeColor = Color.Red;
             //}
             if (f.UnreadCount > 0)
             {
@@ -757,6 +765,9 @@ namespace RealNews
                 {
                     feed.UnreadCount = list.Count(x => x.isRead == false);
                     var n = treeView1.Nodes.Find(feed.Title, true)[0];
+                    n.ForeColor = Color.Black;
+                    if (feed.LastError != "")
+                        n.ForeColor = Color.Red;
                     if (feed.UnreadCount > 0)
                     {
                         n.Text = feed.Title + $" ({feed.UnreadCount})";
@@ -1413,6 +1424,9 @@ namespace RealNews
                     && x.isStarred == false
                     && x.isRead == true);
             }
+            // clear feed errors
+            _feeds.ForEach(x => x.LastError = "");
+
             if (c == 0)
             {
                 //MessageBox.Show
@@ -1604,9 +1618,9 @@ namespace RealNews
             {
                 try
                 {
-                    title = Compiler.CompileAndRun("configs\\search.plugin",  new object[] { title } );
+                    title = Compiler.CompileAndRun("configs\\search.plugin", new object[] { title });
                 }
-                catch { }
+                catch (Exception ex) { Log("" + ex); }
             }
 
             if (f != null)
@@ -1656,6 +1670,10 @@ namespace RealNews
 
             var list = f.FindAll(expr);
             int c = list.Count;
+
+            // clear feed errors
+            _feeds.ForEach(x => x.LastError = "");
+
 
             if (c == 0)
             {
@@ -1748,6 +1766,7 @@ namespace RealNews
 
         private void deleteItems()
         {
+            // FIX : handle search list delete
             // delete item
             int count = listView1.SelectedItems.Count;
             if (count == 0)// == null)

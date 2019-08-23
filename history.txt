@@ -1,3 +1,7 @@
+v1.4.3
+- added the use of a custom proxy 
+- colour coding feeds in tree if failed to get data
+
 v1.4.2
 - search title pre-process plugin 
 

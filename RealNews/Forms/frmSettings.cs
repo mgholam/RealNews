@@ -13,7 +13,6 @@ namespace RealNews
         }
         bool _isdirty = false;
 
-
         private void frmSettings_Load(object sender, EventArgs e)
         {
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -28,6 +27,13 @@ namespace RealNews
             lblLastUpdated.Text = Settings.LastUpdateTime.ToLongTimeString();
             numCleaupDays.Value = Settings.CleanupItemAfterDays;
             maskedTextBox1.Text = Settings.LastUpdateTime.ToLongTimeString();
+            txtCustomProxy.Text = Settings.CustomProxy.Trim();
+
+
+            txtCustomProxy.Enabled = true;
+            if (chkUseSystemProxy.Checked)
+                txtCustomProxy.Enabled = false;
+
             _isdirty = false;
         }
 
@@ -51,6 +57,7 @@ namespace RealNews
                 Settings.webport = (int)numWebPort.Value;
                 Settings.DownloadImagesUnderKB = (int)numDownloadSize.Value;
                 Settings.CleanupItemAfterDays = (int)numCleaupDays.Value;
+                Settings.CustomProxy = txtCustomProxy.Text.Trim();
 
                 var st = TimeSpan.Parse(txtStart.Text);
                 var ed = TimeSpan.Parse(txtEnd.Text);
@@ -74,7 +81,7 @@ namespace RealNews
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("notepad.exe","configs/style.css");
+            Process.Start("notepad.exe", "configs/style.css");
         }
 
         private void frmSettings_KeyUp(object sender, KeyEventArgs e)
@@ -86,6 +93,18 @@ namespace RealNews
         private void chkUseSystemProxy_CheckedChanged(object sender, EventArgs e)
         {
             _isdirty = true;
+
+            txtCustomProxy.Enabled = true;
+            if (chkUseSystemProxy.Checked)
+                txtCustomProxy.Enabled = false;
+        }
+
+        private void TxtCustomProxy_Enter(object sender, EventArgs e)
+        {
+            BeginInvoke((Action)delegate
+            {
+                txtCustomProxy.SelectAll();
+            });
         }
     }
 }

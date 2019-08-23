@@ -407,7 +407,7 @@ namespace RaptorDB.Common
             if (!foldername.EndsWith(separator, StringComparison.CurrentCulture))
                 foldername = foldername + separator;
 
-            AddStream(_method, foldername, null/* TODO Change to default(_) if this is not a reference type */, File.GetLastWriteTime(_pathname), _comment);
+            AddStream(_method, foldername, null/* TDO Change to default(_) if this is not a reference type */, File.GetLastWriteTime(_pathname), _comment);
 
             // Process the list of files found in the directory.
             string[] fileEntries = Directory.GetFiles(_pathname);
