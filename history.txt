@@ -1,3 +1,6 @@
+v1.4.3.1
+- fixed tab orders in forms
+
 v1.4.3
 - added the use of a custom proxy 
 - colour coding feeds in tree if failed to get data

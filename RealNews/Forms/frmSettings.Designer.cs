@@ -65,7 +65,7 @@
             this.txtStart.Location = new System.Drawing.Point(170, 216);
             this.txtStart.Name = "txtStart";
             this.txtStart.Size = new System.Drawing.Size(131, 22);
-            this.txtStart.TabIndex = 5;
+            this.txtStart.TabIndex = 7;
             this.txtStart.TextChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label1
@@ -87,7 +87,7 @@
             0});
             this.numUpdate.Name = "numUpdate";
             this.numUpdate.Size = new System.Drawing.Size(131, 22);
-            this.numUpdate.TabIndex = 2;
+            this.numUpdate.TabIndex = 4;
             this.numUpdate.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label4
@@ -130,7 +130,7 @@
             0});
             this.numWebPort.Name = "numWebPort";
             this.numWebPort.Size = new System.Drawing.Size(131, 22);
-            this.numWebPort.TabIndex = 3;
+            this.numWebPort.TabIndex = 5;
             this.numWebPort.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label2
@@ -152,7 +152,7 @@
             0});
             this.numDownloadSize.Name = "numDownloadSize";
             this.numDownloadSize.Size = new System.Drawing.Size(131, 22);
-            this.numDownloadSize.TabIndex = 4;
+            this.numDownloadSize.TabIndex = 6;
             this.numDownloadSize.ValueChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label5
@@ -178,7 +178,7 @@
             this.txtEnd.Location = new System.Drawing.Point(170, 253);
             this.txtEnd.Name = "txtEnd";
             this.txtEnd.Size = new System.Drawing.Size(131, 22);
-            this.txtEnd.TabIndex = 6;
+            this.txtEnd.TabIndex = 8;
             this.txtEnd.TextChanged += new System.EventHandler(this.chkUseSystemProxy_CheckedChanged);
             // 
             // label7
@@ -195,7 +195,7 @@
             this.button3.Location = new System.Drawing.Point(310, 335);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(90, 33);
-            this.button3.TabIndex = 9;
+            this.button3.TabIndex = 11;
             this.button3.Text = "Cancel";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -205,7 +205,7 @@
             this.button2.Location = new System.Drawing.Point(12, 335);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(90, 33);
-            this.button2.TabIndex = 8;
+            this.button2.TabIndex = 10;
             this.button2.Text = "Save";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -281,7 +281,7 @@
             0});
             this.numCleaupDays.Name = "numCleaupDays";
             this.numCleaupDays.Size = new System.Drawing.Size(131, 22);
-            this.numCleaupDays.TabIndex = 7;
+            this.numCleaupDays.TabIndex = 9;
             this.numCleaupDays.Value = new decimal(new int[] {
             1,
             0,
@@ -304,7 +304,7 @@
             this.maskedTextBox1.Mask = "00:00";
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(108, 22);
-            this.maskedTextBox1.TabIndex = 35;
+            this.maskedTextBox1.TabIndex = 3;
             this.maskedTextBox1.ValidatingType = typeof(System.DateTime);
             // 
             // txtCustomProxy
@@ -312,7 +312,7 @@
             this.txtCustomProxy.Location = new System.Drawing.Point(170, 40);
             this.txtCustomProxy.Name = "txtCustomProxy";
             this.txtCustomProxy.Size = new System.Drawing.Size(228, 22);
-            this.txtCustomProxy.TabIndex = 37;
+            this.txtCustomProxy.TabIndex = 2;
             this.txtCustomProxy.Enter += new System.EventHandler(this.TxtCustomProxy_Enter);
             // 
             // label13

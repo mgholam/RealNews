@@ -65,7 +65,7 @@
             this.txtURL.Location = new System.Drawing.Point(101, 7);
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(501, 22);
-            this.txtURL.TabIndex = 1;
+            this.txtURL.TabIndex = 0;
             this.txtURL.TextChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // button1
@@ -73,7 +73,7 @@
             this.button1.Location = new System.Drawing.Point(613, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(60, 22);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 1;
             this.button1.Text = "get info";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -83,7 +83,7 @@
             this.button2.Location = new System.Drawing.Point(12, 217);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(90, 33);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 9;
             this.button2.Text = "Save";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -93,7 +93,7 @@
             this.button3.Location = new System.Drawing.Point(583, 217);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(90, 33);
-            this.button3.TabIndex = 4;
+            this.button3.TabIndex = 10;
             this.button3.Text = "Cancel";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -125,7 +125,7 @@
             this.txtFolder.Location = new System.Drawing.Point(95, 54);
             this.txtFolder.Name = "txtFolder";
             this.txtFolder.Size = new System.Drawing.Size(501, 22);
-            this.txtFolder.TabIndex = 20;
+            this.txtFolder.TabIndex = 3;
             // 
             // label6
             // 
@@ -142,7 +142,7 @@
             this.chkExcludeCleanup.Location = new System.Drawing.Point(370, 115);
             this.chkExcludeCleanup.Name = "chkExcludeCleanup";
             this.chkExcludeCleanup.Size = new System.Drawing.Size(164, 18);
-            this.chkExcludeCleanup.TabIndex = 18;
+            this.chkExcludeCleanup.TabIndex = 7;
             this.chkExcludeCleanup.Text = "Exclude in Global Cleanup";
             this.chkExcludeCleanup.UseVisualStyleBackColor = true;
             this.chkExcludeCleanup.CheckedChanged += new System.EventHandler(this.txtURL_TextChanged);
@@ -152,7 +152,7 @@
             this.button4.Location = new System.Drawing.Point(577, 107);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(90, 33);
-            this.button4.TabIndex = 9;
+            this.button4.TabIndex = 8;
             this.button4.Text = "Delete Feed";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -185,7 +185,7 @@
             0});
             this.numUpdate.Name = "numUpdate";
             this.numUpdate.Size = new System.Drawing.Size(123, 22);
-            this.numUpdate.TabIndex = 15;
+            this.numUpdate.TabIndex = 4;
             this.numUpdate.ValueChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // label4
@@ -212,7 +212,7 @@
             this.chkImages.Location = new System.Drawing.Point(95, 115);
             this.chkImages.Name = "chkImages";
             this.chkImages.Size = new System.Drawing.Size(123, 18);
-            this.chkImages.TabIndex = 11;
+            this.chkImages.TabIndex = 5;
             this.chkImages.Text = "Download Images";
             this.chkImages.UseVisualStyleBackColor = true;
             this.chkImages.CheckedChanged += new System.EventHandler(this.txtURL_TextChanged);
@@ -223,7 +223,7 @@
             this.chkRTL.Location = new System.Drawing.Point(250, 115);
             this.chkRTL.Name = "chkRTL";
             this.chkRTL.Size = new System.Drawing.Size(96, 18);
-            this.chkRTL.TabIndex = 10;
+            this.chkRTL.TabIndex = 6;
             this.chkRTL.Text = "Right to Left";
             this.chkRTL.UseVisualStyleBackColor = true;
             this.chkRTL.CheckedChanged += new System.EventHandler(this.txtURL_TextChanged);
@@ -233,7 +233,7 @@
             this.txtName.Location = new System.Drawing.Point(95, 21);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(501, 22);
-            this.txtName.TabIndex = 9;
+            this.txtName.TabIndex = 2;
             this.txtName.TextChanged += new System.EventHandler(this.txtURL_TextChanged);
             // 
             // label2
