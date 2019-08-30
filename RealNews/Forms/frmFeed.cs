@@ -49,9 +49,23 @@ namespace RealNews
         private void button2_Click(object sender, EventArgs e)
         {
             var s = txtFolder.Text.ToLower();
+
+            if(txtName.Text.Trim() == "")
+            {
+                MessageBox.Show("Please enter a name for the feed");
+                txtName.Focus();
+                return;
+            }
             if(s == "unread" || s== "starred" || s== "search results")
             {
                 MessageBox.Show("Category can not be one of : \r\n\r\n Unread, Starred, Search Results");
+                txtFolder.Focus();
+                return;
+            }
+            if(s.Contains("\\") || s.Contains("/"))
+            {
+                MessageBox.Show("Sub folders are not supported yet");
+                txtFolder.Focus();
                 return;
             }
             // save button

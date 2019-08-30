@@ -28,7 +28,8 @@ namespace RealNews
             numCleaupDays.Value = Settings.CleanupItemAfterDays;
             maskedTextBox1.Text = Settings.LastUpdateTime.ToLongTimeString();
             txtCustomProxy.Text = Settings.CustomProxy.Trim();
-
+            chkCloseOnMinimize.Checked = Settings.OnCloseMinimize;
+            numSkipFeedItems.Value = Settings.SkipFeedItemsDaysOlderThan;
 
             txtCustomProxy.Enabled = true;
             if (chkUseSystemProxy.Checked)
@@ -58,6 +59,8 @@ namespace RealNews
                 Settings.DownloadImagesUnderKB = (int)numDownloadSize.Value;
                 Settings.CleanupItemAfterDays = (int)numCleaupDays.Value;
                 Settings.CustomProxy = txtCustomProxy.Text.Trim();
+                Settings.OnCloseMinimize = chkCloseOnMinimize.Checked;
+                Settings.SkipFeedItemsDaysOlderThan = (int)numSkipFeedItems.Value;
 
                 var st = TimeSpan.Parse(txtStart.Text);
                 var ed = TimeSpan.Parse(txtEnd.Text);

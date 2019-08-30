@@ -29,6 +29,10 @@ namespace RealNews
 
         public static string CustomProxy = "";
 
+        public static bool OnCloseMinimize = true;
+
+        public static int SkipFeedItemsDaysOlderThan = 10;
+
         //public static int DownloadImgThreads = 20;
 
     }

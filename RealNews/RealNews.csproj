@@ -187,6 +187,7 @@
     <Compile Include="Renderer\ProfessionalColorTable.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Helper\ZipStorer.cs" />
+    <Compile Include="Singleinstance.cs" />
     <EmbeddedResource Include="Forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>

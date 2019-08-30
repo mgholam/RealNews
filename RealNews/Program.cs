@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -18,17 +17,9 @@ namespace RealNews
         static void Main()
         {
             _path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var name = Process.GetCurrentProcess().MainModule.ModuleName.Split('.')[0];
             if (_path.EndsWith("\\") == false) _path += "\\";
-            var pp = Process.GetProcessesByName(name);
-            var found = 0;
-            foreach (var pi in pp)
-            {
-                if (pi.MainModule.FileName.StartsWith(_path))
-                    found++;
-            }
 
-            if (found == 1)
+            if (Singleinstance.Running(_path) == false)
             {
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -36,11 +27,7 @@ namespace RealNews
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new frmMain());
             }
-            else
-            {
-                MessageBox.Show("Only one instance at a time");
-            }
-        }
+        }     
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {

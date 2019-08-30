@@ -1,3 +1,10 @@
+v1.4.4
+- add/edit feed form validation checks
+- added OnCloseMinimize config to close or minimize on form close click
+- adding a new feed with category updates the tree correctly
+- added SkipFeedItemsDaysOlderThan config for feeds that don't filter recent items when sending
+- singleton app now works correctly and opens existing window even if in tray
+
 v1.4.3.1
 - fixed tab orders in forms
 

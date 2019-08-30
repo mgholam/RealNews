@@ -41,6 +41,16 @@ namespace RealNews
             (this.webBrowser1.ActiveXInstance as SHDocVw.WebBrowser).NewWindow3 += FrmMain_NewWindow3;
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == Singleinstance._msgID && this.Visible == false)
+            {
+                this.Show();
+                this.WindowState = _lastFormState;
+            }
+            base.WndProc(ref m);
+        }
+
         private void FrmMain_NewWindow3(ref object ppDisp, ref bool Cancel, uint dwFlags, string bstrUrlContext, string bstrUrl)
         {
             // for a tags with target = new window
@@ -73,6 +83,7 @@ namespace RealNews
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
             notifyIcon1.Visible = true;
+            
 
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
@@ -509,6 +520,9 @@ namespace RealNews
             List<FeedItem> list = new List<FeedItem>();
             foreach (var item in reader.Items)
             {
+                if (DateTime.Now.Subtract(item.PublishingDate.Value).TotalDays > Settings.SkipFeedItemsDaysOlderThan)
+                    continue;
+
                 var i = new FeedItem
                 {
                     Title = item.Title,
@@ -1084,11 +1098,16 @@ namespace RealNews
                 Shutdown();
             else
             {
-                //  minimize
-                _lastFormState = this.WindowState;
-                e.Cancel = true;
-                notifyIcon1.Visible = true;
-                this.Hide();
+                if (Settings.OnCloseMinimize)
+                {
+                    //  minimize
+                    _lastFormState = this.WindowState;
+                    e.Cancel = true;
+                    notifyIcon1.Visible = true;
+                    this.Hide();
+                }
+                else
+                    Shutdown();
             }
         }
 
@@ -1249,11 +1268,13 @@ namespace RealNews
                     return;
                 }
                 _feeds.Add(f);
-                var tn = new TreeNode();
-                tn.Tag = f;
-                tn.Name = f.Title;
-                tn.Text = f.Title;
-                treeView1.Nodes.Add(tn);
+                SaveFeeds();
+                LoadFeeds();
+                //var tn = new TreeNode();
+                //tn.Tag = f;
+                //tn.Name = f.Title;
+                //tn.Text = f.Title;
+                //treeView1.Nodes.Add(tn);
             }
         }
 
@@ -1861,5 +1882,14 @@ namespace RealNews
                 }
             }
         }
+
+        private void FrmMain_Activated(object sender, EventArgs e)
+        {
+            //MessageBox.Show("here");
+            //this.Show();
+            //this.WindowState = _lastFormState;
+        }
+
+        
     }
 }
