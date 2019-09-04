@@ -520,7 +520,8 @@ namespace RealNews
             List<FeedItem> list = new List<FeedItem>();
             foreach (var item in reader.Items)
             {
-                if (DateTime.Now.Subtract(item.PublishingDate.Value).TotalDays > Settings.SkipFeedItemsDaysOlderThan)
+                if (item.PublishingDate != null && 
+                    DateTime.Now.Subtract(item.PublishingDate.Value).TotalDays > Settings.SkipFeedItemsDaysOlderThan)
                     continue;
 
                 var i = new FeedItem

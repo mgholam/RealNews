@@ -1,3 +1,6 @@
+v1.4.4.1
+- bug fix filtering old items when item does not provide a pubish date
+
 v1.4.4
 - add/edit feed form validation checks
 - added OnCloseMinimize config to close or minimize on form close click
