@@ -83,7 +83,7 @@ namespace RealNews
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             notifyIcon1.Icon = Properties.Resources.tray;
             notifyIcon1.Visible = true;
-            
+
 
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
@@ -520,7 +520,7 @@ namespace RealNews
             List<FeedItem> list = new List<FeedItem>();
             foreach (var item in reader.Items)
             {
-                if (item.PublishingDate != null && 
+                if (item.PublishingDate != null &&
                     DateTime.Now.Subtract(item.PublishingDate.Value).TotalDays > Settings.SkipFeedItemsDaysOlderThan)
                     continue;
 
@@ -783,6 +783,7 @@ namespace RealNews
                     n.ForeColor = Color.Black;
                     if (feed.LastError != "")
                         n.ForeColor = Color.Red;
+
                     if (feed.UnreadCount > 0)
                     {
                         n.Text = feed.Title + $" ({feed.UnreadCount})";
@@ -897,15 +898,17 @@ namespace RealNews
             }
             ShowItem(item);
         }
-
         private void SaveFeeds()
         {
-            File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
-            File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
-            File.WriteAllText("feeds\\downloadimg.list", JSON.ToNiceJSON(_downloadimglist, jp));
-            foreach (var i in _feeditems)
+            lock (_lock)
             {
-                File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
+                File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
+                File.WriteAllText("feeds\\feeds.list", JSON.ToNiceJSON(_feeds, jp));
+                File.WriteAllText("feeds\\downloadimg.list", JSON.ToNiceJSON(_downloadimglist, jp));
+                foreach (var i in _feeditems)
+                {
+                    File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
+                }
             }
         }
 
@@ -1435,6 +1438,17 @@ namespace RealNews
                 && x.isStarred == false
                 && x.isRead == true);
 
+            // clear errors 
+            _feeds.ForEach(feed =>
+            {
+                var n = treeView1.Nodes.Find(feed.Title, true)[0];
+                if (feed.LastError != "")
+                {
+                    feed.LastError = "";
+                    n.ForeColor = Color.Black;
+                }
+            });
+
             foreach (var f in _feeditems)
             {
                 var ff = _feeds.Find(x => x.Title == f.Key);
@@ -1446,8 +1460,6 @@ namespace RealNews
                     && x.isStarred == false
                     && x.isRead == true);
             }
-            // clear feed errors
-            _feeds.ForEach(x => x.LastError = "");
 
             if (c == 0)
             {
@@ -1481,7 +1493,8 @@ namespace RealNews
                 }
 
                 _imageCache.Remove(imgs);
-                UpdateFeedCount();
+                UpdateAllFeedCounts();
+                Task.Factory.StartNew(SaveFeeds);
             }
         }
 
@@ -1891,6 +1904,6 @@ namespace RealNews
             //this.WindowState = _lastFormState;
         }
 
-        
+
     }
 }
