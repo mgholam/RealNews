@@ -19,7 +19,7 @@ namespace RealNews.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -77,6 +77,48 @@ namespace RealNews.Properties {
             get {
                 object obj = ResourceManager.GetObject("Compress", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*------ DARK MODE ------*/
+        ///
+        ///body {
+        ///    font-family: Tahoma;
+        ///    font-weight: normal;
+        ///    background-color: #202020;
+        ///    color : #bbb;
+        ///}
+        ///
+        ///a {
+        ///   color : #c0c0ff;
+        ///}
+        ///
+        ///.title {
+        ///    background-color: #555;
+        ///    padding: 10px;
+        ///    margin-bottom: 15px;
+        ///}
+        ///
+        ///    .title h2 {
+        ///        font-weight: normal;
+        ///    }
+        ///
+        ///        .title h2 a {
+        ///            text-decoration: none;
+        ///        }
+        ///
+        ///    .title label {
+        ///        margin-left: 5px;
+        ///        margin-right: 5px;
+        ///        font-size: xx-small;
+        ///    }
+        ///
+        ///.e [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string dark {
+            get {
+                return ResourceManager.GetString("dark", resourceCulture);
             }
         }
         
@@ -147,6 +189,45 @@ namespace RealNews.Properties {
             get {
                 object obj = ResourceManager.GetObject("Image1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /*------ LIGHT MODE ------*/
+        ///
+        ///body {
+        ///    font-family: Tahoma;
+        ///    font-weight: normal;
+        ///}
+        ///
+        ///.title {
+        ///    background-color: aliceblue;
+        ///    padding: 10px;
+        ///    margin-bottom: 15px;
+        ///}
+        ///
+        ///    .title h2 {
+        ///        font-weight: normal;
+        ///    }
+        ///
+        ///        .title h2 a {
+        ///            text-decoration: none;
+        ///        }
+        ///
+        ///    .title label {
+        ///        margin-left: 5px;
+        ///        margin-right: 5px;
+        ///        font-size: xx-small;
+        ///    }
+        ///
+        ///.extradata {
+        ///    background-color: whitesmoke;
+        ///    font-size: x-small;
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string light {
+            get {
+                return ResourceManager.GetString("light", resourceCulture);
             }
         }
         
@@ -247,46 +328,6 @@ namespace RealNews.Properties {
             get {
                 object obj = ResourceManager.GetObject("star_yellow", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to body {
-        ///    font-family: Tahoma;
-        ///    font-weight: normal;
-        ///}
-        ///
-        ///.title {
-        ///    background-color: aliceblue;
-        ///    padding: 10px;
-        ///    margin-bottom: 15px;
-        ///}
-        ///
-        ///    .title h2 {
-        ///        font-weight: normal;
-        ///    }
-        ///
-        ///        .title h2 a {
-        ///            text-decoration: none;
-        ///        }
-        ///
-        ///    .title label {
-        ///        margin-left: 5px;
-        ///        margin-right: 5px;
-        ///        font-size: xx-small;
-        ///    }
-        ///
-        ///.extradata {
-        ///    background-color: whitesmoke;
-        ///    font-size: x-small;
-        ///    margin-top : 30px;
-        ///}
-        ///
-        ///    .ex [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string style {
-            get {
-                return ResourceManager.GetString("style", resourceCulture);
             }
         }
         

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace RealNews
@@ -30,6 +31,7 @@ namespace RealNews
             txtCustomProxy.Text = Settings.CustomProxy.Trim();
             chkCloseOnMinimize.Checked = Settings.OnCloseMinimize;
             numSkipFeedItems.Value = Settings.SkipFeedItemsDaysOlderThan;
+            chkDarkMode.Checked = Settings.DarkMode;
 
             txtCustomProxy.Enabled = true;
             if (chkUseSystemProxy.Checked)
@@ -61,6 +63,7 @@ namespace RealNews
                 Settings.CustomProxy = txtCustomProxy.Text.Trim();
                 Settings.OnCloseMinimize = chkCloseOnMinimize.Checked;
                 Settings.SkipFeedItemsDaysOlderThan = (int)numSkipFeedItems.Value;
+                Settings.DarkMode = chkDarkMode.Checked;
 
                 var st = TimeSpan.Parse(txtStart.Text);
                 var ed = TimeSpan.Parse(txtEnd.Text);
@@ -71,6 +74,7 @@ namespace RealNews
                     Settings.EndDownloadImgTime = txtEnd.Text;
 
                     DialogResult = DialogResult.OK;
+
                     this.Close();
                 }
                 else
@@ -84,7 +88,10 @@ namespace RealNews
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("notepad.exe", "configs/style.css");
+            if (chkDarkMode.Checked)
+                Process.Start("notepad.exe", "configs/dark.css");
+            else
+                Process.Start("notepad.exe", "configs/light.css");
         }
 
         private void frmSettings_KeyUp(object sender, KeyEventArgs e)

@@ -33,6 +33,8 @@ namespace RealNews
 
         public static int SkipFeedItemsDaysOlderThan = 10;
 
+        public static bool DarkMode = false;
+
         //public static int DownloadImgThreads = 20;
 
     }

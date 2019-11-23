@@ -57,6 +57,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.numSkipFeedItems = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
+            this.chkDarkMode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpdate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWebPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDownloadSize)).BeginInit();
@@ -370,11 +371,23 @@
             this.label14.TabIndex = 39;
             this.label14.Text = "Skip Items Older Than";
             // 
+            // chkDarkMode
+            // 
+            this.chkDarkMode.AutoSize = true;
+            this.chkDarkMode.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkDarkMode.Location = new System.Drawing.Point(231, 12);
+            this.chkDarkMode.Name = "chkDarkMode";
+            this.chkDarkMode.Size = new System.Drawing.Size(84, 18);
+            this.chkDarkMode.TabIndex = 41;
+            this.chkDarkMode.Text = "Dark Mode";
+            this.chkDarkMode.UseVisualStyleBackColor = true;
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 380);
+            this.Controls.Add(this.chkDarkMode);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.numSkipFeedItems);
             this.Controls.Add(this.label14);
@@ -453,5 +466,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown numSkipFeedItems;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox chkDarkMode;
     }
 }

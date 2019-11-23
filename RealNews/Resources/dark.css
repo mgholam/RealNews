@@ -1,0 +1,51 @@
+/*------ DARK MODE ------*/
+
+body {
+    font-family: Tahoma;
+    font-weight: normal;
+    background-color: #202020;
+    color : #bbb;
+}
+
+a {
+   color : #c0c0ff;
+}
+
+.title {
+    background-color: #555;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+    .title h2 {
+        font-weight: normal;
+    }
+
+        .title h2 a {
+            text-decoration: none;
+        }
+
+    .title label {
+        margin-left: 5px;
+        margin-right: 5px;
+        font-size: xx-small;
+    }
+
+.extradata {
+    background-color: #333;
+    font-size: x-small;
+    margin-top : 30px;
+}
+
+    .extradata tr {
+        padding: 5px;
+    }
+
+    .extradata td {
+        padding: 5px;
+    }
+
+        .extradata td:first-child {
+            vertical-align: top;
+            text-align: end;
+        }

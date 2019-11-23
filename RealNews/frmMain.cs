@@ -19,25 +19,13 @@ namespace RealNews
 {
     // TODO : drag move feeds in folders
     // TODO : download, cleanup on folder -> all feeds down
+    // TODO : dark mode scrollbar colours
 
     public partial class frmMain : Form
     {
         public frmMain()
         {
             InitializeComponent();
-            //treeView1.DrawMode = TreeViewDrawMode.OwnerDrawAll;
-            //treeView1.DrawNode += (o, e) =>
-            //{
-            //    if (!e.Node.TreeView.Focused && e.Node == e.Node.TreeView.SelectedNode)
-            //    {
-            //        Font treeFont = e.Node.NodeFont ?? e.Node.TreeView.Font;
-            //        e.Graphics.FillRectangle(Brushes.Blue, e.Bounds);
-            //        //ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds, SystemColors.HighlightText, SystemColors.Highlight);
-            //        TextRenderer.DrawText(e.Graphics, e.Node.Text, treeFont, e.Bounds, Color.Black, TextFormatFlags.GlyphOverhangPadding);
-            //    }
-            //    else
-            //        e.DrawDefault = true;
-            //};
             (this.webBrowser1.ActiveXInstance as SHDocVw.WebBrowser).NewWindow3 += FrmMain_NewWindow3;
         }
 
@@ -76,6 +64,9 @@ namespace RealNews
         private bool _DoDownloadImages = false;
         private bool _run = true;
         private int _visibleItems = 10;
+        Color _ThemeBackground = Color.White;
+        Color _ThemeNormal = Color.Black;
+        Color _ThemeHighLight = Color.Black;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -84,14 +75,16 @@ namespace RealNews
             notifyIcon1.Icon = Properties.Resources.tray;
             notifyIcon1.Visible = true;
 
-
             Directory.CreateDirectory("feeds\\temp");
             Directory.CreateDirectory("feeds\\lists");
             Directory.CreateDirectory("feeds\\icons");
             Directory.CreateDirectory("configs");
 
-            if (File.Exists("configs\\style.css") == false)
-                File.WriteAllText("configs\\style.css", Properties.Resources.style);
+            // save light dark css
+            if (File.Exists("configs\\light.css") == false)
+                File.WriteAllText("configs\\light.css", Properties.Resources.light);
+            if (File.Exists("configs\\dark.css") == false)
+                File.WriteAllText("configs\\dark.css", Properties.Resources.dark);
 
             if (!File.Exists("configs\\search.plugin"))
                 File.WriteAllText("configs\\search.plugin", "public static string Process(string title)\r\n{\r\n\treturn title;\r\n}");
@@ -107,16 +100,15 @@ namespace RealNews
             else
                 this.WindowState = FormWindowState.Normal;
 
+            SetTheme();
             //var i = TreeViewHelper.GetFolderIcon(TreeViewHelper.IconSize.Small, TreeViewHelper.FolderType.Open);
             //    i.ToBitmap().Save("d:\\folder.png", ImageFormat.Png);
 
             rssImages.Images.Add(Properties.Resources.folder);
-
             rssImages.Images.Add(Properties.Resources.rss);
             rssImages.Images.Add(Properties.Resources.news_new);
             rssImages.Images.Add(Properties.Resources.star_yellow);
             rssImages.Images.Add(Properties.Resources.Search);
-
 
             LoadFeeds();
             Task.Factory.StartNew(downloadfeedicons);
@@ -304,7 +296,7 @@ namespace RealNews
             }
         }
 
-        private string _currhtml = "<html></html>";
+        private string _currhtml = "<html><link rel='stylesheet' href='http://localhost:" + Settings.webport + "/style.css'></html>";
         private string ShowFeedItemHtml()
         {
             return _currhtml;
@@ -354,14 +346,17 @@ namespace RealNews
         private void AddTreeViewMain()
         {
             var tn = treeView1.Nodes.Add("Unread");
+            tn.ForeColor = _ThemeNormal;
             tn.Name = "Unread";
             tn.ImageIndex = 2;
             tn.SelectedImageIndex = 2;
             tn = treeView1.Nodes.Add("Starred");
+            tn.ForeColor = _ThemeNormal;
             tn.Name = "Starred";
             tn.ImageIndex = 3;
             tn.SelectedImageIndex = 3;
             tn = treeView1.Nodes.Add("Search Results");
+            tn.ForeColor = _ThemeNormal;
             tn.Name = "Search";
             tn.ImageIndex = 4;
             tn.SelectedImageIndex = 4;
@@ -387,19 +382,18 @@ namespace RealNews
                 catch { }
             }
             tn = TreeViewHelper.AddTreeNode(treeView1, f.Folder, f, f.Title);
-            //if (imgidx > 0)
-            //{
             tn.ImageIndex = imgidx;
             tn.SelectedImageIndex = imgidx;
 
-            tn.ForeColor = Color.Black;
+            tn.ForeColor = _ThemeNormal;
             if (f.LastError != "")
                 tn.ForeColor = Color.Red;
-            //}
+
             if (f.UnreadCount > 0)
             {
                 tn.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
                 tn.Text = f.Title + $" ({f.UnreadCount})";
+                tn.ForeColor = _ThemeHighLight;
             }
             else
                 tn.Text = f.Title;
@@ -452,7 +446,41 @@ namespace RealNews
             statusStrip1.Renderer = r;
             feedContextMenu.Renderer = r;
             itemContextMenu.Renderer = r;
+
             this.Invalidate();
+        }
+
+        private void SetTheme()
+        {
+            if (Settings.DarkMode)
+            {
+                File.Copy("configs/dark.css", "configs/style.css", true);
+                _ThemeBackground = Color.FromArgb(32, 32, 32);
+                _ThemeNormal = Color.Silver;// DimGray;
+                _ThemeHighLight = Color.White;
+            }
+            else
+            {
+                File.Copy("configs/light.css", "configs/style.css", true);
+                _ThemeBackground = Color.White;
+                _ThemeNormal = Color.Black;
+                _ThemeHighLight = Color.Black;
+            }
+
+            treeView1.BackColor = _ThemeBackground;
+            treeView1.ForeColor = _ThemeNormal;
+
+            panel1.BackColor = _ThemeBackground;
+            panel2.BackColor = _ThemeBackground;
+
+            listView1.BackColor = _ThemeBackground;
+            listView1.ForeColor = _ThemeNormal;
+
+            button1.ForeColor = _ThemeHighLight;
+            placeHolderTextBox1.BackColor = _ThemeBackground;
+            placeHolderTextBox1.ForeColor = _ThemeNormal;
+            placeHolderTextBox1.NormalColor = _ThemeNormal;
+            placeHolderTextBox1.HighlightColor = _ThemeHighLight;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -710,7 +738,7 @@ namespace RealNews
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<img src='star.png' />");
+                sb.Append("<img src='star.png' />"); // FIX : star colour in dark mode
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
@@ -780,7 +808,7 @@ namespace RealNews
                 {
                     feed.UnreadCount = list.Count(x => x.isRead == false);
                     var n = treeView1.Nodes.Find(feed.Title, true)[0];
-                    n.ForeColor = Color.Black;
+                    n.ForeColor = _ThemeNormal;
                     if (feed.LastError != "")
                         n.ForeColor = Color.Red;
 
@@ -788,6 +816,7 @@ namespace RealNews
                     {
                         n.Text = feed.Title + $" ({feed.UnreadCount})";
                         n.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                        n.ForeColor = _ThemeHighLight;
                     }
                     else
                     {
@@ -804,11 +833,13 @@ namespace RealNews
                         {
                             u.Text = u.Name + $" ({cc})";
                             u.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                            u.ForeColor = _ThemeHighLight;
                         }
                         else
                         {
                             u.Text = u.Name;
                             u.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                            u.ForeColor = _ThemeNormal;
                         }
                     }
                 }
@@ -821,11 +852,13 @@ namespace RealNews
                 {
                     ur.Text = $"Unread ({c} of {tot})";
                     ur.NodeFont = new Font(treeView1.Font, FontStyle.Bold);
+                    ur.ForeColor = _ThemeHighLight;
                 }
                 else
                 {
                     ur.Text = $"Unread (0 of {tot})";
                     ur.NodeFont = new Font(treeView1.Font, FontStyle.Regular);
+                    ur.ForeColor = _ThemeNormal;
                 }
             }
             catch //(Exception ex)
@@ -891,6 +924,7 @@ namespace RealNews
                     listView1.EnsureVisible(l.Index + _visibleItems);
 
                 l.Font = new Font(listView1.Font, FontStyle.Regular);
+                l.ForeColor = _ThemeNormal;
                 listView1.SelectedItems.Clear();
                 l.Selected = true;
                 l.Focused = true;
@@ -991,6 +1025,7 @@ namespace RealNews
                     thisweek.HeaderAlignment = HorizontalAlignment.Left;
                     var older = new ListViewGroup("Older");
                     older.HeaderAlignment = HorizontalAlignment.Left;
+                    // FIX : group text colour in dark mode
 
                     listView1.Groups.Add(today);
                     listView1.Groups.Add(yesterday);
@@ -1017,9 +1052,15 @@ namespace RealNews
                             grp = older;
                         lvi.Group = grp;
                         if (i.isRead == false)
+                        {
                             lvi.Font = new Font(listView1.Font, FontStyle.Bold);
+                            lvi.ForeColor = _ThemeHighLight;
+                        }
                         else
+                        {
+                            lvi.ForeColor = _ThemeNormal;
                             lvi.Font = listView1.Font;
+                        }
                         a.Add(lvi);
                     }
                     listView1.Items.AddRange(a.ToArray());
@@ -1051,9 +1092,9 @@ namespace RealNews
         //    return "feeds\\temp\\" + title + ".html";
         //}
 
-        private static void SetDoubleBuffering(System.Windows.Forms.Control control, bool value)
+        private static void SetDoubleBuffering(Control control, bool value)
         {
-            System.Reflection.PropertyInfo controlProperty = typeof(System.Windows.Forms.Control)
+            System.Reflection.PropertyInfo controlProperty = typeof(Control)
                 .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             controlProperty.SetValue(control, value, null);
         }
@@ -1240,6 +1281,7 @@ namespace RealNews
         {
             ShowItem(listView1.FocusedItem.Tag as FeedItem);
             listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
+            listView1.FocusedItem.ForeColor = _ThemeNormal;
         }
 
         private void listView1_KeyUp(object sender, KeyEventArgs e)
@@ -1248,6 +1290,7 @@ namespace RealNews
                 return;
             ShowItem(listView1.FocusedItem.Tag as FeedItem);
             listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
+            listView1.FocusedItem.ForeColor = _ThemeNormal;
         }
 
         private void starToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1366,6 +1409,20 @@ namespace RealNews
                 UpdateFeedCount();
                 ShowItem(f, false);
                 listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Bold);
+                listView1.FocusedItem.ForeColor = _ThemeHighLight;
+            }
+
+            foreach (ListViewItem fi in listView1.SelectedItems)
+            {
+                f = fi.Tag as FeedItem;
+                if (f != null)
+                {
+                    f.isRead = !f.isRead;
+                    UpdateFeedCount();
+                    ShowItem(f, false);
+                    fi.Font = new Font(fi.Font, FontStyle.Bold);
+                    fi.ForeColor = _ThemeHighLight;
+                }
             }
         }
 
@@ -1445,7 +1502,9 @@ namespace RealNews
                 if (feed.LastError != "")
                 {
                     feed.LastError = "";
-                    n.ForeColor = Color.Black;
+                    n.ForeColor = _ThemeNormal;
+                    if (n.NodeFont.Bold == true)
+                        n.ForeColor = _ThemeHighLight;
                 }
             });
 
@@ -1554,7 +1613,20 @@ namespace RealNews
             // settings form here
             frmSettings f = new frmSettings();
             if (f.ShowDialog() == DialogResult.OK)
+            {
                 File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
+                SetTheme();
+                var cf = _currentFeed.Title;
+                // redo web browser content in theme
+                LoadFeeds();
+                _currentFeed = _feeds.Find(x => x.Title == cf);
+                // focus feed in treeview
+                var n = treeView1.Nodes.Find(_currentFeed.Title, true);
+                if (n.Length > 0)
+                    treeView1.SelectedNode = n[0];
+                ShowFeedList(_currentFeed);
+                webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1904,6 +1976,18 @@ namespace RealNews
             //this.WindowState = _lastFormState;
         }
 
+        private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            using (SolidBrush foreBrush = new SolidBrush(_ThemeHighLight))
+            {
+                e.Graphics.DrawString(e.Header.Text, e.Font, foreBrush, e.Bounds);
+            }
+            //e.DrawDefault = false;
+        }
 
+        private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
     }
 }

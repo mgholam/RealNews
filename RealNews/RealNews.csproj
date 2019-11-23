@@ -175,12 +175,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helper\RealNewsWeb.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Helper\RealNewsWeb.cs" />
     <Compile Include="Renderer\Office2007BlackColorTable.cs" />
     <Compile Include="Renderer\Office2007Rendererbse.cs" />
     <Compile Include="Renderer\OfficeColorTable.cs" />
@@ -220,7 +220,7 @@
     <None Include="Resources\notfound.img" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\style.css" />
+    <None Include="Resources\light.css" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\rss.gif" />
@@ -233,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\dark.css" />
     <None Include="Resources\star.png" />
     <None Include="Resources\downloadimgs.ico" />
     <None Include="Resources\settings.ico" />

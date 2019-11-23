@@ -17,6 +17,9 @@ public class PlaceHolderTextBox : TextBox
         }
     }
 
+    public Color NormalColor;
+    public Color HighlightColor;
+
     public new string Text
     {
         get => isPlaceHolder ? string.Empty : base.Text;
@@ -29,7 +32,7 @@ public class PlaceHolderTextBox : TextBox
         if (string.IsNullOrEmpty(base.Text))
         {
             base.Text = PlaceHolderText;
-            this.ForeColor = Color.Gray;
+            this.ForeColor = NormalColor;
             this.Font = new Font(this.Font, FontStyle.Italic);
             isPlaceHolder = true;
         }
@@ -38,13 +41,16 @@ public class PlaceHolderTextBox : TextBox
     //when the control is focused, the placeholder is removed
     private void removePlaceHolder()
     {
-
         if (isPlaceHolder)
         {
             base.Text = "";
-            this.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.ForeColor = NormalColor;
             this.Font = new Font(this.Font, FontStyle.Regular);
             isPlaceHolder = false;
+        }
+        else
+        {
+            this.ForeColor = HighlightColor;
         }
     }
     public PlaceHolderTextBox()

@@ -1,6 +1,7 @@
-v1.4.4.1
-- bug fix filtering old items when item does not provide a pubish date
+v1.5.0
+- bug fix filtering old items when item does not provide a publish date
 - cleanup all, resets failed feed colours
+- added dark mode theme
 
 v1.4.4
 - add/edit feed form validation checks
