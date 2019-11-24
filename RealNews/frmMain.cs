@@ -51,6 +51,7 @@ namespace RealNews
         List<Feed> _feeds = new List<Feed>();
         ConcurrentDictionary<string, List<FeedItem>> _feeditems = new ConcurrentDictionary<string, List<FeedItem>>();
         Feed _currentFeed = null;
+        string _feedTitle = "";
         List<FeedItem> _currentList = null;
         ConcurrentQueue<string> _downloadimglist = new ConcurrentQueue<string>();
         private Regex _imghrefregex = new Regex("src\\s*=\\s*[\'\"]\\s*(?<href>.*?)\\s*[\'\"]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -475,6 +476,7 @@ namespace RealNews
 
             listView1.BackColor = _ThemeBackground;
             listView1.ForeColor = _ThemeNormal;
+            Helper.listviewapi.SetGroupHeaderColor(listView1, _ThemeHighLight);
 
             button1.ForeColor = _ThemeHighLight;
             placeHolderTextBox1.BackColor = _ThemeBackground;
@@ -738,7 +740,7 @@ namespace RealNews
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<img src='star.png' />"); // FIX : star colour in dark mode
+                sb.Append("<img src='star.png' />"); 
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
@@ -1025,13 +1027,15 @@ namespace RealNews
                     thisweek.HeaderAlignment = HorizontalAlignment.Left;
                     var older = new ListViewGroup("Older");
                     older.HeaderAlignment = HorizontalAlignment.Left;
-                    // FIX : group text colour in dark mode
 
                     listView1.Groups.Add(today);
                     listView1.Groups.Add(yesterday);
                     listView1.Groups.Add(thisweek);
                     listView1.Groups.Add(older);
                     listView1.ShowGroups = true;
+                    // FIX : group text colour in dark mode -> not working
+                    Helper.listviewapi.SetGroupHeaderColor(listView1, _ThemeHighLight);
+
                     List<ListViewItem> a = new List<ListViewItem>();
                     foreach (var i in list)
                     {
@@ -1163,41 +1167,49 @@ namespace RealNews
             if (feed != null)
             {
                 _currentFeed = feed;
+                _feedTitle = feed.Title;
                 ShowFeedList(feed);
                 if (_feeditems.TryGetValue(feed.Title, out List<FeedItem> fl))
                     Log(feed.Title + " item count = " + fl.Count);
             }
             else
             {
-                listView1.RightToLeft = RightToLeft.No;
-                listView1.RightToLeftLayout = false;
-                List<FeedItem> list = new List<FeedItem>();
-                if (e.Node.Name == "Unread")
-                {
-                    foreach (var f in _feeditems)
-                        list.AddRange(f.Value.FindAll(x => x.isRead == false));
+                ShowFeedFromTitle(e.Node.Name);
+            }
+        }
 
-                    ShowFeedList(list);
-                }
-                else if (e.Node.Name == "Starred")
-                {
-                    foreach (var f in _feeditems)
-                        list.AddRange(f.Value.FindAll(x => x.isStarred == true));
+        private void ShowFeedFromTitle(string title)
+        {
+            listView1.RightToLeft = RightToLeft.No;
+            listView1.RightToLeftLayout = false;
+            List<FeedItem> list = new List<FeedItem>();
+            _feedTitle = title;
 
-                    ShowFeedList(list);
-                }
-                else if (e.Node.Name == "Search")
-                {
-                    ShowSearchResults();
-                }
-                else
-                {
-                    // category selected 
-                    var f = _feeds.FindAll(x => x.Folder == e.Node.Name).ToList();
-                    foreach (var ff in f)
-                        list.AddRange(_feeditems[ff.Title]);
-                    ShowFeedList(list);
-                }
+            if (title == "Unread")
+            {
+                foreach (var f in _feeditems)
+                    list.AddRange(f.Value.FindAll(x => x.isRead == false));
+
+                ShowFeedList(list);
+            }
+            else if (title == "Starred")
+            {
+                foreach (var f in _feeditems)
+                    list.AddRange(f.Value.FindAll(x => x.isStarred == true));
+
+                ShowFeedList(list);
+            }
+            else if (title == "Search")
+            {
+                ShowSearchResults();
+            }
+            else
+            {
+                // category selected 
+                var f = _feeds.FindAll(x => x.Folder == title).ToList();
+                foreach (var ff in f)
+                    list.AddRange(_feeditems[ff.Title]);
+                ShowFeedList(list);
             }
         }
 
@@ -1616,15 +1628,17 @@ namespace RealNews
             {
                 File.WriteAllText("configs\\settings.config", JSON.ToNiceJSON(new Settings(), jp));
                 SetTheme();
-                var cf = _currentFeed.Title;
-                // redo web browser content in theme
+                string cf = _feedTitle;
                 LoadFeeds();
-                _currentFeed = _feeds.Find(x => x.Title == cf);
-                // focus feed in treeview
-                var n = treeView1.Nodes.Find(_currentFeed.Title, true);
-                if (n.Length > 0)
-                    treeView1.SelectedNode = n[0];
-                ShowFeedList(_currentFeed);
+                if (cf != "")
+                {
+                    ShowFeedFromTitle(cf);
+                    // focus feed in treeview
+                    var n = treeView1.Nodes.Find(cf, true);
+                    if (n.Length > 0)
+                        treeView1.SelectedNode = n[0];
+                }
+                // redo web browser content in theme
                 webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
             }
         }
@@ -1969,25 +1983,18 @@ namespace RealNews
             }
         }
 
-        private void FrmMain_Activated(object sender, EventArgs e)
-        {
-            //MessageBox.Show("here");
-            //this.Show();
-            //this.WindowState = _lastFormState;
-        }
+        //private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        //{
+        //    using (SolidBrush foreBrush = new SolidBrush(_ThemeHighLight))
+        //    {
+        //        e.Graphics.DrawString(e.Header.Text, e.Font, foreBrush, e.Bounds);
+        //    }
+        //    //e.DrawDefault = false;
+        //}
 
-        private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
-        {
-            using (SolidBrush foreBrush = new SolidBrush(_ThemeHighLight))
-            {
-                e.Graphics.DrawString(e.Header.Text, e.Font, foreBrush, e.Bounds);
-            }
-            //e.DrawDefault = false;
-        }
-
-        private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e)
-        {
-            e.DrawDefault = true;
-        }
+        //private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e)
+        //{
+        //    e.DrawDefault = true;
+        //}
     }
 }

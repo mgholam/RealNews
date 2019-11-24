@@ -49,12 +49,15 @@ namespace RealNews
                 OutPutContentType(ctx, ".css");
                 WriteResponse(ctx, 200, File.ReadAllText("configs\\style.css"));
             }
-            else if(path =="api/star.png")
+            else if (path == "api/star.png")
             {
                 OutPutContentType(ctx, ".png");
                 var ms = new MemoryStream();
-                Properties.Resources.Star.Save(ms, ImageFormat.Png);
-                WriteResponse(ctx, 200, ms.ToArray(),false);
+                if (Settings.DarkMode)
+                    Properties.Resources.star1.Save(ms, ImageFormat.Png);
+                else
+                    Properties.Resources.Star.Save(ms, ImageFormat.Png);
+                WriteResponse(ctx, 200, ms.ToArray(), false);
             }
             else
                 base.ServeFile(ctx, path);
