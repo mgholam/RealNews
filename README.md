@@ -10,3 +10,4 @@
 - Update All on an interval
 - Update single feed on an interval
 - Import OPML files
+- Dark mode
