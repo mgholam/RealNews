@@ -1,3 +1,8 @@
+v1.5.1
+- bug fix ensuring items are visible at the end of the feed list
+- memory cleanup on load and save feeds
+- bug fix running on WinXP
+
 v1.5.0
 - bug fix filtering old items when item does not provide a publish date
 - cleanup all, resets failed feed colours

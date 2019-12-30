@@ -337,6 +337,7 @@ namespace RealNews
                 UpdateAllFeedCounts();
             }
             splitContainer1.Visible = true;
+            GC.Collect();
         }
 
         private void UpdateAllFeedCounts()
@@ -740,7 +741,7 @@ namespace RealNews
             sb.Append("<div class='title'>");
             sb.Append("<h2><a href='" + item.Link + "'>" + item.Title + "</a></h2>");
             if (item.isStarred)
-                sb.Append("<img src='star.png' />"); 
+                sb.Append("<img src='star.png' />");
             sb.Append("<label>");
             sb.Append("" + item.Author);
             sb.Append("</label>");
@@ -922,6 +923,9 @@ namespace RealNews
             var l = listView1.FindItemWithText(item.Title, true, 0, false);
             if (l != null)
             {
+                if (listView1.SelectedIndices.Count == 0 && listView1.Items.Count - l.Index <= _visibleItems)
+                    listView1.EnsureVisible(listView1.Items.Count - 1);
+
                 if (l.Index + _visibleItems < listView1.Items.Count)
                     listView1.EnsureVisible(l.Index + _visibleItems);
 
@@ -946,6 +950,7 @@ namespace RealNews
                     File.WriteAllText(GetFeedFilename(i.Key), JSON.ToNiceJSON(i.Value, jp));
                 }
             }
+            GC.Collect();
         }
 
         private void Shutdown()

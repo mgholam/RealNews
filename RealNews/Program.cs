@@ -31,6 +31,7 @@ namespace RealNews
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            File.AppendAllText("error.txt", e.ExceptionObject.ToString());
             _log.Error(e);
         }
     }
