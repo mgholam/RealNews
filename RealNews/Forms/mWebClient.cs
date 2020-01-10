@@ -8,7 +8,7 @@ namespace RealNews
         public mWebClient()
         {
             Timeout = 10 * 1000;
-            if (Environment.OSVersion.Version.Major > 6) // >XP
+            if (Environment.OSVersion.Version.Major >= 6) // >XP
                 ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;// KLUDGE : https security for .net 4
             base.Encoding = System.Text.Encoding.UTF8;
             if (Settings.UseSytemProxy) // else define a proxy

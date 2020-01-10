@@ -1,3 +1,6 @@
+v1.5.2
+- bug fix running on Win7
+
 v1.5.1
 - bug fix ensuring items are visible at the end of the feed list
 - memory cleanup on load and save feeds
