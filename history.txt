@@ -1,5 +1,6 @@
 v1.5.2
 - bug fix running on Win7
+- check for 0 length images in cache
 
 v1.5.1
 - bug fix ensuring items are visible at the end of the feed list

@@ -111,8 +111,8 @@ namespace RealNews
                 return null;
 
             var key = FixName(url);
-
-            if (File.Exists(_path + key.fn))
+            var fi = new FileInfo(Path.GetFullPath(_path + key.fn));
+            if (fi.Exists && fi.Length>0)  // File.Exists(_path + key.fn))
                 return File.ReadAllBytes(_path + key.fn);
             else
             {

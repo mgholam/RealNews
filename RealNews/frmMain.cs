@@ -228,8 +228,10 @@ namespace RealNews
                     req.Proxy = WebRequest.DefaultWebProxy;
                 else if (Settings.CustomProxy != "")
                     req.Proxy = new WebProxy(Settings.CustomProxy);
+                 
                 req.Timeout = 4000;
                 req.Method = "HEAD";
+                req.UserAgent = "Other";
                 using (HttpWebResponse resp = (HttpWebResponse)(req.GetResponse()))
                 {
                     len = resp.ContentLength;
