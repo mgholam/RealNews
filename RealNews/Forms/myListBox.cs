@@ -57,10 +57,10 @@ namespace RealNews
             if (this.RightToLeft == RightToLeft.Yes)
             {
                 sf = new StringFormat();
-                sf.Alignment = StringAlignment.Far;
+                //sf.Alignment = StringAlignment.Far;
                 sf.Trimming = StringTrimming.EllipsisCharacter;
                 sf.LineAlignment = StringAlignment.Center;
-                sf.FormatFlags = StringFormatFlags.NoWrap;
+                sf.FormatFlags = StringFormatFlags.DirectionRightToLeft | StringFormatFlags.NoWrap;
                 l = 20;
                 w = 0;
             }
