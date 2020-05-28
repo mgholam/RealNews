@@ -66,6 +66,9 @@
     <Compile Include="Forms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\myListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Helper\Compiler.cs" />
     <Compile Include="Helper\CoreWebServer.cs" />
     <Compile Include="Entities.cs" />
@@ -143,8 +146,6 @@
     <Compile Include="Forms\frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper\listviewapi.cs" />
-    <Compile Include="Helper\SystemColors.cs" />
     <Compile Include="Helper\TreeViewHelper.cs" />
     <Compile Include="HtmlAgilityPack\crc32.cs" />
     <Compile Include="HtmlAgilityPack\EncodingFoundException.cs" />

@@ -52,6 +52,11 @@ namespace RealNews
         public bool isStarred = false;
         [XmlIgnore]
         public bool RTL = false;
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 
     class FeedItemComparer : IEqualityComparer<FeedItem>

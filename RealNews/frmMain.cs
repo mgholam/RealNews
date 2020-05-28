@@ -68,6 +68,8 @@ namespace RealNews
         Color _ThemeBackground = Color.White;
         Color _ThemeNormal = Color.Black;
         Color _ThemeHighLight = Color.Black;
+        CheckBox _menuCheckBox = new CheckBox();
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -89,9 +91,6 @@ namespace RealNews
 
             if (!File.Exists("configs\\search.plugin"))
                 File.WriteAllText("configs\\search.plugin", "public static string Process(string title)\r\n{\r\n\treturn title;\r\n}");
-
-            SetDoubleBuffering(listView1, true);
-            SetHeight(listView1, 20);
 
             JSON.Parameters.UseUTCDateTime = false;
             if (File.Exists("configs\\settings.config"))
@@ -134,6 +133,23 @@ namespace RealNews
             _minuteTimer.Elapsed += _minuteTimer_Elapsed;
             _minuteTimer.AutoReset = true;
             _minuteTimer.Enabled = true;
+
+            if (Settings.MGFeatures)
+            {
+                _menuCheckBox.Text = "System Proxy";
+                _menuCheckBox.ForeColor = Color.White;// menuStrip1.Items[0].ForeColor;
+                _menuCheckBox.BackColor = Color.Transparent;
+                _menuCheckBox.CheckStateChanged += Cb_CheckStateChanged;
+                _menuCheckBox.Checked = Settings.UseSytemProxy;
+                ToolStripControlHost host = new ToolStripControlHost(_menuCheckBox);
+                host.ForeColor = _menuCheckBox.ForeColor;
+                menuStrip1.Items.Add(host);
+            }
+        }
+
+        private void Cb_CheckStateChanged(object sender, EventArgs e)
+        {
+            Settings.UseSytemProxy = (sender as CheckBox).Checked;
         }
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
@@ -168,7 +184,7 @@ namespace RealNews
                                 c++;
                                 var ret = downloadImageFile(url);
 
-                                if (ret.ToLower().Contains("timed out")) // retry if timed out
+                                if (ret.myContains("timed out")) // retry if timed out
                                 {
                                     _downloadimglist.Enqueue(url);
                                 }
@@ -228,7 +244,7 @@ namespace RealNews
                     req.Proxy = WebRequest.DefaultWebProxy;
                 else if (Settings.CustomProxy != "")
                     req.Proxy = new WebProxy(Settings.CustomProxy);
-                 
+
                 req.Timeout = 4000;
                 req.Method = "HEAD";
                 req.UserAgent = "Other";
@@ -462,6 +478,7 @@ namespace RealNews
                 _ThemeBackground = Color.FromArgb(32, 32, 32);
                 _ThemeNormal = Color.Silver;// DimGray;
                 _ThemeHighLight = Color.White;
+                myListBox1.GroupColor = _ThemeHighLight;
             }
             else
             {
@@ -469,6 +486,7 @@ namespace RealNews
                 _ThemeBackground = Color.White;
                 _ThemeNormal = Color.Black;
                 _ThemeHighLight = Color.Black;
+                myListBox1.GroupColor = Color.Blue;
             }
 
             treeView1.BackColor = _ThemeBackground;
@@ -477,9 +495,9 @@ namespace RealNews
             panel1.BackColor = _ThemeBackground;
             panel2.BackColor = _ThemeBackground;
 
-            listView1.BackColor = _ThemeBackground;
-            listView1.ForeColor = _ThemeNormal;
-            Helper.listviewapi.SetGroupHeaderColor(listView1, _ThemeHighLight);
+            myListBox1.BackColor = _ThemeBackground;
+            myListBox1.ForeColor = _ThemeNormal;
+            myListBox1.HighLightText = _ThemeHighLight;
 
             button1.ForeColor = _ThemeHighLight;
             placeHolderTextBox1.BackColor = _ThemeBackground;
@@ -704,28 +722,13 @@ namespace RealNews
             if (isread)
                 _newItemsExist = false;
 
-            try
-            {
-                webBrowser1.Document.DomDocument.GetType().GetProperty("designMode").SetValue(webBrowser1.Document.DomDocument, "Off", null);
-            }
-            catch
-            {//(Exception ex){
-                //_log.Error(ex);
-            }
             // show item
-            if (item == null)
-            {
-                item = new FeedItem
-                {
-                    Title = "Testing",
-                    Link = "http://google.com",
-                    Author = "m. gholam",
-                    Categories = "testing, 123",
-                    date = DateTime.Now,
-                    Description = "",
-                    Attachment = ""
-                };
-            }
+            //if (item == null)
+            //{
+            //    return;
+            //}
+            if (item == null || item.Id == "")
+                return;
 
             Log("");
 
@@ -919,27 +922,26 @@ namespace RealNews
         private void ShowNextItem()
         {
             _newItemsExist = false; // reset tray icon
-            var item = _currentList.Find(x => x.isRead == false);
-            if (item == null)
-                return;
-            var l = listView1.FindItemWithText(item.Title, true, 0, false);
-            if (l != null)
+
+            int j = 0;
+            if (myListBox1.SelectedIndex > -1)
+                j = myListBox1.SelectedIndex;
+            for (int i = j; i < myListBox1.Items.Count; i++)
             {
-                if (listView1.SelectedIndices.Count == 0 && listView1.Items.Count - l.Index <= _visibleItems)
-                    listView1.EnsureVisible(listView1.Items.Count - 1);
-
-                if (l.Index + _visibleItems < listView1.Items.Count)
-                    listView1.EnsureVisible(l.Index + _visibleItems);
-
-                l.Font = new Font(listView1.Font, FontStyle.Regular);
-                l.ForeColor = _ThemeNormal;
-                listView1.SelectedItems.Clear();
-                l.Selected = true;
-                l.Focused = true;
-                listView1.FocusedItem = l;
+                var fi = myListBox1.Items[i] as FeedItem;
+                if (fi.Id != "" && fi.isRead == false)
+                {
+                    myListBox1.SelectedItems.Clear();
+                    myListBox1.SelectedIndex = i;
+                    myListBox1.EnsureVisible(i, _visibleItems);
+                    ShowItem(myListBox1.SelectedItem as FeedItem);
+                    break;
+                }
             }
-            ShowItem(item);
+
+
         }
+
         private void SaveFeeds()
         {
             lock (_lock)
@@ -999,8 +1001,7 @@ namespace RealNews
                     if (list != null)
                     {
                         list.ForEach(x => x.RTL = feed.RTL);
-                        listView1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
-                        listView1.RightToLeftLayout = feed.RTL;
+                        myListBox1.RightToLeft = feed.RTL ? RightToLeft.Yes : RightToLeft.No;
                         ShowFeedList(list);
                         UpdateFeedCount(feed, list);
                     }
@@ -1019,65 +1020,34 @@ namespace RealNews
                 if (list != null)
                 {
                     _currentList = list;
-                    listView1.SuspendLayout();
-                    listView1.BeginUpdate();
+                    myListBox1.SuspendLayout();
+                    myListBox1.BeginUpdate();
 
-                    listView1.Items.Clear();
-                    listView1.Groups.Clear();
-                    listView1.View = View.Details;
-                    listView1.ListViewItemSorter = null;
-                    var today = new ListViewGroup("Today");
-                    today.HeaderAlignment = HorizontalAlignment.Left;
-                    var yesterday = new ListViewGroup("Yesterday");
-                    yesterday.HeaderAlignment = HorizontalAlignment.Left;
-                    var thisweek = new ListViewGroup("This Week");
-                    thisweek.HeaderAlignment = HorizontalAlignment.Left;
-                    var older = new ListViewGroup("Older");
-                    older.HeaderAlignment = HorizontalAlignment.Left;
+                    myListBox1.Items.Clear();
+                    var last = "";
 
-                    listView1.Groups.Add(today);
-                    listView1.Groups.Add(yesterday);
-                    listView1.Groups.Add(thisweek);
-                    listView1.Groups.Add(older);
-                    listView1.ShowGroups = true;
-                    // FIX : group text colour in dark mode -> not working
-                    Helper.listviewapi.SetGroupHeaderColor(listView1, _ThemeHighLight);
-
-                    List<ListViewItem> a = new List<ListViewItem>();
                     foreach (var i in list)
                     {
-                        var lvi = new ListViewItem();
-                        lvi.Name = "Title";
-                        lvi.Text = i.Title;
-                        lvi.Tag = i;
-
-                        var grp = today;
                         var d = DateTime.Now.Subtract(i.date).TotalDays;
+                        var grp = "";
                         if (d < 1)
-                            grp = today;
+                            grp = "Today";
                         else if (d >= 1 & d < 2)
-                            grp = yesterday;
+                            grp = "Yesterday";
                         else if (d >= 2 && d < 7)
-                            grp = thisweek;
+                            grp = "This week";
                         else
-                            grp = older;
-                        lvi.Group = grp;
-                        if (i.isRead == false)
+                            grp = "Older";
+
+                        if (last != grp)
                         {
-                            lvi.Font = new Font(listView1.Font, FontStyle.Bold);
-                            lvi.ForeColor = _ThemeHighLight;
+                            myListBox1.Items.Add(new FeedItem { Title = grp, Id = "" });
+                            last = grp;
                         }
-                        else
-                        {
-                            lvi.ForeColor = _ThemeNormal;
-                            lvi.Font = listView1.Font;
-                        }
-                        a.Add(lvi);
+                        myListBox1.Items.Add(i);
                     }
-                    listView1.Items.AddRange(a.ToArray());
-                    listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                    listView1.EndUpdate();
-                    listView1.ResumeLayout();
+                    myListBox1.EndUpdate();
+                    myListBox1.ResumeLayout();
                 }
             }
         }
@@ -1098,24 +1068,6 @@ namespace RealNews
         {
             return "feeds\\temp\\" + GetFeedFilenameOnly(f) + ".xml";
         }
-        //private string GetTempHTMLFilename(string title)
-        //{
-        //    return "feeds\\temp\\" + title + ".html";
-        //}
-
-        private static void SetDoubleBuffering(Control control, bool value)
-        {
-            System.Reflection.PropertyInfo controlProperty = typeof(Control)
-                .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            controlProperty.SetValue(control, value, null);
-        }
-
-        private void SetHeight(ListView listView, int height)
-        {
-            ImageList imgList = new ImageList();
-            imgList.ImageSize = new Size(1, height);
-            listView.SmallImageList = imgList;
-        }
 
         private void Log(string msg)
         {
@@ -1126,11 +1078,11 @@ namespace RealNews
 
         private void ToggleStarred()
         {
-            if (listView1.FocusedItem == null)
+            if (myListBox1.SelectedItem != null)
                 return;
             // toggle star
-            var f = listView1.FocusedItem.Tag as FeedItem;
-            if (f != null)
+            var f = myListBox1.SelectedItem as FeedItem;
+            if (f != null && f.Id != "")
             {
                 f.isStarred = !f.isStarred;
                 UpdateStarCount();
@@ -1187,8 +1139,7 @@ namespace RealNews
 
         private void ShowFeedFromTitle(string title)
         {
-            listView1.RightToLeft = RightToLeft.No;
-            listView1.RightToLeftLayout = false;
+            myListBox1.RightToLeft = RightToLeft.No;
             List<FeedItem> list = new List<FeedItem>();
             _feedTitle = title;
 
@@ -1230,6 +1181,9 @@ namespace RealNews
         {
             if (loaded)
                 Settings.feeditemlistwidth = e.SplitX;
+            // resize bug 
+            myListBox1.DrawMode = DrawMode.OwnerDrawFixed;
+            myListBox1.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
         private bool _exit = false;
@@ -1298,18 +1252,12 @@ namespace RealNews
 
         private void listView1_Click(object sender, EventArgs e)
         {
-            ShowItem(listView1.FocusedItem.Tag as FeedItem);
-            listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
-            listView1.FocusedItem.ForeColor = _ThemeNormal;
+            ShowItem(myListBox1.SelectedItem as FeedItem);
         }
 
         private void listView1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (listView1.FocusedItem == null)
-                return;
-            ShowItem(listView1.FocusedItem.Tag as FeedItem);
-            listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Regular);
-            listView1.FocusedItem.ForeColor = _ThemeNormal;
+            ShowItem(myListBox1.SelectedItem as FeedItem);
         }
 
         private void starToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1421,34 +1369,19 @@ namespace RealNews
         private void markUnreadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // mark unread
-            var f = listView1.FocusedItem.Tag as FeedItem;
-            if (f != null)
-            {
-                f.isRead = !f.isRead;
-                UpdateFeedCount();
-                ShowItem(f, false);
-                listView1.FocusedItem.Font = new Font(listView1.FocusedItem.Font, FontStyle.Bold);
-                listView1.FocusedItem.ForeColor = _ThemeHighLight;
-            }
 
-            foreach (ListViewItem fi in listView1.SelectedItems)
+            foreach (FeedItem fi in myListBox1.SelectedItems)
             {
-                f = fi.Tag as FeedItem;
-                if (f != null)
-                {
-                    f.isRead = !f.isRead;
-                    UpdateFeedCount();
-                    ShowItem(f, false);
-                    fi.Font = new Font(fi.Font, FontStyle.Bold);
-                    fi.ForeColor = _ThemeHighLight;
-                }
+                if (fi != null && fi.Id != "")
+                    fi.isRead = false;// !f.isRead;
             }
+            UpdateFeedCount();
         }
 
         private void downloadImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // force download image for item now
-            var f = listView1.FocusedItem.Tag as FeedItem;
+            var f = myListBox1.SelectedItem as FeedItem;
             if (f != null)
             {
                 internalDownloadImage(f, true);
@@ -1588,13 +1521,13 @@ namespace RealNews
         private void ShowSearchResults()
         {
             List<FeedItem> list = new List<FeedItem>();
-            string s = placeHolderTextBox1.Text.ToLower();
+            string s = placeHolderTextBox1.Text;//.ToLower();
             if (s != "")
                 foreach (var f in _feeditems)
                 {
                     list.AddRange(f.Value.FindAll(x =>
-                        x.Title.ToLower().Contains(s)
-                        || x.Description.ToLower().Contains(s)));
+                        x.Title.myContains(s) ||
+                        x.Description.myContains(s)));
                 }
             treeView1.Nodes[2].Text = "Search Results";
             if (list.Count > 0)
@@ -1637,6 +1570,7 @@ namespace RealNews
                 SetTheme();
                 string cf = _feedTitle;
                 LoadFeeds();
+                _menuCheckBox.Checked = Settings.UseSytemProxy;
                 if (cf != "")
                 {
                     ShowFeedFromTitle(cf);
@@ -1659,6 +1593,11 @@ namespace RealNews
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            if (Settings.MGFeatures && keyData == Keys.Escape)
+            {
+                MoveNextUnread();
+                return true;
+            }
             if (keyData == Keys.Space && placeHolderTextBox1.Focused == false)
             {
                 MoveNextUnread();
@@ -1686,43 +1625,34 @@ namespace RealNews
 
         private void MovePrev()
         {
-            if (listView1.SelectedIndices.Count == 0)
+            if (myListBox1.SelectedIndices.Count == 0)
                 return;
-            int selectedIndex = listView1.SelectedIndices[0];
-            listView1.Items[selectedIndex].Focused = false;
-            listView1.Items[selectedIndex].Selected = false;
-            listView1.SelectedIndices.Clear();
-            listView1.SelectedItems.Clear();
+            int selectedIndex = myListBox1.SelectedIndices[0];
+            //myListBox1.SelectedItems.Clear();
             if (selectedIndex > 0)
             {
                 selectedIndex--;
-                listView1.Items[selectedIndex].Selected = true;
-                listView1.Items[selectedIndex].Focused = true;
-                var i = _currentList[selectedIndex];
-                //if (selectedIndex + _visibleItems < listView1.Items.Count)
-                listView1.EnsureVisible(selectedIndex);
-                ShowItem(i);
+                myListBox1.SelectedIndices.Clear();
+                myListBox1.SelectedIndex = selectedIndex;
+                //var i = _currentList[selectedIndex];
+                ShowItem(myListBox1.SelectedItem as FeedItem);
             }
         }
 
         private void MoveNext()
         {
-            if (listView1.SelectedIndices.Count == 0)
-                return;
-            int selectedIndex = listView1.SelectedIndices[0];
-            listView1.Items[selectedIndex].Focused = false;
-            listView1.Items[selectedIndex].Selected = false;
-            listView1.SelectedIndices.Clear();
-            listView1.SelectedItems.Clear();
-            if (selectedIndex < listView1.Items.Count)
+            //if (myListBox1.SelectedIndices.Count == 0)
+            //return;
+            int selectedIndex = myListBox1.SelectedIndex;
+            if (selectedIndex < myListBox1.Items.Count)
             {
                 selectedIndex++;
-                listView1.Items[selectedIndex].Selected = true;
-                listView1.Items[selectedIndex].Focused = true;
-                var i = _currentList[selectedIndex];
-                if (selectedIndex + _visibleItems < listView1.Items.Count)
-                    listView1.EnsureVisible(selectedIndex + _visibleItems);
-                ShowItem(i);
+
+                myListBox1.SelectedIndices.Clear();
+                myListBox1.SelectedIndex = selectedIndex;
+                //var i = _currentList[selectedIndex];
+                myListBox1.EnsureVisible(_visibleItems);
+                ShowItem(myListBox1.SelectedItem as FeedItem);
             }
         }
 
@@ -1735,10 +1665,10 @@ namespace RealNews
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.FocusedItem == null)
+            if (myListBox1.SelectedItem == null)
                 return;
             // toggle star
-            var f = listView1.FocusedItem.Tag as FeedItem;
+            var f = myListBox1.SelectedItem as FeedItem;
             string title = f.Title;
 
             // preprocess title
@@ -1896,7 +1826,7 @@ namespace RealNews
         {
             // FIX : handle search list delete
             // delete item
-            int count = listView1.SelectedItems.Count;
+            int count = myListBox1.SelectedItems.Count;
             if (count == 0)// == null)
                 return;
             var feed = treeView1.SelectedNode.Tag as Feed;
@@ -1910,7 +1840,7 @@ namespace RealNews
             }
             var list = _feeditems[feed.Title];
             int last = 0;
-            foreach (ListViewItem ff in listView1.SelectedItems)
+            foreach (ListViewItem ff in myListBox1.SelectedItems)
             {
                 var f = ff.Tag as FeedItem;
                 if (f.isStarred)
@@ -1931,11 +1861,8 @@ namespace RealNews
             ShowFeedList(feed);
             last++;
             ShowItem(list[last]);
-            listView1.SelectedIndices.Add(last);
-            if (last + _visibleItems < list.Count)
-                listView1.EnsureVisible(last + _visibleItems);
-            else
-                listView1.EnsureVisible(last);
+            myListBox1.SelectedIndices.Add(last);
+            myListBox1.EnsureVisible(_visibleItems);
         }
 
         private void cleanupImageCacheToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1989,19 +1916,5 @@ namespace RealNews
                 }
             }
         }
-
-        //private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
-        //{
-        //    using (SolidBrush foreBrush = new SolidBrush(_ThemeHighLight))
-        //    {
-        //        e.Graphics.DrawString(e.Header.Text, e.Font, foreBrush, e.Bounds);
-        //    }
-        //    //e.DrawDefault = false;
-        //}
-
-        //private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e)
-        //{
-        //    e.DrawDefault = true;
-        //}
     }
 }

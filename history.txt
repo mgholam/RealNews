@@ -1,3 +1,12 @@
+v1.5.4
+- replaced ListView with custom ListBox because of theme problems
+- image cache check for zero length files
+- 
+
+v1.5.3
+- caching compiled plugin MethodInfo
+- internal feature flag
+
 v1.5.2
 - bug fix running on Win7
 - check for 0 length images in cache

@@ -37,5 +37,14 @@ namespace RealNews
 
         //public static int DownloadImgThreads = 20;
 
+        public static bool MGFeatures = false;
+    }
+
+    public static class myextension{
+
+        public static bool myContains(this string str, string val)
+        {
+            return str.IndexOf(val.ToLower(), StringComparison.OrdinalIgnoreCase) > -1;
+        }
     }
 }

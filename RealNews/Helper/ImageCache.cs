@@ -77,9 +77,10 @@ namespace RealNews
                 return true;
 
             var key = FixName(url);
+            var fi = new FileInfo(Path.GetFullPath(_path + key.fn));
 
-            if (File.Exists(_path + key.fn))
-                return true;
+            if (fi.Exists && fi.Length > 0)  // File.Exists(_path + key.fn))
+                    return true;
             else
             {
                 // check zip 
