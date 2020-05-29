@@ -1147,6 +1147,8 @@ namespace RealNews
             {
                 foreach (var f in _feeditems)
                     list.AddRange(f.Value.FindAll(x => x.isRead == false));
+                
+                list = list.OrderByDescending(x => x.date).ToList();
 
                 ShowFeedList(list);
             }
@@ -1154,6 +1156,8 @@ namespace RealNews
             {
                 foreach (var f in _feeditems)
                     list.AddRange(f.Value.FindAll(x => x.isStarred == true));
+
+                list = list.OrderByDescending(x => x.date).ToList();
 
                 ShowFeedList(list);
             }
@@ -1167,6 +1171,9 @@ namespace RealNews
                 var f = _feeds.FindAll(x => x.Folder == title).ToList();
                 foreach (var ff in f)
                     list.AddRange(_feeditems[ff.Title]);
+                
+                list = list.OrderByDescending(x => x.date).ToList();
+
                 ShowFeedList(list);
             }
         }
@@ -1533,6 +1540,9 @@ namespace RealNews
             if (list.Count > 0)
                 treeView1.Nodes[2].Text = $"Search Results ({list.Count})";
             _currentFeed = null;
+
+            list = list.OrderByDescending(x => x.date).ToList();
+
             ShowFeedList(list);
             Log($"{list.Count} items found.");
         }
@@ -1628,21 +1638,17 @@ namespace RealNews
             if (myListBox1.SelectedIndices.Count == 0)
                 return;
             int selectedIndex = myListBox1.SelectedIndices[0];
-            //myListBox1.SelectedItems.Clear();
             if (selectedIndex > 0)
             {
                 selectedIndex--;
                 myListBox1.SelectedIndices.Clear();
                 myListBox1.SelectedIndex = selectedIndex;
-                //var i = _currentList[selectedIndex];
                 ShowItem(myListBox1.SelectedItem as FeedItem);
             }
         }
 
         private void MoveNext()
         {
-            //if (myListBox1.SelectedIndices.Count == 0)
-            //return;
             int selectedIndex = myListBox1.SelectedIndex;
             if (selectedIndex < myListBox1.Items.Count)
             {
@@ -1650,7 +1656,6 @@ namespace RealNews
 
                 myListBox1.SelectedIndices.Clear();
                 myListBox1.SelectedIndex = selectedIndex;
-                //var i = _currentList[selectedIndex];
                 myListBox1.EnsureVisible(_visibleItems);
                 ShowItem(myListBox1.SelectedItem as FeedItem);
             }

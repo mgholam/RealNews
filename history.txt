@@ -1,3 +1,6 @@
+v1.5.5
+- bug fix sorted feed items
+
 v1.5.4
 - replaced ListView with custom ListBox because of theme problems
 - image cache check for zero length files
