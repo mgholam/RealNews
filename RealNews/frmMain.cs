@@ -101,8 +101,6 @@ namespace RealNews
                 this.WindowState = FormWindowState.Normal;
 
             SetTheme();
-            //var i = TreeViewHelper.GetFolderIcon(TreeViewHelper.IconSize.Small, TreeViewHelper.FolderType.Open);
-            //    i.ToBitmap().Save("d:\\folder.png", ImageFormat.Png);
 
             rssImages.Images.Add(Properties.Resources.folder);
             rssImages.Images.Add(Properties.Resources.rss);
@@ -923,23 +921,20 @@ namespace RealNews
         {
             _newItemsExist = false; // reset tray icon
 
-            int j = 0;
-            if (myListBox1.SelectedIndex > -1)
-                j = myListBox1.SelectedIndex;
-            for (int i = j; i < myListBox1.Items.Count; i++)
+            int i = 0;
+            while (i < myListBox1.Items.Count)
             {
-                var fi = myListBox1.Items[i] as FeedItem;
-                if (fi.Id != "" && fi.isRead == false)
+                var f = myListBox1.Items[i] as FeedItem;
+                if (f.isRead == false && f.Id != "")
                 {
                     myListBox1.SelectedItems.Clear();
                     myListBox1.SelectedIndex = i;
                     myListBox1.EnsureVisible(i, _visibleItems);
                     ShowItem(myListBox1.SelectedItem as FeedItem);
-                    break;
+                    return;
                 }
+                i++;
             }
-
-
         }
 
         private void SaveFeeds()
@@ -1147,7 +1142,7 @@ namespace RealNews
             {
                 foreach (var f in _feeditems)
                     list.AddRange(f.Value.FindAll(x => x.isRead == false));
-                
+
                 list = list.OrderByDescending(x => x.date).ToList();
 
                 ShowFeedList(list);
@@ -1171,7 +1166,7 @@ namespace RealNews
                 var f = _feeds.FindAll(x => x.Folder == title).ToList();
                 foreach (var ff in f)
                     list.AddRange(_feeditems[ff.Title]);
-                
+
                 list = list.OrderByDescending(x => x.date).ToList();
 
                 ShowFeedList(list);
@@ -1291,11 +1286,6 @@ namespace RealNews
                 _feeds.Add(f);
                 SaveFeeds();
                 LoadFeeds();
-                //var tn = new TreeNode();
-                //tn.Tag = f;
-                //tn.Name = f.Title;
-                //tn.Text = f.Title;
-                //treeView1.Nodes.Add(tn);
             }
         }
 
@@ -1844,10 +1834,9 @@ namespace RealNews
                     return;
             }
             var list = _feeditems[feed.Title];
-            int last = 0;
-            foreach (ListViewItem ff in myListBox1.SelectedItems)
+            int last = myListBox1.SelectedIndices[count-1] - count;
+            foreach (FeedItem f in myListBox1.SelectedItems)
             {
-                var f = ff.Tag as FeedItem;
                 if (f.isStarred)
                     continue;
                 List<string> imgs = new List<string>();
@@ -1858,7 +1847,6 @@ namespace RealNews
                     imgs.Add(url);
                 }
                 _imageCache.Remove(imgs);
-                last = ff.Index - count;
                 list.Remove(f);
             }
             File.WriteAllText(GetFeedFilename(feed.Title), JSON.ToNiceJSON(list, jp));
